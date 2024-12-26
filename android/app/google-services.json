@@ -1,0 +1,134 @@
+{
+  "project_info": {
+    "project_number": "91552841385",
+    "project_id": "d2home-191bc",
+    "storage_bucket": "d2home-191bc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91552841385:android:07cdf20ed95ad372cff3b8",
+        "android_client_info": {
+          "package_name": "com.d2home.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91552841385-15q0gqefo55rmf5grsn3k39v56tc7prr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.d2home.customer",
+            "certificate_hash": "b56f02e2de7b9d6883a88e082be55a10d69ea4ff"
+          }
+        },
+        {
+          "client_id": "91552841385-t42uu6qralhkhr4f1hqh7csj18g04guj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.d2home.customer",
+            "certificate_hash": "027116b592edbc205d085ace698682be25b3fb7d"
+          }
+        },
+        {
+          "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjHTb1wQ-j9MH1rivRpTGmWbK4EGN-0XA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.foodyman.seller"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91552841385:android:267888a7c37068cecff3b8",
+        "android_client_info": {
+          "package_name": "com.d2home.pos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjHTb1wQ-j9MH1rivRpTGmWbK4EGN-0XA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.foodyman.seller"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91552841385:android:d6d5d6b441adb191cff3b8",
+        "android_client_info": {
+          "package_name": "com.d2home.vendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjHTb1wQ-j9MH1rivRpTGmWbK4EGN-0XA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.foodyman.seller"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
