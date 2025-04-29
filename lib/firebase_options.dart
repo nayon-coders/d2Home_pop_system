@@ -59,12 +59,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD6I1QpavT6BRSvLAtBsjp6v16u06c1HKQ',
-    appId: '1:91552841385:ios:660a490febe67bebcff3b8',
+    appId: '1:91552841385:ios:9b43e289a803b25fcff3b8',
     messagingSenderId: '91552841385',
     projectId: 'd2home-191bc',
     storageBucket: 'd2home-191bc.firebasestorage.app',
     androidClientId: '91552841385-15q0gqefo55rmf5grsn3k39v56tc7prr.apps.googleusercontent.com',
-    iosClientId: '91552841385-7l5fcd1hdhc2u7c79vo9al9npv1tob5u.apps.googleusercontent.com',
-    iosBundleId: 'com.d2home.post',
+    iosClientId: '91552841385-gns6vd9ug4s5q6bgathrk5pnrol329ke.apps.googleusercontent.com',
+    iosBundleId: 'com.posd2home.tableapp',
   );
+
 }

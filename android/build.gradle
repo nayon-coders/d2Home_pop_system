@@ -3,6 +3,15 @@ allprojects {
         google()
         mavenCentral()
     }
+    buildscript {
+        ext.kotlin_version = '1.9.22' // Update to latest stable
+        dependencies {
+            classpath 'com.android.tools.build:gradle:8.2.0' // Update AGP
+
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22"
+            // ... other classpath entries ...
+        }
+    }
 }
 
 rootProject.buildDir = '../build'
