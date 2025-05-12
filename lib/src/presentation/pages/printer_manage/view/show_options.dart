@@ -119,7 +119,7 @@ void showPrinterPopup(BuildContext context, SaleHistoryModel data) {
                           onPressed: () {
                             Navigator.pop(context);
                             // Handle printer search logic here
-                            Get.find<PrinterController>().printReceipt(context, data, copies);
+                            Get.find<PrinterController>().printReceipt(context, copies, data.id.toString());
                           },
                           child: const Text("Print"),
                         ),

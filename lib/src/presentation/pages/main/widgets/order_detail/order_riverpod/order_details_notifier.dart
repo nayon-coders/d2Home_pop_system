@@ -84,6 +84,7 @@ class OrderDetailsNotifier extends StateNotifier<OrderDetailsState> {
     state = state.copyWith(detailStatus: status);
   }
 
+  ///TODO:
   Future<void> fetchOrderDetails({OrderData? order}) async {
     state = state.copyWith(isLoading: true, order: order);
     final response =

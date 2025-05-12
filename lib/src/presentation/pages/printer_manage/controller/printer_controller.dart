@@ -1,6 +1,8 @@
 // printer_controller.dart
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:admin_desktop/src/presentation/pages/printer_manage/model/single_order_details_printer_model.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -9,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/utils/local_storage.dart';
 import '../../../../models/response/sale_history_response.dart';
 
 class PrinterController extends GetxController {
@@ -367,125 +370,139 @@ class PrinterController extends GetxController {
   RxBool isPrinting = false.obs;
 
   Future<void> printReceipt(
-      BuildContext context, SaleHistoryModel data, int copies) async {
+      BuildContext context, int copies, id) async {
     print("Starting print process...");
 
-    if (selectedDevice.value == null) {
-      Get.snackbar("Error", "No printer selected",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
-      return;
-    }
 
-    isPrinting.value = true;
+    // if (selectedDevice.value == null) {
+    //   Get.snackbar("Error", "No printer selected",
+    //       snackPosition: SnackPosition.BOTTOM,
+    //       backgroundColor: Colors.red,
+    //       colorText: Colors.white);
+    //   return;
+    // }
+    //getting data -----
+    var response = await getSingleOrderDetailsModel(id);
+    if(response.statusCode == 200){
+      print("order getting success...");
+      //model
+      SingleOrderDetailsPrinterModel data = SingleOrderDetailsPrinterModel.fromJson(jsonDecode(response.body));
+      isPrinting.value = true;
 
-    try {
-      final profile = await CapabilityProfile.load();
-      final generator = Generator(PaperSize.mm80, profile);
+      try {
+        final profile = await CapabilityProfile.load();
+        final generator = Generator(PaperSize.mm80, profile);
 
-      const PosStyles defaultStyle = PosStyles(
-        height: PosTextSize.size2,
-        width: PosTextSize.size2,
-      );
+        const PosStyles defaultStyle = PosStyles(
+          height: PosTextSize.size2,
+          width: PosTextSize.size2,
+        );
 
-      bool isBle = bleDeviceIds.contains(selectedDevice.value!.id.toString());
+        bool isBle = bleDeviceIds.contains(selectedDevice.value!.id.toString());
 
-      for (int copy = 1; copy <= copies; copy++) {
-        print("Printing copy $copy of $copies");
+        for (int copy = 1; copy <= copies; copy++) {
+          print("Printing copy $copy of $copies");
 
-        List<List<int>> chunks = [];
-        List<int> currentChunk = [];
+          List<List<int>> chunks = [];
+          List<int> currentChunk = [];
 
-        void addToChunk(List<int> bytes, {bool forceNewChunk = false}) {
-          int maxChunkSize = isBle ? 256 : 1024;
+          void addToChunk(List<int> bytes, {bool forceNewChunk = false}) {
+            int maxChunkSize = isBle ? 256 : 1024;
 
-          if (forceNewChunk || currentChunk.length + bytes.length > maxChunkSize) {
-            if (currentChunk.isNotEmpty) chunks.add(currentChunk);
-            currentChunk = [];
-          }
-          currentChunk.addAll(bytes);
-        }
-
-        // Header
-        addToChunk(generator.reset(), forceNewChunk: true);
-        await Future.delayed(Duration(milliseconds: 100));
-        addToChunk(generator.setGlobalCodeTable('CP1252'));
-
-        addToChunk(generator.text('D2Home POS - Copy $copy',
-            styles: PosStyles(
-              align: PosAlign.center,
-              height: PosTextSize.size4,
-              width: PosTextSize.size4,
-              bold: true,
-            )));
-        addToChunk(generator.feed(1));
-
-        // Divider
-        addToChunk(generator.text('--------------------------------',
-            styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
-
-        // Example Body (you can insert dynamic order data here)
-        addToChunk(generator.text('Order ID: ${data.id}',
-            styles: defaultStyle.copyWith(align: PosAlign.left)));
-        addToChunk(generator.text('Date: ${data.createdAt}',
-            styles: defaultStyle.copyWith(align: PosAlign.left)));
-
-        // Footer
-        addToChunk(generator.feed(1));
-        addToChunk(generator.text('Thanks for choosing us.',
-            styles: defaultStyle.copyWith(align: PosAlign.center)));
-        addToChunk(generator.feed(2));
-        addToChunk(generator.text('********************************',
-            styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
-        addToChunk(generator.feed(3));
-
-        if (currentChunk.isNotEmpty) {
-          chunks.add(currentChunk);
-        }
-
-        // Send chunks to printer
-        for (var chunk in chunks) {
-          try {
-            if (isBle) {
-              await printViaBle(selectedDevice.value!, chunk);
-              await Future.delayed(Duration(milliseconds: 200));
-            } else {
-              await printViaClassic(selectedDevice.value!, chunk);
-              await Future.delayed(Duration(milliseconds: 50));
+            if (forceNewChunk || currentChunk.length + bytes.length > maxChunkSize) {
+              if (currentChunk.isNotEmpty) chunks.add(currentChunk);
+              currentChunk = [];
             }
-          } catch (e) {
-            print("Error printing chunk: $e");
-            await Future.delayed(Duration(milliseconds: 300));
-            // Try again once
+            currentChunk.addAll(bytes);
+          }
+
+          // Header
+          addToChunk(generator.reset(), forceNewChunk: true);
+          await Future.delayed(Duration(milliseconds: 100));
+          addToChunk(generator.setGlobalCodeTable('CP1252'));
+
+          addToChunk(generator.text('D2Home POS - Copy $copy',
+              styles: PosStyles(
+                align: PosAlign.center,
+                height: PosTextSize.size4,
+                width: PosTextSize.size4,
+                bold: true,
+              )));
+          addToChunk(generator.feed(1));
+
+          // Divider
+          addToChunk(generator.text('--------------------------------',
+              styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
+
+          // Example Body (you can insert dynamic order data here)
+          addToChunk(generator.text('Order ID: ${data.data!.id}',
+              styles: defaultStyle.copyWith(align: PosAlign.left)));
+          addToChunk(generator.text('Date: ${data.data!.createdAt}',
+              styles: defaultStyle.copyWith(align: PosAlign.left)));
+
+          // Footer
+          addToChunk(generator.feed(1));
+          addToChunk(generator.text('Thanks for choosing us.',
+              styles: defaultStyle.copyWith(align: PosAlign.center)));
+          addToChunk(generator.feed(2));
+          addToChunk(generator.text('********************************',
+              styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
+          addToChunk(generator.feed(3));
+
+          if (currentChunk.isNotEmpty) {
+            chunks.add(currentChunk);
+          }
+
+          // Send chunks to printer
+          for (var chunk in chunks) {
             try {
               if (isBle) {
                 await printViaBle(selectedDevice.value!, chunk);
+                await Future.delayed(Duration(milliseconds: 200));
               } else {
                 await printViaClassic(selectedDevice.value!, chunk);
+                await Future.delayed(Duration(milliseconds: 50));
               }
             } catch (e) {
-              print("Retry failed: $e");
+              print("Error printing chunk: $e");
+              await Future.delayed(Duration(milliseconds: 300));
+              // Try again once
+              try {
+                if (isBle) {
+                  await printViaBle(selectedDevice.value!, chunk);
+                } else {
+                  await printViaClassic(selectedDevice.value!, chunk);
+                }
+              } catch (e) {
+                print("Retry failed: $e");
+              }
             }
           }
         }
-      }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Print completed successfully!"),
-          backgroundColor: Colors.green,
-        ),
-      );
-      Get.back();
-    } catch (e) {
-      print("Print Error: $e");
-      Get.snackbar("Error!", "Print failed: (Order full data not retrieved)",
-          backgroundColor: Colors.red);
-      Get.back();
-    } finally {
-      isPrinting.value = false;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Print completed successfully!"),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Get.back();
+      } catch (e) {
+        print("Print Error: $e");
+        Get.snackbar("Error!", "Print failed: (Order full data not retrieved)",
+            backgroundColor: Colors.red);
+        Get.back();
+      } finally {
+        isPrinting.value = false;
+      }
+    }else{
+      //order details nto getting...
+      print("order not getting..");
+      return;
     }
+
+
+
   }
 
 
@@ -546,6 +563,22 @@ class PrinterController extends GetxController {
     int spaces = lineWidth - (nameLength + priceLength);
     spaces = spaces > 0 ? spaces : 0;
     return '$name${' ' * spaces}$price';
+  }
+  
+  
+  
+  //get single order details
+  RxBool isGettingData = false.obs; 
+  Future<http.Response> getSingleOrderDetailsModel(id)async{
+    isGettingData.value = true; 
+    var response = await http.get(Uri.parse("https://api.d2home.com.au/api/v1/dashboard/${LocalStorage.getUser()?.role}/orders/${id}?lang=en"),
+      headers: {
+        "Authorization" : "Bearer ${LocalStorage.getToken()}"
+      }
+    );
+    print("single data --- ${response.body}");
+    isGettingData.value = false;
+    return response;
   }
 
 }

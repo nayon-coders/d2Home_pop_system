@@ -244,7 +244,7 @@ class _SaleHistoryState extends ConsumerState<SaleHistory> {
                 paddingSize: 18,
                 textSize: 14,
                 isActive: Get.find<PrinterController>().selectedDevice.value != null,
-                title: "🖨️ ${ Get.find<PrinterController>().selectedDevice.value!.name ?? "Connect Printer"}",
+                title: "🖨️ ${ Get.find<PrinterController>().selectedDevice.value != null ? Get.find<PrinterController>().printerName.value : "Connect Printer"}",
                 isTab: true,
                 isShadow: true,
                 onTap: () {

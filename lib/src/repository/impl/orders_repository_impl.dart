@@ -256,6 +256,7 @@ class OrdersRepositoryImpl extends OrdersRepository {
       final response = await client.get(
           '/api/v1/dashboard/${LocalStorage.getUser()?.role}/orders/$orderId',
           queryParameters: data);
+      print("/api/v1/dashboard/${LocalStorage.getUser()?.role}/orders/$orderId");
       return ApiResult.success(
         data: SingleOrderResponse.fromJson(response.data),
       );
