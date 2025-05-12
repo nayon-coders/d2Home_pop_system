@@ -1,13 +1,17 @@
 import 'package:admin_desktop/src/core/utils/utils.dart';
 import 'package:admin_desktop/src/models/response/sale_history_response.dart';
 import 'package:admin_desktop/src/presentation/components/buttons/animation_button_effect.dart';
+import 'package:admin_desktop/src/presentation/pages/printer_manage/controller/printer_controller.dart';
 import 'package:admin_desktop/src/presentation/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:admin_desktop/src/core/constants/constants.dart';
 
+import '../../../printer_manage/view/show_options.dart';
+///TODO: sales
 class SaleTab extends StatelessWidget {
   final List<SaleHistoryModel> list;
   final bool isLoading;
@@ -41,10 +45,11 @@ class SaleTab extends StatelessWidget {
                     columnWidths: {
                       0:FixedColumnWidth(112.w),
                       1:FixedColumnWidth(260.w),
-                      2:FixedColumnWidth(172.w),
+                      2:FixedColumnWidth(120.w),
                       3:FixedColumnWidth(132.w),
                       4:FixedColumnWidth(200.w),
                       5:FixedColumnWidth(200.w),
+                      //6:FixedColumnWidth(100.w),
                     },
                     // defaultColumnWidth: FixedColumnWidth(
                     //     (MediaQuery.of(context).size.height) / 4.6.r),
@@ -130,6 +135,22 @@ class SaleTab extends StatelessWidget {
                             children: [
                               Text(
                                 AppHelpers.getTranslation(TrKeys.date),
+                                style: GoogleFonts.inter(
+                                  fontSize: 16.sp,
+                                  color: AppStyle.black,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.3,
+                                ),
+                              )
+                            ],
+                          ),
+
+                          //print invoice
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                               "Print Invoice",
                                 style: GoogleFonts.inter(
                                   fontSize: 16.sp,
                                   color: AppStyle.black,
@@ -259,6 +280,34 @@ class SaleTab extends StatelessWidget {
                                 ],
                               ),
                             ),
+
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 12.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Divider(),
+                                  InkWell(
+                                    onTap: (){
+                                      // Inside any button or action:
+                                      showPrinterPopup(context,  list[i]);
+
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade200,
+                                        borderRadius: BorderRadius.circular(10)
+                                      ),
+                                      child: Center(
+                                        child: Icon(Icons.print, color: Colors.black, size: 25,),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                     ],
@@ -307,4 +356,7 @@ class SaleTab extends StatelessWidget {
             ),
     );
   }
+
+
+
 }

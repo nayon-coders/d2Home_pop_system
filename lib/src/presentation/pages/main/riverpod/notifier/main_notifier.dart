@@ -181,8 +181,10 @@ class MainNotifier extends StateNotifier<MainState> {
       );
       final response = await _categoriesRepository.searchCategories(
           state.categoryQuery.isEmpty ? null : state.categoryQuery);
+
       response.when(
         success: (data) async {
+          print("this is category response --- ${data.toJson()}");
           final List<CategoryData> categories = data.data ?? [];
           state = state.copyWith(
             isCategoriesLoading: false,
@@ -191,7 +193,7 @@ class MainNotifier extends StateNotifier<MainState> {
         },
         failure: (failure) {
           state = state.copyWith(isCategoriesLoading: false);
-
+          print("this is category response failed");
         },
       );
     } else {

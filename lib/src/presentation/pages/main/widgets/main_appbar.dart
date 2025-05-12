@@ -17,12 +17,14 @@ class MainAppbar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(mainProvider.notifier);
     final state = ref.watch(mainProvider);
+    print("state.categories --- ${state.categories.length}");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         state.categories.isEmpty
             ? const SizedBox.shrink()
+           // ? Text("this is empty")
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -35,7 +37,7 @@ class MainAppbar extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(10.r)
                     ),
                     height: 56.h,
-                    child: ListView.builder(
+                    child: ListView.builder( ///TODO: category view
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: state.categories.length + 2,

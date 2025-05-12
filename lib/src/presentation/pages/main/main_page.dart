@@ -32,6 +32,7 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:proste_indexed_stack/proste_indexed_stack.dart';
 import '../../../../generated/assets.dart';
@@ -39,6 +40,8 @@ import 'package:admin_desktop/src/core/constants/constants.dart';
 import 'package:admin_desktop/src/core/utils/utils.dart';
 import '../../components/components.dart';
 import '../../theme/theme.dart';
+import '../printer_manage/controller/printer_controller.dart';
+import '../printer_manage/view/manage_printer.dart';
 import 'riverpod/provider/main_provider.dart';
 import 'widgets/income/income_page.dart';
 import 'widgets/orders_table/orders/accepted/accepted_orders_provider.dart';
@@ -70,6 +73,7 @@ class _MainPageState extends ConsumerState<MainPage>
     IndexedStackChild(child: const SaleHistory()),
     IndexedStackChild(child: const InComePage()),
     IndexedStackChild(child: const ProfilePage()),
+    IndexedStackChild(child: const PrinterSetting()),
   ];
 
   late List<IndexedStackChild> listKitchen = [
@@ -129,6 +133,9 @@ class _MainPageState extends ConsumerState<MainPage>
   void initState() {
     super.initState();
     notif();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   PrinterController.to.checkSavedPrinter();
+    // });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (user?.role == TrKeys.seller) {
         ref.read(mainProvider.notifier)
@@ -228,6 +235,7 @@ class _MainPageState extends ConsumerState<MainPage>
           child: KeyboardDismisser(
               child: Row(
             children: [
+              ///TODO: This is left menu part (Nayon Coders)
               user?.role == TrKeys.seller
                   ? bottomLeftNavigationBar(state)
                   : user?.role == TrKeys.cooker
@@ -440,6 +448,8 @@ class _MainPageState extends ConsumerState<MainPage>
                   color: AppStyle.black,
                 ),
               ),
+
+
               // IconButton(
               //   onPressed: () {
               //     showDialog(
@@ -509,9 +519,7 @@ class _MainPageState extends ConsumerState<MainPage>
       height: double.infinity,
       width: 90.w,
       color: AppStyle.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: ListView( //fixed scrolling.
         children: [
           24.verticalSpace,
           Container(
@@ -625,6 +633,24 @@ class _MainPageState extends ConsumerState<MainPage>
                       state.selectIndex == 5 ? AppStyle.white : AppStyle.icon,
                 )),
           ),
+          28.verticalSpace,
+          Container(
+            decoration: BoxDecoration(
+                color: state.selectIndex == 7
+                    ? AppStyle.primary
+                    : AppStyle.transparent,
+                borderRadius: BorderRadius.circular(10.r)),
+            child: IconButton(
+              onPressed: () {
+                ref.read(mainProvider.notifier).changeIndex(7);
+              },
+              icon: const Icon(
+                FlutterRemix.printer_fill,
+                color: AppStyle.black,
+              ),
+            ),
+          ),
+          32.verticalSpace,
           const Spacer(),
           InkWell(
             onTap: () {
@@ -662,7 +688,8 @@ class _MainPageState extends ConsumerState<MainPage>
                 FlutterRemix.logout_circle_line,
                 color: AppStyle.icon,
               )),
-          32.verticalSpace
+          32.verticalSpace,
+
         ],
       ),
     );
@@ -695,6 +722,24 @@ class _MainPageState extends ConsumerState<MainPage>
               ),
             ),
           ),
+          28.verticalSpace,
+          Container(
+            decoration: BoxDecoration(
+                color: state.selectIndex == 7
+                    ? AppStyle.primary
+                    : AppStyle.transparent,
+                borderRadius: BorderRadius.circular(10.r)),
+            child: IconButton(
+              onPressed: () {
+                ref.read(mainProvider.notifier).changeIndex(7);
+              },
+              icon: const Icon(
+                FlutterRemix.printer_fill,
+                color: AppStyle.black,
+              ),
+            ),
+          ),
+          32.verticalSpace,
           const Spacer(),
           InkWell(
             onTap: () {
@@ -797,6 +842,32 @@ class _MainPageState extends ConsumerState<MainPage>
               ),
             ),
           ),
+          28.verticalSpace,
+          IconButton(
+            onPressed: () => Get.to(PrinterSetting()),
+            icon: const Icon(
+              FlutterRemix.printer_fill,
+              color: AppStyle.black,
+            ),
+          ),
+          28.verticalSpace,
+          Container(
+            decoration: BoxDecoration(
+                color: state.selectIndex == 7
+                    ? AppStyle.primary
+                    : AppStyle.transparent,
+                borderRadius: BorderRadius.circular(10.r)),
+            child: IconButton(
+              onPressed: () {
+                ref.read(mainProvider.notifier).changeIndex(7);
+              },
+              icon: const Icon(
+                FlutterRemix.printer_fill,
+                color: AppStyle.black,
+              ),
+            ),
+          ),
+          32.verticalSpace,
           const Spacer(),
           InkWell(
             onTap: () {
