@@ -292,8 +292,7 @@ class SaleTab extends StatelessWidget {
                                     onTap: (){
                                       // Inside any button or action:
                                       if(Get.find<PrinterController>().isPrinting.value) return;
-                                       showPrinterPopup(context,  list[i]);
-
+                                      Get.find<PrinterController>().printReceipt(context, list[i], 1);
                                     },
                                     child: Container(
                                       width: 40,
@@ -304,7 +303,7 @@ class SaleTab extends StatelessWidget {
                                       ),
                                       child: Obx(() {
                                           return Center(
-                                            child: Get.find<PrinterController>().isPrinting.value ? CircularProgressIndicator() : Icon(Icons.print, color: Colors.black, size: 25,),
+                                            child:  Icon(Icons.print, color: Colors.black, size: 25,),
                                           );
                                         }
                                       ),

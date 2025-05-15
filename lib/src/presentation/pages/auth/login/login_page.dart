@@ -183,51 +183,51 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               },
                             ),
                           ),
-                          if (AppConstants.isDemo)
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  CustomPasswords(
-                                    type: TrKeys.seller,
-                                    onTap: () {
-                                      login.text = AppConstants.demoSellerLogin;
-                                      password.text =
-                                          AppConstants.demoSellerPassword;
-                                      notifier
-                                          .setEmail(AppConstants.demoSellerLogin);
-                                      notifier.setPassword(
-                                          AppConstants.demoSellerPassword);
-                                    },
-                                  ),
-                                  CustomPasswords(
-                                    type: TrKeys.cooker,
-                                    onTap: () {
-                                      login.text = AppConstants.demoCookerLogin;
-                                      password.text =
-                                          AppConstants.demoCookerPassword;
-                                      notifier
-                                          .setEmail(AppConstants.demoCookerLogin);
-                                      notifier.setPassword(
-                                          AppConstants.demoCookerPassword);
-                                    },
-                                  ),
-                                  CustomPasswords(
-                                    type: TrKeys.waiter,
-                                    onTap: () {
-                                      login.text = AppConstants.demoWaiterLogin;
-                                      password.text =
-                                          AppConstants.demoWaiterPassword;
-                                      notifier
-                                          .setEmail(AppConstants.demoWaiterLogin);
-                                      notifier.setPassword(
-                                          AppConstants.demoWaiterPassword);
-                                    },
-                                  ),
-                                  8.verticalSpace,
-                                ],
-                              ),
-                            )
+                          // if (AppConstants.isDemo)
+                          //   Expanded(
+                          //     child: Column(
+                          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //       children: [
+                          //         CustomPasswords(
+                          //           type: TrKeys.seller,
+                          //           onTap: () {
+                          //             login.text = AppConstants.demoSellerLogin;
+                          //             password.text =
+                          //                 AppConstants.demoSellerPassword;
+                          //             notifier
+                          //                 .setEmail(AppConstants.demoSellerLogin);
+                          //             notifier.setPassword(
+                          //                 AppConstants.demoSellerPassword);
+                          //           },
+                          //         ),
+                          //         CustomPasswords(
+                          //           type: TrKeys.cooker,
+                          //           onTap: () {
+                          //             login.text = AppConstants.demoCookerLogin;
+                          //             password.text =
+                          //                 AppConstants.demoCookerPassword;
+                          //             notifier
+                          //                 .setEmail(AppConstants.demoCookerLogin);
+                          //             notifier.setPassword(
+                          //                 AppConstants.demoCookerPassword);
+                          //           },
+                          //         ),
+                          //         CustomPasswords(
+                          //           type: TrKeys.waiter,
+                          //           onTap: () {
+                          //             login.text = AppConstants.demoWaiterLogin;
+                          //             password.text =
+                          //                 AppConstants.demoWaiterPassword;
+                          //             notifier
+                          //                 .setEmail(AppConstants.demoWaiterLogin);
+                          //             notifier.setPassword(
+                          //                 AppConstants.demoWaiterPassword);
+                          //           },
+                          //         ),
+                          //         8.verticalSpace,
+                          //       ],
+                          //     ),
+                          //   )
                         ],
                       ),
                     ),
