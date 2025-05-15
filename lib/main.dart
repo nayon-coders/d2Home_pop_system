@@ -12,13 +12,23 @@ import 'src/app_widget.dart';
 import 'src/core/di/dependency_manager.dart';
 import 'src/core/utils/utils.dart';
 import 'dart:io' show Platform;
+import 'package:permission_handler/permission_handler.dart';
 
 late  SharedPreferences sharedPreferences;
+
+
+Future<void> requestBluetoothPermission() async {
+  if (Platform.isAndroid && await Permission.bluetoothConnect.isDenied) {
+    await Permission.bluetoothConnect.request();
+  }
+}
 void main() async {
   setUpDependencies();
   WidgetsFlutterBinding.ensureInitialized();
   sharedPreferences = await SharedPreferences.getInstance();
+  requestBluetoothPermission();
   if(Platform.isAndroid || Platform.isIOS){
+
     await Firebase.initializeApp();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }

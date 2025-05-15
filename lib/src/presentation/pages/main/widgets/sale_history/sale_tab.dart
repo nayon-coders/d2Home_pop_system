@@ -3,6 +3,7 @@ import 'package:admin_desktop/src/models/response/sale_history_response.dart';
 import 'package:admin_desktop/src/presentation/components/buttons/animation_button_effect.dart';
 import 'package:admin_desktop/src/presentation/pages/printer_manage/controller/printer_controller.dart';
 import 'package:admin_desktop/src/presentation/theme/theme.dart';
+import 'package:admin_desktop/src/printer/printer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -290,7 +291,8 @@ class SaleTab extends StatelessWidget {
                                   InkWell(
                                     onTap: (){
                                       // Inside any button or action:
-                                      showPrinterPopup(context,  list[i]);
+                                      if(Get.find<PrinterController>().isPrinting.value) return;
+                                       showPrinterPopup(context,  list[i]);
 
                                     },
                                     child: Container(
@@ -300,8 +302,11 @@ class SaleTab extends StatelessWidget {
                                         color: Colors.grey.shade200,
                                         borderRadius: BorderRadius.circular(10)
                                       ),
-                                      child: Center(
-                                        child: Icon(Icons.print, color: Colors.black, size: 25,),
+                                      child: Obx(() {
+                                          return Center(
+                                            child: Get.find<PrinterController>().isPrinting.value ? CircularProgressIndicator() : Icon(Icons.print, color: Colors.black, size: 25,),
+                                          );
+                                        }
                                       ),
                                     ),
                                   )

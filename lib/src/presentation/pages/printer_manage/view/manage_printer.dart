@@ -104,7 +104,7 @@ class PrinterSetting extends GetView<PrinterController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: controller.devices!.value.map((data){
                 return data ==   controller.selectedDevice.value ? Center() : ListTile(
-                  title: Text(data.name,
+                  title: Text(data.name.isNotEmpty ? data.name : "Unknown",
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,

@@ -17,8 +17,8 @@ import '../../../../models/response/sale_history_response.dart';
 class PrinterController extends GetxController {
   static PrinterController get to => Get.find();
 
-  static const platform = MethodChannel('com.example.printer/classic');
 
+  static const platform = MethodChannel('com.example.printer/classic');
 
   final RxBool isScanning = false.obs;
   final RxList<BluetoothDevice> devices = <BluetoothDevice>[].obs;
@@ -26,7 +26,7 @@ class PrinterController extends GetxController {
   final RxBool isConnected = false.obs;
   final RxString printerName = ''.obs;
   final RxString printerAddress = ''.obs;
-  final Set<String> bleDeviceIds = <String>{};
+  final List<String> bleDeviceIds = <String>[];
 
   RxInt clipes = 1.obs;
 
@@ -36,6 +36,25 @@ class PrinterController extends GetxController {
     getSavedPrinter();
     _fetchBondedDevices();
     //checkSavedPrinter();
+  }
+
+  Future<void> requestPermissions() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.bluetooth,
+      Permission.bluetoothScan,
+      Permission.bluetoothConnect,
+      Permission.locationWhenInUse,
+    ].request();
+
+    if (statuses[Permission.bluetoothScan]!.isGranted &&
+        statuses[Permission.bluetoothConnect]!.isGranted &&
+        statuses[Permission.locationWhenInUse]!.isGranted) {
+      print('Permissions granted successfully');
+    } else {
+      print('Permissions denied: $statuses');
+      Get.snackbar("Permission Error", "Please grant all permissions",
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
   }
 
   getSavedPrinter()async{
@@ -56,10 +75,7 @@ class PrinterController extends GetxController {
       printerAddress.value = savedAddress;
       await attemptAutoReconnect(savedAddress, priterName);
     } else {
-      // Show initial connection dialog if no saved printer
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showInitialConnectionDialog(Get.context!);
-      });
+
     }
 
     print("printerName --- ${printerName.value}");
@@ -86,8 +102,7 @@ class PrinterController extends GetxController {
   Future<void> startPrinterScan(BuildContext context) async {
     try {
       isScanning.value = true;
-      devices.clear();
-      bleDeviceIds.clear();
+
 
       if (!await FlutterBluePlus.isOn) {
         throw Exception('Bluetooth is not enabled');
@@ -109,6 +124,8 @@ class PrinterController extends GetxController {
     } finally {
       isScanning.value = false;
     }
+
+
   }
 
   Future<void> _fetchBondedDevices() async {
@@ -122,17 +139,17 @@ class PrinterController extends GetxController {
 
   RxBool isScanningPrinter = false.obs;
   Future<void> _scanBleDevices() async {
+    bleDeviceIds.clear();
     try {
       isScanningPrinter.value = true;
       await FlutterBluePlus.startScan(timeout: const Duration(seconds: 5));
 
       FlutterBluePlus.scanResults.listen((results) {
         for (final result in results) {
-          if (result.device.name.isNotEmpty &&
-              !devices.contains(result.device)) {
             devices.add(result.device);
+            // Debugging: Check device id
+            print('Scanned device ID: ${result.device.id}');
             bleDeviceIds.add(result.device.id.toString());
-          }
         }
       });
 
@@ -142,6 +159,8 @@ class PrinterController extends GetxController {
       isScanningPrinter.value = false;
       print('BLE scan error: $e');
     }
+
+    print('BLEdevice id:  ${bleDeviceIds}');
   }
 
 
@@ -154,7 +173,7 @@ class PrinterController extends GetxController {
       );
 
       // Important: Request permissions first
-      await _requestBluetoothPermissions();
+   //   await _requestBluetoothPermissions();
 
       // Cancel previous connection
       if (isConnected.value) {
@@ -181,7 +200,6 @@ class PrinterController extends GetxController {
       isConnected.value = true;
       selectedDevice.value = device;
 
-      Get.back(); // Close dialog
       Get.back(); // Close dialog
       Get.snackbar('Success', 'Connected to ${device.name}',
           backgroundColor: Colors.green, colorText: Colors.white);
@@ -238,290 +256,311 @@ class PrinterController extends GetxController {
 
 
   //show popup
-  Future<void> showInitialConnectionDialog(BuildContext context) async {
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(28),
-        ),
-        elevation: 10,
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.blue.shade100,
-                Colors.white,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            borderRadius: BorderRadius.circular(28),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Header with Icon
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade800,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.print_rounded,
-                  size: 40,
-                  color: Colors.white,
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Title
-              const Text(
-                'Connect Your Printer',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Content
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  'To get started, connect your Bluetooth printer. '
-                      'You only need to do this once!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black54,
-                    height: 1.4,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              // Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Later Button
-                  OutlinedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      side: BorderSide(color: Colors.blue.shade800),
-                    ),
-                    child: const Text(
-                      'Maybe Later',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-
-                  // Connect Button
-                  MaterialButton(
-                    onPressed: () {
-                     // Navigator.pop(context);
-                      startPrinterScan(context);
-                    },
-                    color: Colors.blue.shade800,
-                    elevation: 2,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child:    Obx(() {
-                        return isScanningPrinter.value ? Center(child: CircularProgressIndicator.adaptive(backgroundColor: Colors.white,),) : Text(
-                          'Connect Now',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        );
-                      }
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-
-  }
 
 
   RxBool isPrinting = false.obs;
 
   Future<void> printReceipt(
-      BuildContext context, int copies, id) async {
+      BuildContext context,
+      SaleHistoryModel data,
+      int copies
+      ) async {
     print("Starting print process...");
-
-
-    // if (selectedDevice.value == null) {
-    //   Get.snackbar("Error", "No printer selected",
-    //       snackPosition: SnackPosition.BOTTOM,
-    //       backgroundColor: Colors.red,
-    //       colorText: Colors.white);
-    //   return;
-    // }
-    //getting data -----
-    var response = await getSingleOrderDetailsModel(id);
-    if(response.statusCode == 200){
-      print("order getting success...");
-      //model
-      SingleOrderDetailsPrinterModel data = SingleOrderDetailsPrinterModel.fromJson(jsonDecode(response.body));
-      isPrinting.value = true;
-
-      try {
-        final profile = await CapabilityProfile.load();
-        final generator = Generator(PaperSize.mm80, profile);
-
-        const PosStyles defaultStyle = PosStyles(
-          height: PosTextSize.size2,
-          width: PosTextSize.size2,
-        );
-
-        bool isBle = bleDeviceIds.contains(selectedDevice.value!.id.toString());
-
-        for (int copy = 1; copy <= copies; copy++) {
-          print("Printing copy $copy of $copies");
-
-          List<List<int>> chunks = [];
-          List<int> currentChunk = [];
-
-          void addToChunk(List<int> bytes, {bool forceNewChunk = false}) {
-            int maxChunkSize = isBle ? 256 : 1024;
-
-            if (forceNewChunk || currentChunk.length + bytes.length > maxChunkSize) {
-              if (currentChunk.isNotEmpty) chunks.add(currentChunk);
-              currentChunk = [];
-            }
-            currentChunk.addAll(bytes);
-          }
-
-          // Header
-          addToChunk(generator.reset(), forceNewChunk: true);
-          await Future.delayed(Duration(milliseconds: 100));
-          addToChunk(generator.setGlobalCodeTable('CP1252'));
-
-          addToChunk(generator.text('D2Home POS - Copy $copy',
-              styles: PosStyles(
-                align: PosAlign.center,
-                height: PosTextSize.size4,
-                width: PosTextSize.size4,
-                bold: true,
-              )));
-          addToChunk(generator.feed(1));
-
-          // Divider
-          addToChunk(generator.text('--------------------------------',
-              styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
-
-          // Example Body (you can insert dynamic order data here)
-          addToChunk(generator.text('Order ID: ${data.data!.id}',
-              styles: defaultStyle.copyWith(align: PosAlign.left)));
-          addToChunk(generator.text('Date: ${data.data!.createdAt}',
-              styles: defaultStyle.copyWith(align: PosAlign.left)));
-
-          // Footer
-          addToChunk(generator.feed(1));
-          addToChunk(generator.text('Thanks for choosing us.',
-              styles: defaultStyle.copyWith(align: PosAlign.center)));
-          addToChunk(generator.feed(2));
-          addToChunk(generator.text('********************************',
-              styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
-          addToChunk(generator.feed(3));
-
-          if (currentChunk.isNotEmpty) {
-            chunks.add(currentChunk);
-          }
-
-          // Send chunks to printer
-          for (var chunk in chunks) {
-            try {
-              if (isBle) {
-                await printViaBle(selectedDevice.value!, chunk);
-                await Future.delayed(Duration(milliseconds: 200));
-              } else {
-                await printViaClassic(selectedDevice.value!, chunk);
-                await Future.delayed(Duration(milliseconds: 50));
-              }
-            } catch (e) {
-              print("Error printing chunk: $e");
-              await Future.delayed(Duration(milliseconds: 300));
-              // Try again once
-              try {
-                if (isBle) {
-                  await printViaBle(selectedDevice.value!, chunk);
-                } else {
-                  await printViaClassic(selectedDevice.value!, chunk);
-                }
-              } catch (e) {
-                print("Retry failed: $e");
-              }
-            }
-          }
-        }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Print completed successfully!"),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Get.back();
-      } catch (e) {
-        print("Print Error: $e");
-        Get.snackbar("Error!", "Print failed: (Order full data not retrieved)",
-            backgroundColor: Colors.red);
-        Get.back();
-      } finally {
-        isPrinting.value = false;
-      }
-    }else{
-      //order details nto getting...
-      print("order not getting..");
+    if (selectedDevice.value == null) {
+      Get.snackbar("Error", "No printer selected",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
       return;
     }
 
+    const PosStyles defaultStyle = PosStyles(
+      height: PosTextSize.size2,
+      width: PosTextSize.size2,
+    );
+
+    isPrinting.value = true;
 
 
+    //getting single data
+    SingleOrderDetailsPrinterModel orderModel = SingleOrderDetailsPrinterModel();
+    var response = await getSingleOrderDetailsModel(data.id.toString());
+    if(response.statusCode == 200){
+      orderModel = SingleOrderDetailsPrinterModel.fromJson(jsonDecode(response.body));
+    }
+
+    try {
+
+      for(var i = 0; i < copies; i++) {
+        final profile = await CapabilityProfile.load();
+        final generator = Generator(PaperSize.mm80, profile);
+
+
+        // Split into chunks to prevent buffer overflow
+        List<List<int>> chunks = [];
+        List<int> currentChunk = [];
+        bool isBle = bleDeviceIds.contains(selectedDevice.value!.id.toString());
+
+        void addToChunk(List<int> bytes, {bool forceNewChunk = false}) {
+          // For BLE, we need smaller chunks (512 bytes)
+          // For classic Bluetooth, we can use larger chunks (2048 bytes)
+          int maxChunkSize = isBle ? 512 : 2048;
+
+          if (forceNewChunk ||
+              currentChunk.length + bytes.length > maxChunkSize) {
+            if (currentChunk.isNotEmpty) chunks.add(currentChunk);
+            currentChunk = [];
+          }
+          currentChunk.addAll(bytes);
+        }
+
+        // 1. Printer initialization
+        addToChunk(generator.reset(), forceNewChunk: true);
+        addToChunk(
+            generator.setGlobalCodeTable('CP1252')); // Ensure proper encoding
+
+        addToChunk(generator.text("Shop Name",
+            styles: defaultStyle.copyWith(align: PosAlign.left)));
+        addToChunk(generator.feed(1));
+
+        addToChunk(generator.text("Order ID: ${orderModel.data!.id!}",
+            styles: PosStyles(
+              align: PosAlign.center,
+              height: PosTextSize.size8, // Changed from size2 to size4
+              width: PosTextSize.size8, // Changed from size2 to size4
+              bold: true,
+            )));
+        addToChunk(generator.feed(1));
+
+
+        const PosStyles customerInfoStyle = PosStyles(
+          height: PosTextSize.size1,
+          width: PosTextSize.size1,
+          align: PosAlign.center, // All text centered
+        );
+
+        addToChunk(generator.text(orderModel.data?.address?.address ?? '',
+            styles: customerInfoStyle)); // Centered address
+
+        addToChunk(generator.text(orderModel.data?.user?.phone ?? '-',
+            styles: customerInfoStyle)); // Centered phone
+
+        addToChunk(generator.text('Order Time: ${orderModel.data?.createdAt}',
+            styles: customerInfoStyle)); // Centered time
+
+        addToChunk(generator.text(
+            'Customer Name: ${orderModel.data?.user?.firstname} ${orderModel
+                .data?.user?.lastname}',
+            styles: customerInfoStyle)); // Centered name
+
+
+        addToChunk(generator.feed(1));
+
+        addToChunk(generator.text("Order Items",
+            styles: defaultStyle.copyWith(align: PosAlign.center)));
+        addToChunk(generator.feed(1));
+        addToChunk(generator.text('--------------------------------',
+            styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
+
+        int totalQuantity = orderModel.data!.details!
+            .fold(0, (sum, item) => sum + (item.quantity ?? 0));
+        addToChunk(generator.text('Order Items (Total: $totalQuantity)',
+            styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
+        addToChunk(generator.text('--------------------------------',
+            styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
+
+
+        for (var item in orderModel.data!.details!) {
+          String quantity = item.quantity?.toString() ?? "1";
+          String price = item.stock?.totalPrice?.toString() ?? "0.00";
+          double totalPrice =
+              (double.tryParse(price) ?? 0) * (double.tryParse(quantity) ?? 1);
+          String productName = item.stock?.product?.translation?.title ??
+              "Item";
+
+          String left = '$quantity X $productName';
+          String right = '\$${totalPrice.toStringAsFixed(2)}';
+          String line = _formatLine(left, right, 32);
+
+          addToChunk(
+              generator.text(line,
+                  styles: defaultStyle.copyWith(align: PosAlign.left)),
+              forceNewChunk: false);
+
+          // Addons (unchanged, but quantities not included in total)
+          item.addons?.forEach((addon) {
+            String addonQty = addon.quantity?.toString() ?? "1";
+            String addonPrice = addon.stock?.totalPrice?.toString() ?? "0.00";
+            String addonName =
+                addon.stock?.product?.translation?.title ?? "Addon";
+
+            String addonLeft = '+$addonQty X $addonName';
+            String addonRight =
+                '\$${double.parse(addonPrice).toStringAsFixed(2)}';
+            String addonLine = _formatLine(addonLeft, addonRight, 32);
+
+            addToChunk(
+                generator.text(addonLine,
+                    styles: defaultStyle.copyWith(align: PosAlign.left)),
+                forceNewChunk: false);
+          });
+
+          if (item.stock?.extras?.isNotEmpty ?? false) {
+            addToChunk(
+                generator.text(
+                    '(${item.stock!.extras!.map((e) => e.value ?? "").join(
+                        ", ")})',
+                    styles: defaultStyle.copyWith(align: PosAlign.left)),
+                forceNewChunk: false);
+          }
+          addToChunk(generator.feed(1), forceNewChunk: true);
+        }
+// 8.   // ===== SUMMARY SECTION WITH PROPER ALIGNMENT ===== //
+        addToChunk(generator.text('--------------------------------',
+            styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
+
+
+        final summaryItems = [
+          {
+            "label": "Sub total",
+            "value": orderModel.data!.originPrice!.toStringAsFixed(2)
+          },
+          {
+            "label": "Delivery fee",
+            "value": orderModel.data!.deliveryFee?.toStringAsFixed(2) ?? "0.00"
+          },
+          {
+            "label": "Service fee",
+            "value": orderModel.data!.serviceFee?.toStringAsFixed(2) ?? "0.00"
+          },
+        ];
+
+        for (var item in summaryItems) {
+          // Manually format the line to match your image exactly
+          String line =
+              item["label"]!.padRight(20) + "\$${item["value"]}".padLeft(40);
+
+          addToChunk(
+              generator.text(line,
+                  styles: PosStyles(
+                    height: PosTextSize.size1,
+                    width: PosTextSize.size1,
+                  )),
+              forceNewChunk: true);
+        }
+
+        // 9. Total section with font size 2
+        addToChunk(generator.text('--------------------------------',
+            styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
+
+
+        addToChunk(
+            generator.text(
+                _formatLineWithoutQuantity(
+                    "Total",
+                    "\$${orderModel.data?.totalPrice?.toStringAsFixed(2) ??
+                        "0.00"}",
+                    32),
+                styles: defaultStyle.copyWith(
+                    align: PosAlign.left, bold: true)),
+            forceNewChunk: true);
+
+        // 10. Footer with CUT command and font size 2
+        addToChunk(generator.text('--------------------------------',
+            styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
+        addToChunk(generator.feed(1));
+        addToChunk(generator.text('Thanks for choosing us.',
+            styles: defaultStyle.copyWith(align: PosAlign.center)));
+        addToChunk(generator.feed(2));
+        addToChunk(generator.text('********************************',
+            styles: defaultStyle.copyWith(align: PosAlign.center, bold: true)));
+        addToChunk(generator.feed(3));
+
+        // IMPORTANT: Add the cut command in its own chunk
+        addToChunk(generator.cut(mode: PosCutMode.full), forceNewChunk: true);
+
+
+        // Add any remaining bytes
+        if (currentChunk.isNotEmpty) {
+          chunks.add(currentChunk);
+        }
+
+        print("isBle---- ${isBle}");
+
+        // Print all chunks with appropriate delays
+        // Print all chunks with appropriate delays
+        for (var chunk in chunks) {
+          try {
+            if (isBle) {
+              await printViaBle(selectedDevice.value!, chunk);
+              await Future.delayed(
+                  Duration(milliseconds: chunk.length > 256 ? 200 : 100));
+            } else {
+              await printViaClassic(selectedDevice.value!, chunk);
+              if (chunk.length > 1024) {
+                await Future.delayed(Duration(milliseconds: 50));
+              }
+            }
+          } catch (e) {
+            print("Error printing chunk: $e");
+            await Future.delayed(Duration(milliseconds: 300));
+            // Try one more time
+            if (isBle) {
+              await printViaBle(selectedDevice.value!, chunk);
+            } else {
+              await printViaClassic(selectedDevice.value!, chunk);
+            }
+          }
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Print completed successfully"),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      print("Print Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Print failed: ${e.toString()}"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      isPrinting.value = false;
+    }
   }
 
 
+
   Future<void> printViaBle(BluetoothDevice device, List<int> bytes) async {
-    await device.connect(timeout: const Duration(seconds: 10));
-    List<BluetoothService> services = await device.discoverServices();
-    for (var service in services) {
-      for (var characteristic in service.characteristics) {
-        if (characteristic.properties.write ||
-            characteristic.properties.writeWithoutResponse) {
-          await characteristic.write(bytes,
-              withoutResponse: characteristic.properties.writeWithoutResponse);
-          break;
+    try {
+      if (device.isConnected) {
+        await device.disconnect(); // double safety
+      }
+
+      await device.connect(timeout: const Duration(seconds: 10));
+      List<BluetoothService> services = await device.discoverServices();
+
+      for (var service in services) {
+        for (var characteristic in service.characteristics) {
+          if (characteristic.properties.write || characteristic.properties.writeWithoutResponse) {
+            await characteristic.write(bytes,
+                withoutResponse: characteristic.properties.writeWithoutResponse);
+            break;
+          }
         }
       }
-      break;
+
+      await Future.delayed(const Duration(seconds: 2));
+    } catch (e) {
+      print('Print Error: $e');
+    } finally {
+      if (device.isConnected) {
+        await device.disconnect();
+      }
     }
-    await Future.delayed(const Duration(seconds: 2));
-    await device.disconnect();
   }
 
   Future<void> printViaClassic(BluetoothDevice device, List<int> bytes) async {
@@ -531,9 +570,6 @@ class PrinterController extends GetxController {
     });
     print("Classic print result: $result");
   }
-
-
-
 
   String _formatLine(String left, String right, int lineLength) {
     int maxLeftLength = lineLength - right.length;
