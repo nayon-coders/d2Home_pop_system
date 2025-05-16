@@ -279,11 +279,11 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                 price: state.paginateResponse?.totalTax,
                 symbol: widget.bag.selectedCurrency?.symbol,
               ),
-              _priceItem(
-                title: TrKeys.serviceFee,
-                price: state.paginateResponse?.serviceFee,
-                symbol: widget.bag.selectedCurrency?.symbol,
-              ),
+              // _priceItem(
+              //   title: TrKeys.serviceFee,
+              //   price: state.paginateResponse?.serviceFee,
+              //   symbol: widget.bag.selectedCurrency?.symbol,
+              // ),
               _priceItem(
                 title: TrKeys.deliveryFee,
                 price: state.paginateResponse?.deliveryFee,
@@ -324,7 +324,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                     ),
                   ),
                   Text(
-                    AppHelpers.numberFormat(state.paginateResponse?.totalPrice,
+                    AppHelpers.numberFormat(state.paginateResponse!.totalPrice! - state.paginateResponse!.serviceFee!,
                       symbol: widget.bag.selectedCurrency?.symbol ,
                     ),
                     style: GoogleFonts.inter(

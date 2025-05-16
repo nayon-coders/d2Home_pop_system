@@ -18,7 +18,7 @@ class AppHelpers {
   AppHelpers._();
 
   static String numberFormat(
-    num? number, {
+    dynamic? number, {
     String? symbol,
     int? decimalDigits,
   }) {

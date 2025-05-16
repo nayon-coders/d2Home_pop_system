@@ -17,21 +17,26 @@ import 'package:intl/intl.dart' as intl;
 import '../../../../components/components.dart';
 import '../orders_table/orders/accepted/accepted_orders_provider.dart';
 
+///todo: nayon coders price info
 class PriceInfo extends StatelessWidget {
   final BagData bag;
   final RightSideState state;
   final RightSideNotifier notifier;
   final MainNotifier mainNotifier;
+  final String selectedPayment;
 
   const PriceInfo(
       {super.key,
       required this.state,
       required this.notifier,
       required this.bag,
+      required this.selectedPayment,
       required this.mainNotifier});
 
   @override
   Widget build(BuildContext context) {
+
+    var totalPrice = state.paginateResponse!.totalPrice! - state.paginateResponse!.serviceFee!;
     return Column(
       children: [
         Row(
@@ -85,31 +90,31 @@ class PriceInfo extends StatelessWidget {
           ],
         ),
         12.verticalSpace,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              AppHelpers.getTranslation(TrKeys.serviceFee),
-              style: GoogleFonts.inter(
-                color: AppStyle.black,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
-                letterSpacing: -0.4,
-              ),
-            ),
-            Text(
-              AppHelpers.numberFormat(state.paginateResponse?.serviceFee ?? 0,
-                  symbol: bag.selectedCurrency?.symbol),
-              style: GoogleFonts.inter(
-                color: AppStyle.black,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w400,
-                letterSpacing: -0.4,
-              ),
-            ),
-          ],
-        ),
-        12.verticalSpace,
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     Text(
+        //       AppHelpers.getTranslation(TrKeys.serviceFee),
+        //       style: GoogleFonts.inter(
+        //         color: AppStyle.black,
+        //         fontSize: 16.sp,
+        //         fontWeight: FontWeight.w500,
+        //         letterSpacing: -0.4,
+        //       ),
+        //     ),
+        //     Text(
+        //       AppHelpers.numberFormat(state.paginateResponse?.serviceFee ?? 0,
+        //           symbol: bag.selectedCurrency?.symbol),
+        //       style: GoogleFonts.inter(
+        //         color: AppStyle.black,
+        //         fontSize: 16.sp,
+        //         fontWeight: FontWeight.w400,
+        //         letterSpacing: -0.4,
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        // 12.verticalSpace,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -199,7 +204,7 @@ class PriceInfo extends StatelessWidget {
               ),
             ),
             Text(
-              AppHelpers.numberFormat(state.paginateResponse?.totalPrice ?? 0,
+              AppHelpers.numberFormat(totalPrice ?? 0,
                   symbol: bag.selectedCurrency?.symbol),
               style: GoogleFonts.inter(
                 color: AppStyle.black,
@@ -216,18 +221,32 @@ class PriceInfo extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    AppHelpers.getTranslation(TrKeys.refund),
-                    style: GoogleFonts.inter(
-                      color: AppStyle.black,
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -0.4,
-                    ),
+                  Builder(
+                    builder: (context) {
+                      bool isPositive = (int.tryParse(state.calculate ?? '') ?? 0) > 0;
+                      String text = "";
+                      if(selectedPayment.contains("Split")){
+                        if(isPositive){
+                          text = "Pay by card";
+                        }else{
+                          text = "Refund";
+                        }
+                      }
+                      return Text(
+                         AppHelpers.getTranslation(TrKeys.refund),
+                       // "${text} ",
+                        style: GoogleFonts.inter(
+                          color: AppStyle.black,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.4,
+                        ),
+                      );
+                    }
                   ),
                   Text(
                     AppHelpers.numberFormat(
-                        (state.paginateResponse?.totalPrice ?? 0) -
+                        (totalPrice ?? 0) -
                             (double.tryParse(state.calculate) ?? 0),
                         symbol: bag.selectedCurrency?.symbol),
                     style: GoogleFonts.inter(

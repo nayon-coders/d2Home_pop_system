@@ -872,10 +872,12 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
         active = false;
         state = state.copyWith(selectCurrencyError: TrKeys.selectCurrency);
       }
-      if (state.selectedPayment == null) {
-        active = false;
-        state = state.copyWith(selectPaymentError: TrKeys.selectPayment);
-      }
+
+      ///comment payment method selection options
+      // if (state.selectedPayment == null) {
+      //   active = false;
+      //   state = state.copyWith(selectPaymentError: TrKeys.selectPayment);
+      // }
 
       if (state.orderType == TrKeys.delivery) {
         if (state.selectedUser?.phone?.isEmpty ?? true) {

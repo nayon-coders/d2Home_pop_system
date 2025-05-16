@@ -82,7 +82,7 @@ class _RightSideState extends ConsumerState<RightSide> {
                     final bag = state.bags[index];
                     final bool isSelected = state.selectedBagIndex == index;
                     return Row(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.min, 
                       children: [
                         InkWell(
                           borderRadius: BorderRadius.circular(10.r),

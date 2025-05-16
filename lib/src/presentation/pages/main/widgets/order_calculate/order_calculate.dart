@@ -6,6 +6,7 @@ import 'package:admin_desktop/src/presentation/components/components.dart';
 import 'package:admin_desktop/src/presentation/pages/main/riverpod/notifier/main_notifier.dart';
 import 'package:admin_desktop/src/presentation/pages/main/riverpod/provider/main_provider.dart';
 import 'package:admin_desktop/src/presentation/pages/main/riverpod/state/main_state.dart';
+import 'package:admin_desktop/src/presentation/pages/main/widgets/order_calculate/payment_provider.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/order_calculate/price_info.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/right_side/riverpod/right_side_notifier.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/right_side/riverpod/right_side_state.dart';
@@ -17,6 +18,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../right_side/riverpod/right_side_provider.dart';
 
+
+///TODO: Order checkout pages (NayonCoders)
 class OrderCalculate extends ConsumerWidget {
   const OrderCalculate({super.key});
 
@@ -26,6 +29,7 @@ class OrderCalculate extends ConsumerWidget {
     final rightNotifier = ref.read(rightSideProvider.notifier);
     final state = ref.read(mainProvider);
     final stateRight = ref.watch(rightSideProvider);
+    final selectedPayment = ref.watch(selectedPaymentProvider);
     return Scaffold(
       backgroundColor: AppStyle.mainBack,
       body: Padding(
@@ -33,9 +37,9 @@ class OrderCalculate extends ConsumerWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _informationWidget(notifier, rightNotifier, state, stateRight),
+            _informationWidget(notifier, rightNotifier, state, stateRight, selectedPayment),
             16.horizontalSpace,
-            calculator(stateRight, rightNotifier)
+           calculator(stateRight, rightNotifier, selectedPayment)
           ],
         ),
       ),
@@ -43,7 +47,7 @@ class OrderCalculate extends ConsumerWidget {
   }
 
   Widget calculator(
-      RightSideState stateRight, RightSideNotifier rightSideNotifier) {
+      RightSideState stateRight, RightSideNotifier rightSideNotifier, selectedPayment) {
     return Expanded(
       child: Container(
         decoration: const BoxDecoration(color: AppStyle.white),
@@ -59,7 +63,8 @@ class OrderCalculate extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AppHelpers.getTranslation(TrKeys.payableAmount),
+                          "${selectedPayment} payable amount",
+                          // AppHelpers.getTranslation(TrKeys.payableAmount),
                           style: GoogleFonts.inter(
                               fontSize: 18.sp, fontWeight: FontWeight.w600),
                         ),
@@ -231,7 +236,8 @@ class OrderCalculate extends ConsumerWidget {
       MainNotifier notifier,
       RightSideNotifier rightSideNotifier,
       MainState state,
-      RightSideState stateRight) {
+      RightSideState stateRight, selectedPayment) {
+
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
@@ -273,6 +279,12 @@ class OrderCalculate extends ConsumerWidget {
                 )
               ],
             ),
+            16.verticalSpace,
+            //show the payment options
+           SizedBox(
+             height: 40,
+             child: PaymentSelector(),
+           ),
             16.verticalSpace,
             Container(
               padding: EdgeInsets.symmetric(vertical: 20.r, horizontal: 16.r),
@@ -376,6 +388,7 @@ class OrderCalculate extends ConsumerWidget {
                     state: stateRight,
                     notifier: rightSideNotifier,
                     mainNotifier: notifier,
+                      selectedPayment: selectedPayment
                   )
                 ],
               ),
@@ -383,6 +396,46 @@ class OrderCalculate extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+
+class PaymentSelector extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    List paymentOption = ["Cash", "Card", "Split"];
+
+    final selectedOption = ref.watch(selectedPaymentProvider);
+
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: paymentOption.length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {
+            ref.read(selectedPaymentProvider.notifier).state = paymentOption[index];
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: selectedOption == paymentOption[index] ? Colors.red : Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Center(
+              child: Text(
+                paymentOption[index],
+                style: TextStyle(
+                  fontSize: 16,
+                  color: selectedOption == paymentOption[index] ? Colors.white : Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

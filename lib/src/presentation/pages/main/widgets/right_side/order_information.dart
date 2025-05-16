@@ -61,7 +61,7 @@ class OrderInformation extends ConsumerWidget {
                   ),
                   const Spacer(),
                   IconButton(
-                      onPressed: context.maybePop,
+                      onPressed: ()=> Navigator.pop(context),
                       icon: const Icon(FlutterRemix.close_line))
                 ],
               ),
@@ -156,6 +156,9 @@ class OrderInformation extends ConsumerWidget {
                               24.verticalSpace,
                             ],
                           ),
+
+
+                        ///here we had Currancy dropdown 
                         PopupMenuButton<int>(
                           itemBuilder: (context) {
                             return state.currencies
@@ -187,6 +190,8 @@ class OrderInformation extends ConsumerWidget {
                                     TrKeys.selectCurrency),
                           ),
                         ),
+
+
                         Visibility(
                           visible: state.selectCurrencyError != null,
                           child: Padding(
@@ -597,10 +602,8 @@ class OrderInformation extends ConsumerWidget {
                               );
                             },
                             openSelectDeliveriesDrawer: () {
-                              ref
-                                  .read(mainProvider.notifier)
-                                  .setPriceDate(state.paginateResponse);
-                              context.maybePop();
+                              ref.read(mainProvider.notifier).setPriceDate(state.paginateResponse);
+                              Navigator.pop(context);
                             },
                           );
                         }),
