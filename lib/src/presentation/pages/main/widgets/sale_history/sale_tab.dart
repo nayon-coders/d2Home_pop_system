@@ -301,11 +301,8 @@ class SaleTab extends StatelessWidget {
                                         color: Colors.grey.shade200,
                                         borderRadius: BorderRadius.circular(10)
                                       ),
-                                      child: Obx(() {
-                                          return Center(
-                                            child:  Icon(Icons.print, color: Colors.black, size: 25,),
-                                          );
-                                        }
+                                      child: Center(
+                                        child:  Icon(Icons.print, color: Colors.black, size: 25,),
                                       ),
                                     ),
                                   )
