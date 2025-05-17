@@ -73,7 +73,7 @@ class _RightSideState extends ConsumerState<RightSide> {
           children: [
             Expanded(
               child: SizedBox(
-                height: 56.r,
+                height: 50.r,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,

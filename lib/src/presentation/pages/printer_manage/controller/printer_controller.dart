@@ -417,10 +417,18 @@ class PrinterController extends GetxController {
             "label": "Delivery fee",
             "value": orderModel.data!.deliveryFee?.toStringAsFixed(2) ?? "0.00"
           },
-          {
-            "label": "Service fee",
-            "value": orderModel.data!.serviceFee?.toStringAsFixed(2) ?? "0.00"
-          },
+          // {
+          //   "label": "Commission fee",
+          //   "value": orderModel.data!.commissionFee?.toStringAsFixed(2) ?? "0.00"
+          // },
+          // {
+          //   "label": "Commission fee",
+          //   "value": orderModel.data!.?.toStringAsFixed(2) ?? "0.00"
+          // },
+          // {
+          //   "label": "Service fee",
+          //   "value": orderModel.data!.serviceFee?.toStringAsFixed(2) ?? "0.00"
+          // },
         ];
 
         for (var item in summaryItems) {

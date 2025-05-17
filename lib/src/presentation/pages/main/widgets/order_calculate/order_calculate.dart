@@ -51,7 +51,7 @@ class OrderCalculate extends ConsumerWidget {
     return Expanded(
       child: Container(
         decoration: const BoxDecoration(color: AppStyle.white),
-        padding: EdgeInsets.symmetric(vertical: 28.r, horizontal: 16.r),
+        padding: EdgeInsets.symmetric(vertical: 23.r, horizontal: 14.r),
         child: Column(
           children: [
             Row(
@@ -68,7 +68,7 @@ class OrderCalculate extends ConsumerWidget {
                           style: GoogleFonts.inter(
                               fontSize: 18.sp, fontWeight: FontWeight.w600),
                         ),
-                        6.verticalSpace,
+                        4.verticalSpace,
                         Text(
                           AppHelpers.numberFormat(
                             stateRight.selectedUser?.wallet?.price ?? 0,
@@ -112,7 +112,7 @@ class OrderCalculate extends ConsumerWidget {
                   ),
               ],
             ),
-            16.verticalSpace,
+            14.verticalSpace,
             const Divider(),
             const Spacer(),
             Container(
