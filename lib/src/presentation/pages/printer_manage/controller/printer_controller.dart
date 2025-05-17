@@ -452,7 +452,7 @@ class PrinterController extends GetxController {
             generator.text(
                 _formatLineWithoutQuantity(
                     "Total",
-                    "\$${orderModel.data?.totalPrice?.toStringAsFixed(2) ?? "0.00"}",
+                    "\$${ (orderModel.data!.totalPrice! - orderModel.data!.serviceFee!).toStringAsFixed(2) ?? "0.00"}",
                     32),
                 styles: mediumFont()),
             forceNewChunk: true);
