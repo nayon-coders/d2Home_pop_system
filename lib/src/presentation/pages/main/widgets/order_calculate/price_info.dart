@@ -4,6 +4,7 @@ import 'package:admin_desktop/src/core/utils/utils.dart';
 import 'package:admin_desktop/src/models/data/bag_data.dart';
 import 'package:admin_desktop/src/models/data/order_body_data.dart';
 import 'package:admin_desktop/src/presentation/pages/main/riverpod/notifier/main_notifier.dart';
+import 'package:admin_desktop/src/presentation/pages/main/widgets/order_calculate/calculator_controller.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/orders_table/orders/new/new_orders_provider.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/right_side/riverpod/right_side_notifier.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/right_side/riverpod/right_side_state.dart';
@@ -11,6 +12,7 @@ import 'package:admin_desktop/src/presentation/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -216,48 +218,37 @@ class PriceInfo extends StatelessWidget {
           ],
         ),
         20.verticalSpace,
-        state.calculate.isEmpty
-            ? const SizedBox.shrink()
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Builder(
-                    builder: (context) {
-                      bool isPositive = (int.tryParse(state.calculate ?? '') ?? 0) > 0;
-                      String text = "";
-                      if(selectedPayment.contains("Split")){
-                        if(isPositive){
-                          text = "Pay by card";
-                        }else{
-                          text = "Refund";
-                        }
-                      }
-                      return Text(
-                         AppHelpers.getTranslation(TrKeys.refund),
-                       // "${text} ",
+        Obx(() {
+            return Get.find<PaymentCalculatorController>().balanceAmount.isEmpty
+                ? const SizedBox.shrink()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Obx(() => Text(
+                        "${Get.find<PaymentCalculatorController>().balanceType.value}: ",
                         style: GoogleFonts.inter(
                           color: AppStyle.black,
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w600,
                           letterSpacing: -0.4,
                         ),
-                      );
-                    }
-                  ),
-                  Text(
-                    AppHelpers.numberFormat(
-                        (totalPrice ?? 0) -
-                            (double.tryParse(state.calculate) ?? 0),
-                        symbol: bag.selectedCurrency?.symbol),
-                    style: GoogleFonts.inter(
-                      color: AppStyle.black,
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                ],
-              ),
+                      )),
+                      Obx((){
+                          return Text(
+                            "\$ ${Get.find<PaymentCalculatorController>().balanceAmount.value}",
+                            style: GoogleFonts.inter(
+                              color: AppStyle.black,
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: -0.4,
+                            ),
+                          );
+                        }
+                      ),
+                    ],
+                  );
+          }
+        ),
         32.verticalSpace,
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {

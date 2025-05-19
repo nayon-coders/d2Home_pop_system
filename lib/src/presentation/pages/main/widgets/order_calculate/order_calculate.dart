@@ -6,6 +6,7 @@ import 'package:admin_desktop/src/presentation/components/components.dart';
 import 'package:admin_desktop/src/presentation/pages/main/riverpod/notifier/main_notifier.dart';
 import 'package:admin_desktop/src/presentation/pages/main/riverpod/provider/main_provider.dart';
 import 'package:admin_desktop/src/presentation/pages/main/riverpod/state/main_state.dart';
+import 'package:admin_desktop/src/presentation/pages/main/widgets/order_calculate/calculator_controller.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/order_calculate/payment_provider.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/order_calculate/price_info.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/right_side/riverpod/right_side_notifier.dart';
@@ -15,16 +16,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../right_side/riverpod/right_side_provider.dart';
 
 
 ///TODO: Order checkout pages (NayonCoders)
 class OrderCalculate extends ConsumerWidget {
-  const OrderCalculate({super.key});
+   OrderCalculate({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
+    Get.put(PaymentCalculatorController());
     final notifier = ref.read(mainProvider.notifier);
     final rightNotifier = ref.read(rightSideProvider.notifier);
     final state = ref.read(mainProvider);
@@ -37,9 +40,9 @@ class OrderCalculate extends ConsumerWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _informationWidget(notifier, rightNotifier, state, stateRight, selectedPayment),
+            _informationWidget(notifier, rightNotifier, state, stateRight),
             16.horizontalSpace,
-           calculator(stateRight, rightNotifier, selectedPayment)
+           calculator(stateRight, rightNotifier)
           ],
         ),
       ),
@@ -47,39 +50,108 @@ class OrderCalculate extends ConsumerWidget {
   }
 
   Widget calculator(
-      RightSideState stateRight, RightSideNotifier rightSideNotifier, selectedPayment) {
+      RightSideState stateRight, RightSideNotifier rightSideNotifier) {
+    var totalPrice = stateRight.paginateResponse!.totalPrice! - stateRight.paginateResponse!.serviceFee!;
     return Expanded(
       child: Container(
         decoration: const BoxDecoration(color: AppStyle.white),
         padding: EdgeInsets.symmetric(vertical: 23.r, horizontal: 14.r),
         child: Column(
           children: [
+            SizedBox(
+              child: Row(
+                children: [
+                  Obx(() {
+                      return Visibility(
+                        visible: Get.find<PaymentCalculatorController>().selectedPaymentOption.value == "Cash" || Get.find<PaymentCalculatorController>().selectedPaymentOption.value == "Split",
+                        child: Container(
+                          margin: EdgeInsets.only(right: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("💵 Cash pay"),
+                              SizedBox(height: 10,),
+                              InkWell(
+                                onTap: (){
+                                  Get.find<PaymentCalculatorController>().changeSelectionBox(true);
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 170,
+                                  padding: EdgeInsets.all(20.r),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Get.find<PaymentCalculatorController>().isSelectCashBox.value ? Colors.red : AppStyle.differborder),
+                                      borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Obx((){
+                                        return Text(
+                                          Get.find<PaymentCalculatorController>().cashAmountStr.value.toString(),
+                                          style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w600, fontSize: 24.sp),
+                                          maxLines: 1,
+                                        );
+                                      }
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  ),
+
+                  Obx((){
+                      return Visibility(
+                        visible: Get.find<PaymentCalculatorController>().selectedPaymentOption.value == "Card" || Get.find<PaymentCalculatorController>().selectedPaymentOption.value == "Split",
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("💳 Card pay"),
+                            SizedBox(height: 10,),
+                            InkWell(
+                              onTap: (){
+                                Get.find<PaymentCalculatorController>().changeSelectionBox(false);
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 170,
+                                padding: EdgeInsets.all(20.r),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color:  Get.find<PaymentCalculatorController>().isSelectCashBox.value ? AppStyle.differborder : Colors.red),
+                                    borderRadius: BorderRadius.circular(8.r)),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Obx((){
+                                      return Text(
+                                         Get.find<PaymentCalculatorController>().cardAmountStr.value,
+                                        style: GoogleFonts.inter(
+                                            fontWeight: FontWeight.w600, fontSize: 24.sp),
+                                        maxLines: 1,
+                                      );
+                                    }
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  )
+                ],
+              ),
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${selectedPayment} payable amount",
-                          // AppHelpers.getTranslation(TrKeys.payableAmount),
-                          style: GoogleFonts.inter(
-                              fontSize: 18.sp, fontWeight: FontWeight.w600),
-                        ),
-                        4.verticalSpace,
-                        Text(
-                          AppHelpers.numberFormat(
-                            stateRight.selectedUser?.wallet?.price ?? 0,
-                          ),
-                          style: GoogleFonts.inter(
-                              fontSize: 26.sp, fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+
+
                 const Spacer(),
                 if (stateRight.selectedUser != null)
                   Row(
@@ -115,22 +187,22 @@ class OrderCalculate extends ConsumerWidget {
             14.verticalSpace,
             const Divider(),
             const Spacer(),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(20.r),
-              decoration: BoxDecoration(
-                  border: Border.all(color: AppStyle.differborder),
-                  borderRadius: BorderRadius.circular(8.r)),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  stateRight.calculate,
-                  style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600, fontSize: 24.sp),
-                  maxLines: 1,
-                ),
-              ),
-            ),
+            // Container(
+            //   width: double.infinity,
+            //   padding: EdgeInsets.all(20.r),
+            //   decoration: BoxDecoration(
+            //       border: Border.all(color: AppStyle.differborder),
+            //       borderRadius: BorderRadius.circular(8.r)),
+            //   child: Align(
+            //     alignment: Alignment.centerRight,
+            //     child: Text(
+            //       stateRight.calculate,
+            //       style: GoogleFonts.inter(
+            //           fontWeight: FontWeight.w600, fontSize: 24.sp),
+            //       maxLines: 1,
+            //     ),
+            //   ),
+            // ),
             const Spacer(),
             GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -145,13 +217,15 @@ class OrderCalculate extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      rightSideNotifier.setCalculate(index == 9
+                      Get.find<PaymentCalculatorController>().setCalculate(index == 9
                           ? "00"
                           : index == 10
-                              ? "0"
-                              : index == 11
-                                  ? "-1"
-                                  : (index + 1).toString());
+                          ? "0"
+                          : index == 11
+                          ? "-1"
+                          : (index + 1).toString(), 50);
+                      Get.find<PaymentCalculatorController>().calculateBalance(double.tryParse("${totalPrice}")!); // Call after setting cash/card amount
+
                     },
                     child: AnimationButtonEffect(
                       child: Container(
@@ -236,7 +310,7 @@ class OrderCalculate extends ConsumerWidget {
       MainNotifier notifier,
       RightSideNotifier rightSideNotifier,
       MainState state,
-      RightSideState stateRight, selectedPayment) {
+      RightSideState stateRight) {
 
     return Expanded(
       child: SingleChildScrollView(
@@ -246,7 +320,9 @@ class OrderCalculate extends ConsumerWidget {
               children: [
                 InkWell(
                   onTap: () {
+                    Get.find<PaymentCalculatorController>().clearAll();
                     notifier.setPriceDate(null);
+
                   },
                   child: Row(
                     children: [
@@ -388,7 +464,7 @@ class OrderCalculate extends ConsumerWidget {
                     state: stateRight,
                     notifier: rightSideNotifier,
                     mainNotifier: notifier,
-                      selectedPayment: selectedPayment
+                      selectedPayment: Get.find<PaymentCalculatorController>().selectedPaymentOption.value
                   )
                 ],
               ),
@@ -414,25 +490,28 @@ class PaymentSelector extends ConsumerWidget {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            ref.read(selectedPaymentProvider.notifier).state = paymentOption[index];
+            Get.find<PaymentCalculatorController>().selectedPaymentMethod(paymentOption[index]);
           },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              color: selectedOption == paymentOption[index] ? Colors.red : Colors.white,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Center(
-              child: Text(
-                paymentOption[index],
-                style: TextStyle(
-                  fontSize: 16,
-                  color: selectedOption == paymentOption[index] ? Colors.white : Colors.black,
-                  fontWeight: FontWeight.w500,
+          child: Obx(() {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color:   Get.find<PaymentCalculatorController>().selectedPaymentOption.value == paymentOption[index] ? Colors.red : Colors.white,
+                  borderRadius: BorderRadius.circular(5),
                 ),
-              ),
-            ),
+                child: Center(
+                  child: Text(
+                    paymentOption[index],
+                    style: TextStyle(
+                      fontSize: 16,
+                      color:  Get.find<PaymentCalculatorController>().selectedPaymentOption.value == paymentOption[index] ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              );
+            }
           ),
         );
       },

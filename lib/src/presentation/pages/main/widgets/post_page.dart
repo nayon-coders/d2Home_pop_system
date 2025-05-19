@@ -14,7 +14,7 @@ class PostPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context,ref) {
     return CustomScaffold(body: (c)=> ref.watch(mainProvider).priceDate != null
-        ? const OrderCalculate()
+        ?  OrderCalculate()
         :  Padding(
           padding: REdgeInsets.symmetric(horizontal: 15),
           child: Column(

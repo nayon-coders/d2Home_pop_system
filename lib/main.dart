@@ -14,6 +14,8 @@ import 'src/core/utils/utils.dart';
 import 'dart:io' show Platform;
 import 'package:permission_handler/permission_handler.dart';
 
+import 'src/presentation/pages/main/widgets/order_calculate/calculator_controller.dart';
+
 late  SharedPreferences sharedPreferences;
 
 
@@ -34,6 +36,7 @@ void main() async {
   }
 
   Get.put(PrinterController());
+
   // if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
   //   doWhenWindowReady(() {
   //     const initialSize = Size(1280, 720);
