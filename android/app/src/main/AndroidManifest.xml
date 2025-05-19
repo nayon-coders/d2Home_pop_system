@@ -30,9 +30,9 @@
         android:smallScreens="false"
         android:xlargeScreens="true" />
 
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="14" />
+<!--    <uses-sdk-->
+<!--        android:minSdkVersion="14"-->
+<!--        android:targetSdkVersion="14" />-->
 
 
     <application
