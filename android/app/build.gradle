@@ -26,8 +26,8 @@ if (flutterVersionName == null) {
 android {
     namespace "com.posd2home.tableapp"
     compileSdkVersion 35
-    buildToolsVersion "35.0.0"
-    ndkVersion "25.1.8937393"
+//    buildToolsVersion "35.0.0"
+    ndkVersion "26.1.10909125"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

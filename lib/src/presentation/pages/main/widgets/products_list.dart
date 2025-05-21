@@ -1,10 +1,12 @@
 import 'package:admin_desktop/generated/assets.dart';
+import 'package:admin_desktop/src/presentation/pages/main/getx_controller/main_controller.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/add_product/add_product_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:admin_desktop/src/core/constants/constants.dart';
@@ -15,7 +17,9 @@ import '../riverpod/provider/main_provider.dart';
 
 ///TODO: NayonCoders (Changes: product list time 32 items show)
 class ProductsList extends ConsumerWidget {
-  const ProductsList({super.key});
+   ProductsList({super.key});
+
+  MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,46 +39,13 @@ class ProductsList extends ConsumerWidget {
                   shrinkWrap: false,
                   cacheExtent: (state.products.length / 4) * 250,
                   children: [
+
+                    ///TODO:: need to change the product show as grid or list
                     AnimationLimiter(
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: state.products.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 200 / 300,
-                          mainAxisSpacing: 10.r,
-                          crossAxisSpacing: 10.r,
-                          crossAxisCount: 4,
-                        ),
-                        padding: REdgeInsets.only(top: 8, bottom: 10),
-                        itemBuilder: (context, index) {
-                          final product = state.products[index];
-                          return AnimationConfiguration.staggeredGrid(
-                            columnCount: state.products.length,
-                            position: index,
-                            duration: const Duration(milliseconds: 375),
-                            child: ScaleAnimation(
-                              scale: 0.5,
-                              child: FadeInAnimation(
-                                child: ProductGridItem(
-                                  product: product,
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AddProductDialog(
-                                            product: product);
-                                      },
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                      child: Obx(() => mainController.isGridView.value ?  gridView(state) : listView(state)),
                     ),
+
+
                     10.verticalSpace,
                     state.isMoreProductsLoading
                         ? const ProductGridListShimmer(verticalPadding: 0)
@@ -158,4 +129,88 @@ class ProductsList extends ConsumerWidget {
                 ),
               );
   }
+
+
+  Widget gridView(state){
+    return  GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      primary: false,
+      itemCount: state.products.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: Get.find<MainController>().isShowImage.value ? (200 / 300) : (200 / 150),
+        mainAxisSpacing: 10.r,
+        crossAxisSpacing: 10.r,
+        crossAxisCount: 4,
+      ),
+      padding: REdgeInsets.only(top: 8, bottom: 10),
+      itemBuilder: (context, index) {
+        final product = state.products[index];
+        return AnimationConfiguration.staggeredGrid(
+          columnCount: state.products.length,
+          position: index,
+          duration: const Duration(milliseconds: 375),
+          child: ScaleAnimation(
+            scale: 0.5,
+            child: FadeInAnimation(
+              child: ProductGridItem(
+                product: product,
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) { ///TODO:: Add Product Nayon coder
+                      return AddProductDialog(
+                          product: product);
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+   Widget listView(state){
+     return  ListView.builder(
+       physics: const NeverScrollableScrollPhysics(),
+       shrinkWrap: true,
+       primary: false,
+       itemCount: state.products.length,
+       // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+       //   childAspectRatio: 200 / 300,
+       //   mainAxisSpacing: 10.r,
+       //   crossAxisSpacing: 10.r,
+       //   crossAxisCount: 4,
+       // ),
+       padding: REdgeInsets.only(top: 8, bottom: 10),
+       itemBuilder: (context, index) {
+         final product = state.products[index];
+         return AnimationConfiguration.staggeredGrid(
+           columnCount: state.products.length,
+           position: index,
+           duration: const Duration(milliseconds: 375),
+           child: ScaleAnimation(
+             scale: 0.5,
+             child: FadeInAnimation(
+               child: ProductGridItem(
+                 product: product,
+                 onTap: () {
+                   showDialog(
+                     context: context,
+                     builder: (context) {
+                       return AddProductDialog(
+                           product: product);
+                     },
+                   );
+                 },
+               ),
+             ),
+           ),
+         );
+       },
+     );
+   }
 }

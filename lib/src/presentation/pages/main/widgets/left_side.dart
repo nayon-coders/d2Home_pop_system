@@ -15,7 +15,7 @@ class LeftSide extends StatelessWidget {
       children: [
         const MainAppbar(),
         4.verticalSpace,
-        const Expanded(child: ProductsList()),
+         Expanded(child: ProductsList()),
       ],
     );
   }

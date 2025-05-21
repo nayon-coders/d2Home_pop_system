@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:admin_desktop/src/core/routes/app_router.dart';
 import 'package:admin_desktop/src/presentation/components/custom_clock/custom_clock.dart';
 import 'package:admin_desktop/src/presentation/components/custom_scaffold.dart';
+import 'package:admin_desktop/src/presentation/pages/main/getx_controller/main_controller.dart';
 import 'package:admin_desktop/src/presentation/pages/main/riverpod/notifier/main_notifier.dart';
 import 'package:admin_desktop/src/presentation/pages/main/riverpod/state/main_state.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/customers/customers_page.dart';
@@ -205,6 +206,9 @@ class _MainPageState extends ConsumerState<MainPage>
       }
     });
   }
+
+
+  MainController  mainController = Get.put(MainController());
 
   @override
   Widget build(BuildContext context) {
@@ -448,7 +452,16 @@ class _MainPageState extends ConsumerState<MainPage>
                   color: AppStyle.black,
                 ),
               ),
-
+              IconButton(
+                onPressed: () {
+                  print("you press here");
+                  _showAlertDilog(); //show alert dialog
+                },
+                icon: const Icon(
+                  FlutterRemix.settings_2_line,
+                  color: AppStyle.black,
+                ),
+              ),
 
 
               // IconButton(
@@ -910,5 +923,103 @@ class _MainPageState extends ConsumerState<MainPage>
         ],
       ),
     );
+  }
+
+  _showAlertDilog()async{
+
+   return showDialog(
+     context: context,
+     barrierDismissible: false,
+     builder: (context) {
+       return AlertDialog(
+         title: Text('Select view for items'),
+         content: Obx(() {
+           return Column(
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               CheckboxListTile(
+                 title: Row(
+                   children: [
+                     Icon(Icons.grid_view_rounded),
+                     SizedBox(width: 10),
+                     Text('Grid View'),
+                   ],
+                 ),
+                 value: mainController.isGridView.value,
+                 onChanged: (value) {
+                   if (value!) {
+                     mainController.isGridView.value = true;
+                     mainController.isListView.value = false; // Auto uncheck ListView
+                   }
+                 },
+               ),
+
+               CheckboxListTile(
+                 title: Row(
+                   children: [
+                     Icon(Icons.list_alt),
+                     SizedBox(width: 10),
+                     Text('List View'),
+                   ],
+                 ),
+                 value: mainController.isListView.value,
+                 onChanged: (value) {
+                   if (value!) {
+                     mainController.isListView.value = true;
+                     mainController.isGridView.value = false; // Auto uncheck GridView
+                   }
+                 },
+               ),
+
+               CheckboxListTile(
+                 title: Row(
+                   children: [
+                     Icon(Icons.photo),
+                     SizedBox(width: 10,),
+                     Text('Show Image'),
+                   ],
+                 ),
+                 value: mainController.isShowImage.value,
+                 onChanged: (value) {
+                   mainController.isShowImage.value = value!;
+                 },
+               ),
+             ],
+           );
+         }),
+         actions: [
+           TextButton(
+             style: TextButton.styleFrom(
+               backgroundColor: Colors.blue,
+               foregroundColor: Colors.white,
+               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(8),
+               ),
+             ),
+             onPressed: () {
+               mainController.savePrefs();
+               Navigator.of(context).pop();
+             },
+             child: Text('Save', style: TextStyle(fontWeight: FontWeight.bold)),
+           ),
+           SizedBox(width: 10),
+           TextButton(
+             style: TextButton.styleFrom(
+               backgroundColor: Colors.grey.shade200,
+               foregroundColor: Colors.black,
+               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(8),
+               ),
+             ),
+             onPressed: () => Navigator.of(context).pop(),
+             child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold)),
+           ),
+         ],
+
+       );
+     },
+   );
   }
 }

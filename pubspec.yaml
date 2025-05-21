@@ -41,7 +41,7 @@ dependencies:
   percent_indicator: ^4.2.3
   freezed_annotation: ^2.1.0
   flutter_screenutil: ^5.8.1
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.5.3
   google_maps_flutter: ^2.7.0
   drag_and_drop_lists: ^0.4.1
   cached_network_image: ^3.3.0
