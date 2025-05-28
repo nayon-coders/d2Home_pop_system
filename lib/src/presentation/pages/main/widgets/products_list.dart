@@ -1,6 +1,8 @@
 import 'package:admin_desktop/generated/assets.dart';
+import 'package:admin_desktop/src/presentation/pages/main/getx_controller/bag_controller.dart';
 import 'package:admin_desktop/src/presentation/pages/main/getx_controller/main_controller.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/add_product/add_product_dialog.dart';
+import 'package:admin_desktop/src/presentation/pages/main/widgets/right_side/riverpod/right_side_provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,11 +22,15 @@ class ProductsList extends ConsumerWidget {
    ProductsList({super.key});
 
   MainController mainController = Get.find<MainController>();
+  BagController bagController = Get.find<BagController>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    bagController.updateProductsFromBags();
     final state = ref.watch(mainProvider);
     final notifier = ref.read(mainProvider.notifier);
+
+
     return state.isProductsLoading
         ? const ProductGridListShimmer()
         : state.products.isNotEmpty
@@ -194,7 +200,7 @@ class ProductsList extends ConsumerWidget {
            duration: const Duration(milliseconds: 375),
            child: ScaleAnimation(
              scale: 0.5,
-             child: FadeInAnimation(
+             child: FadeInAnimation(///TODO::
                child: ProductGridItem(
                  product: product,
                  onTap: () {

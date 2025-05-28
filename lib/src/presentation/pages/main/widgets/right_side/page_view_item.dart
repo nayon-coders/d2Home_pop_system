@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:admin_desktop/generated/assets.dart';
@@ -15,6 +16,7 @@ import 'package:admin_desktop/src/core/utils/utils.dart';
 import 'package:admin_desktop/src/models/models.dart';
 import '../../../../components/components.dart';
 import '../../../../theme/theme.dart';
+import '../../getx_controller/bag_controller.dart';
 import 'riverpod/right_side_provider.dart';
 
 class PageViewItem extends ConsumerStatefulWidget {
@@ -92,6 +94,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                             InkWell(
                               onTap: () {
                                 notifier.clearBag();
+                                Get.find<BagController>().updateProductsFromBags();
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(8.r),
@@ -116,20 +119,19 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                             add: () {
                               notifier.increaseProductCount(
                                   productIndex: index);
+                              Get.find<BagController>().updateProductsFromBags();
                             },
                             remove: () {
                               notifier.decreaseProductCount(
                                   productIndex: index);
+                              Get.find<BagController>().updateProductsFromBags();
                             },
-                            cart:
-                            state.paginateResponse?.stocks?[index] ??
-                                ProductData(),
+                            cart: state.paginateResponse?.stocks?[index] ?? ProductData(),
                             delete: () {
                               notifier.deleteProductCount(
-                                  bagProductData: state
-                                      .bags[state.selectedBagIndex]
-                                      .bagProducts?[index],
+                                  bagProductData: state.bags[state.selectedBagIndex].bagProducts?[index],
                                   productIndex: index);
+                              Get.find<BagController>().updateProductsFromBags();
                             },
                           );
                         },

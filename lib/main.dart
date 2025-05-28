@@ -1,3 +1,4 @@
+import 'package:admin_desktop/src/presentation/pages/main/getx_controller/bag_controller.dart';
 import 'package:admin_desktop/src/presentation/pages/printer_manage/controller/printer_controller.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,6 +37,7 @@ void main() async {
   }
 
   Get.put(PrinterController());
+  Get.put(BagController());
 
   // if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
   //   doWhenWindowReady(() {

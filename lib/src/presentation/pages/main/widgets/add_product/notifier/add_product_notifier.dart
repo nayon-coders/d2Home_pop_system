@@ -1,4 +1,5 @@
 import 'package:admin_desktop/src/models/data/addons_data.dart';
+import 'package:admin_desktop/src/presentation/pages/main/getx_controller/bag_controller.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/right_side/riverpod/right_side_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:admin_desktop/src/core/constants/constants.dart';
 import 'package:admin_desktop/src/core/utils/utils.dart';
 import 'package:admin_desktop/src/models/models.dart';
+import 'package:get/get.dart';
 import '../riverpod/add_product_state.dart';
 
 class AddProductNotifier extends StateNotifier<AddProductState> {
@@ -24,6 +26,8 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
       final List<int> selectedIndexes = List.filled(groupsCount, 0);
       initialSetSelectedIndexes(selectedIndexes, bagIndex);
     }
+    //update
+    Get.find<BagController>().updateProductsFromBags();
   }
 
   void updateSelectedIndexes({
@@ -42,6 +46,8 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
   void initialSetSelectedIndexes(List<int> indexes, int bagIndex) {
     state = state.copyWith(selectedIndexes: indexes);
     updateExtras(bagIndex);
+    //update
+    Get.find<BagController>().updateProductsFromBags();
   }
 
   void updateExtras(int bagIndex) {
@@ -67,6 +73,8 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
       selectedStock: selectedStock,
       stockCount: stockCount,
     );
+    //update
+    Get.find<BagController>().updateProductsFromBags();
   }
 
   void updateIngredient(BuildContext context, int selectIndex) {
@@ -115,6 +123,8 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
       AppHelpers.showSnackBar(
           context, AppHelpers.getTranslation(TrKeys.minQty));
     }
+    //update
+    Get.find<BagController>().updateProductsFromBags();
   }
 
   Stocks? getSelectedStock(List<TypedExtra> groupExtras) {
@@ -202,6 +212,8 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
         stocks.add(includedStocks[i]);
       }
     }
+    //update
+    Get.find<BagController>().updateProductsFromBags();
     return stocks;
   }
 
@@ -220,6 +232,8 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
       newCount = newCount + 1;
       state = state.copyWith(stockCount: newCount);
     }
+    //update
+    Get.find<BagController>().updateProductsFromBags();
   }
 
   void decreaseStockCount(int bagIndex) {
@@ -307,5 +321,9 @@ class AddProductNotifier extends StateNotifier<AddProductState> {
         );
       },
     );
+
+
+    //update
+    Get.find<BagController>().updateProductsFromBags();
   }
 }

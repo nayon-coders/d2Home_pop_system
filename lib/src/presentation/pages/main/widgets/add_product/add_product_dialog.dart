@@ -290,12 +290,14 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                       isLoading: state.isLoading,
                       title: AppHelpers.getTranslation(TrKeys.add),
                       onPressed: () {
+
                         notifier.addProductToBag(
                           context,
                           rightSideState.selectedBagIndex,
                           rightSideNotifier,
                         );
-                        context.maybePop();
+
+                       context.maybePop();
                       },
                     ),
                   ),
