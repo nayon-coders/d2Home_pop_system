@@ -103,7 +103,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                     backgroundColor: AppStyle.transparent,
                     iconData: FlutterRemix.close_circle_line,
                     icon: AppStyle.black,
-                    onTap: context.maybePop,
+                    onTap: ()=> Navigator.pop(context),
                   ),
                 ],
               ),
@@ -114,11 +114,15 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CommonImage(
+                     widget.product?.addons != null ?  CommonImage(
                         imageUrl: widget.product?.img,
                         width: 250,
                         height: 250,
-                      ),
+                      ) :  CommonImage(
+                       imageUrl: widget.product?.img,
+                       width: 150,
+                       height: 100,
+                     ),
                       24.verticalSpace,
                       Container(
                         decoration: BoxDecoration(

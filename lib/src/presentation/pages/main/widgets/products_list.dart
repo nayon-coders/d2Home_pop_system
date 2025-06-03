@@ -13,9 +13,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:admin_desktop/src/core/constants/constants.dart';
 import 'package:admin_desktop/src/core/utils/utils.dart';
+import '../../../../models/data/product_data.dart';
 import '../../../components/components.dart';
+import '../../../components/list_items/product_list_item.dart';
 import '../../../theme/theme.dart';
 import '../riverpod/provider/main_provider.dart';
+import 'add_product/provider/add_product_provider.dart';
 
 ///TODO: NayonCoders (Changes: product list time 32 items show)
 class ProductsList extends ConsumerWidget {
@@ -24,11 +27,20 @@ class ProductsList extends ConsumerWidget {
   MainController mainController = Get.find<MainController>();
   BagController bagController = Get.find<BagController>();
 
+
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bagController.updateProductsFromBags();
     final state = ref.watch(mainProvider);
     final notifier = ref.read(mainProvider.notifier);
+
+    final addProductState = ref.watch(addProductProvider);
+    final rightSideState = ref.watch(rightSideProvider);
+    final addProductNotifier = ref.read(addProductProvider.notifier);
+    final rightSideNotifier = ref.read(rightSideProvider.notifier);
+
+
 
 
     return state.isProductsLoading
@@ -48,7 +60,7 @@ class ProductsList extends ConsumerWidget {
 
                     ///TODO:: need to change the product show as grid or list
                     AnimationLimiter(
-                      child: Obx(() => mainController.isGridView.value ?  gridView(state) : listView(state)),
+                      child: Obx(() => mainController.isGridView.value ?  gridView(state, addProductNotifier) : listView(state, addProductNotifier)),
                     ),
 
 
@@ -137,7 +149,7 @@ class ProductsList extends ConsumerWidget {
   }
 
 
-  Widget gridView(state){
+  Widget gridView(state, addProductNotifier){
     return  GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -151,7 +163,7 @@ class ProductsList extends ConsumerWidget {
       ),
       padding: REdgeInsets.only(top: 8, bottom: 10),
       itemBuilder: (context, index) {
-        final product = state.products[index];
+        ProductData singleProduct = state.products[index];
         return AnimationConfiguration.staggeredGrid(
           columnCount: state.products.length,
           position: index,
@@ -160,15 +172,18 @@ class ProductsList extends ConsumerWidget {
             scale: 0.5,
             child: FadeInAnimation(
               child: ProductGridItem(
-                product: product,
+                product: singleProduct,
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) { ///TODO:: Add Product Nayon coder
                       return AddProductDialog(
-                          product: product);
+                        // product: product
+                          product: singleProduct
+                      );
                     },
                   );
+
                 },
               ),
             ),
@@ -179,7 +194,7 @@ class ProductsList extends ConsumerWidget {
   }
 
 
-   Widget listView(state){
+   Widget listView(state, addProductNotifier){
      return  ListView.builder(
        physics: const NeverScrollableScrollPhysics(),
        shrinkWrap: true,
@@ -201,7 +216,7 @@ class ProductsList extends ConsumerWidget {
            child: ScaleAnimation(
              scale: 0.5,
              child: FadeInAnimation(///TODO::
-               child: ProductGridItem(
+               child: ProductListItemView(
                  product: product,
                  onTap: () {
                    showDialog(
