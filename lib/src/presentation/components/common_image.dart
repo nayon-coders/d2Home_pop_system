@@ -14,6 +14,7 @@ class CommonImage extends StatelessWidget {
   final double height;
   final double radius;
   final bool isResponsive;
+  final bool isRedious;
   final File? fileImage;
 
 
@@ -24,6 +25,7 @@ class CommonImage extends StatelessWidget {
     this.height = 50,
     this.radius = 10,  this.isResponsive=true,
     this.fileImage,
+    this.isRedious = true
   });
 
   @override
@@ -43,7 +45,7 @@ class CommonImage extends StatelessWidget {
       fit: BoxFit.cover,
       placeholderBuilder: (_) => Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius.r),
+          borderRadius: isRedious ? BorderRadius.circular(radius.r) :  null ,
           color: AppStyle.white,
         ),
       ),
@@ -57,7 +59,7 @@ class CommonImage extends StatelessWidget {
           return MakeShimmer(
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(isResponsive ?radius.r :radius),
+                borderRadius:  isRedious ? BorderRadius.circular(isResponsive ?radius.r :radius) : null,
                 color: AppStyle.mainBack,
               ),
             ),
@@ -68,7 +70,7 @@ class CommonImage extends StatelessWidget {
             width: isResponsive? width.r :width,
             height:  isResponsive? height.r :height,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(isResponsive ?radius.r :radius),
+              borderRadius: isRedious ? BorderRadius.circular(isResponsive ?radius.r :radius) : null,
               border: Border.all(color: AppStyle.border),
               color: AppStyle.mainBack,
             ),

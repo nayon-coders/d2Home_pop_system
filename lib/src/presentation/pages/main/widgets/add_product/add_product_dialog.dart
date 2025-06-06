@@ -115,46 +115,17 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                      widget.product?.addons != null ?  CommonImage(
+                        isRedious: false,
                         imageUrl: widget.product?.img,
                         width: 250,
                         height: 250,
                       ) :  CommonImage(
+                       isRedious: true,
                        imageUrl: widget.product?.img,
                        width: 150,
                        height: 100,
                      ),
-                      24.verticalSpace,
-                      Container(
 
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.r),
-                            border: Border.all(color: AppStyle.icon)),
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () => notifier.decreaseStockCount(
-                                  rightSideState.selectedBagIndex),
-                              icon: const Icon(FlutterRemix.subtract_line, size: 30,),
-                            ),
-                            13.horizontalSpace,
-                            Text(
-                              '${state.stockCount}',
-                              style: GoogleFonts.inter(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18.sp,
-                                color: AppStyle.black,
-                                letterSpacing: -0.4,
-                              ),
-                            ),
-                            12.horizontalSpace,
-                            IconButton(
-                              onPressed: () => notifier.increaseStockCount(
-                                  rightSideState.selectedBagIndex),
-                              icon: const Icon(FlutterRemix.add_line,  size: 30),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                   32.horizontalSpace,
@@ -283,6 +254,45 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                     ),
                   ),
                 ],
+              ),
+              24.verticalSpace,
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  width:250.r,
+                  height: 80.r,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6.r),
+                      border: Border.all(color: AppStyle.icon)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () => notifier.decreaseStockCount(
+                            rightSideState.selectedBagIndex),
+                        icon: const Icon(FlutterRemix.subtract_line, size: 40,),
+                      ),
+                      12.horizontalSpace,
+                      Text(
+                        '${state.stockCount}',
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18.sp,
+                          color: AppStyle.black,
+                          letterSpacing: -0.4,
+                        ),
+                      ),
+                      12.horizontalSpace,
+                      IconButton(
+                        onPressed: () => notifier.increaseStockCount(
+                            rightSideState.selectedBagIndex),
+                        icon: const Icon(FlutterRemix.add_line,  size: 40),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               10.verticalSpace,
               const Divider(),
