@@ -36,20 +36,23 @@ class MainAppbar extends ConsumerWidget {
                       color: AppStyle.white,
                       borderRadius: BorderRadius.circular(10.r)
                     ),
-                    height: 56.h,
+                    height: 160.h,
                     child: ListView.builder( ///TODO: category view
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: state.categories.length + 2,
                         itemBuilder: (context, index) {
+
                           return index == 0
-                              ? Padding(
-                                  padding: EdgeInsets.only(right: 6.r),
-                                  child:
-                                      SvgPicture.asset(Assets.svgMenu),
-                                )
+                              ? Center()
+                              // ? Padding(
+                              //     padding: EdgeInsets.only(right: 6.r),
+                              //     child:
+                              //         SvgPicture.asset(Assets.svgMenu),
+                              //   )
                               : index == 1
                                   ? CategoryTabBarItem(
+                                    image: "https://t4.ftcdn.net/jpg/06/25/16/63/360_F_625166313_eh9LfdUO4WHUdcS7OOXco1zjR5JZNWz2.jpg",
                                       isActive:
                                           state.selectedCategory?.id == null,
                                       onTap: () {
@@ -60,6 +63,7 @@ class MainAppbar extends ConsumerWidget {
                                           AppHelpers.getTranslation(TrKeys.all),
                                     )
                                   : CategoryTabBarItem(
+                                      image: state.categories[index - 2]?.img,
                                       isActive:
                                           state.categories[index - 2].id ==
                                               state.selectedCategory?.id,

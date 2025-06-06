@@ -125,6 +125,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                      ),
                       24.verticalSpace,
                       Container(
+
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6.r),
                             border: Border.all(color: AppStyle.icon)),
@@ -133,7 +134,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                             IconButton(
                               onPressed: () => notifier.decreaseStockCount(
                                   rightSideState.selectedBagIndex),
-                              icon: const Icon(FlutterRemix.subtract_line),
+                              icon: const Icon(FlutterRemix.subtract_line, size: 30,),
                             ),
                             13.horizontalSpace,
                             Text(
@@ -149,7 +150,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                             IconButton(
                               onPressed: () => notifier.increaseStockCount(
                                   rightSideState.selectedBagIndex),
-                              icon: const Icon(FlutterRemix.add_line),
+                              icon: const Icon(FlutterRemix.add_line,  size: 30),
                             ),
                           ],
                         ),
@@ -301,7 +302,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                           rightSideNotifier,
                         );
 
-                       context.maybePop();
+                        Navigator.pop(context);
                       },
                     ),
                   ),

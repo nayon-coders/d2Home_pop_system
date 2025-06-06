@@ -6,12 +6,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CategoryTabBarItem extends StatelessWidget {
   final String? title;
+  final String? image;
   final bool isActive;
   final Function() onTap;
 
   const CategoryTabBarItem({
     super.key,
     this.title,
+    this.image,
     required this.isActive,
     required this.onTap,
   });
@@ -23,10 +25,13 @@ class CategoryTabBarItem extends StatelessWidget {
         onTap: isActive ? null : onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          height: 36.r,
+
+          width: 150.r,
+          height: 110.r,
+
           decoration: BoxDecoration(
-            color: isActive ? AppStyle.primary : AppStyle.white,
-            borderRadius: BorderRadius.circular(10.r),
+            color: isActive ? Colors.grey.shade100 : AppStyle.white,
+            borderRadius: BorderRadius.circular(5.r),
             boxShadow: [
               BoxShadow(
                 color: AppStyle.white.withOpacity(0.07),
@@ -37,14 +42,24 @@ class CategoryTabBarItem extends StatelessWidget {
             ],
           ),
           alignment: Alignment.center,
-          padding: REdgeInsets.symmetric(horizontal: 18),
+          padding: REdgeInsets.symmetric(horizontal: 18, vertical: 5),
           margin: REdgeInsets.only(right: 8),
-          child: Row(
+          child: Column(
             children: [
+              SizedBox(
+                height: 80.r,
+                child: ClipRRect(
+                  borderRadius: BorderRadiusDirectional.circular(10),
+                    child: Image.network(image ?? "https://cdn-icons-png.freepik.com/256/12130/12130914.png?semt=ais_hybrid", fit: BoxFit.cover
+                      ,)),
+              ),
+              SizedBox(height: 10,),
               Text(
                 '$title',
+                textAlign: TextAlign.center,
+                maxLines: 2,
                 style: GoogleFonts.inter(
-                  fontSize: 13.sp,
+                  fontSize: 12.sp,
                   color: AppStyle.black,
                 ),
               ),

@@ -199,34 +199,52 @@ class ProductsList extends ConsumerWidget {
        physics: const NeverScrollableScrollPhysics(),
        shrinkWrap: true,
        primary: false,
-       itemCount: state.products.length,
-       // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-       //   childAspectRatio: 200 / 300,
-       //   mainAxisSpacing: 10.r,
-       //   crossAxisSpacing: 10.r,
-       //   crossAxisCount: 4,
-       // ),
        padding: REdgeInsets.only(top: 8, bottom: 10),
+       itemCount: (state.products.length / 2).ceil(),
        itemBuilder: (context, index) {
-         final product = state.products[index];
-         return AnimationConfiguration.staggeredGrid(
-           columnCount: state.products.length,
+         final firstProduct = state.products[index * 2];
+         final secondIndex = index * 2 + 1;
+         final secondProduct = secondIndex < state.products.length ? state.products[secondIndex] : null;
+
+         return AnimationConfiguration.staggeredList(
            position: index,
            duration: const Duration(milliseconds: 375),
            child: ScaleAnimation(
              scale: 0.5,
-             child: FadeInAnimation(///TODO::
-               child: ProductListItemView(
-                 product: product,
-                 onTap: () {
-                   showDialog(
-                     context: context,
-                     builder: (context) {
-                       return AddProductDialog(
-                           product: product);
-                     },
-                   );
-                 },
+             child: FadeInAnimation(
+               child: Row(
+                 children: [
+                   Expanded(
+                     child: ProductListItemView(
+                       product: firstProduct,
+                       onTap: () {
+                         showDialog(
+                           context: context,
+                           builder: (context) {
+                             return AddProductDialog(product: firstProduct);
+                           },
+                         );
+                       },
+                     ),
+                   ),
+                   SizedBox(width: 10.w), // spacing between two products
+                   if (secondProduct != null)
+                     Expanded(
+                       child: ProductListItemView(
+                         product: secondProduct,
+                         onTap: () {
+                           showDialog(
+                             context: context,
+                             builder: (context) {
+                               return AddProductDialog(product: secondProduct);
+                             },
+                           );
+                         },
+                       ),
+                     )
+                   else
+                     const Expanded(child: SizedBox()), // empty space if odd number
+                 ],
                ),
              ),
            ),
