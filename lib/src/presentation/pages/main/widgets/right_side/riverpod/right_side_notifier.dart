@@ -847,16 +847,16 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
     final connected = await AppConnectivity.connectivity();
     if (connected) {
       bool active = true;
-      if (state.orderType == TrKeys.dine) {
-        if (state.selectedSection == null) {
-          active = false;
-          state = state.copyWith(selectSectionError: TrKeys.selectSection);
-        }
-        if (state.selectedTable == null) {
-          active = false;
-          state = state.copyWith(selectTableError: TrKeys.selectTable);
-        }
-      }
+      // if (state.orderType == TrKeys.dine) {
+      //   if (state.selectedSection == null) {
+      //     active = false;
+      //     state = state.copyWith(selectSectionError: TrKeys.selectSection);
+      //   }
+      //   if (state.selectedTable == null) {
+      //     active = false;
+      //     state = state.copyWith(selectTableError: TrKeys.selectTable);
+      //   }
+      // }
       if (state.orderType == TrKeys.delivery) {
         if (state.selectedUser == null) {
           active = false;
@@ -868,10 +868,10 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
         }
       }
 
-      if (state.selectedCurrency == null) {
-        active = false;
-        state = state.copyWith(selectCurrencyError: TrKeys.selectCurrency);
-      }
+      // if (state.selectedCurrency == null) {
+      //   active = false;
+      //   state = state.copyWith(selectCurrencyError: TrKeys.selectCurrency);
+      // }
 
       ///comment payment method selection options
       // if (state.selectedPayment == null) {

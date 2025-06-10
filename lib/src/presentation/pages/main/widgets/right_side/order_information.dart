@@ -65,307 +65,307 @@ class OrderInformation extends ConsumerWidget {
                       icon: const Icon(FlutterRemix.close_line))
                 ],
               ),
-              16.verticalSpace,
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (state.orderType == TrKeys.delivery)
-                          Column(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  border: Border.all(
-                                    color: AppStyle.unselectedBottomBarBack,
-                                    width: 1.r,
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                                height: 56.r,
-                                padding: EdgeInsets.only(left: 16.r),
-                                child: CustomDropdown(
-                                  hintText: AppHelpers.getTranslation(
-                                      TrKeys.selectUser),
-                                  searchHintText: AppHelpers.getTranslation(
-                                      TrKeys.searchUser),
-                                  dropDownType: DropDownType.users,
-                                  onChanged: (value) =>
-                                      notifier.setUsersQuery(context, value),
-                                  initialValue:
-                                      bag.selectedUser?.firstname ?? '',
-                                ),
-                              ),
-                              Visibility(
-                                visible: state.selectUserError != null,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 6.r, left: 4.r),
-                                  child: Text(
-                                    AppHelpers.getTranslation(
-                                        state.selectUserError ?? ""),
-                                    style: GoogleFonts.inter(
-                                        color: AppStyle.red, fontSize: 14.sp),
-                                  ),
-                                ),
-                              ),
-                              24.verticalSpace,
-                            ],
-                          ),
-                        if (state.orderType == TrKeys.dine)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  border: Border.all(
-                                    color: AppStyle.unselectedBottomBarBack,
-                                    width: 1.r,
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                                height: 56.r,
-                                padding: EdgeInsets.only(left: 16.r),
-                                child: CustomDropdown(
-                                  hintText: AppHelpers.getTranslation(
-                                      TrKeys.selectSection),
-                                  searchHintText:
-                                      AppHelpers.getTranslation(TrKeys.search),
-                                  dropDownType: DropDownType.section,
-                                  onChanged: (value) =>
-                                      notifier.setSectionQuery(context, value),
-                                  initialValue:
-                                      bag.selectedSection?.translation?.title ??
-                                          '',
-                                ),
-                              ),
-                              Visibility(
-                                visible: state.selectSectionError != null,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 6.r, left: 4.r),
-                                  child: Text(
-                                    AppHelpers.getTranslation(
-                                        state.selectSectionError ?? ""),
-                                    style: GoogleFonts.inter(
-                                        color: AppStyle.red, fontSize: 14.sp),
-                                  ),
-                                ),
-                              ),
-                              24.verticalSpace,
-                            ],
-                          ),
-
-
-                        ///here we had Currancy dropdown 
-                        PopupMenuButton<int>(
-                          itemBuilder: (context) {
-                            return state.currencies
-                                .map(
-                                  (currency) => PopupMenuItem<int>(
-                                    value: currency.id,
-                                    child: Text(
-                                      '${currency.title}(${currency.symbol})',
-                                      style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14.sp,
-                                        color: AppStyle.black,
-                                        letterSpacing: -14 * 0.02,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList();
-                          },
-                          onSelected: notifier.setSelectedCurrency,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          color: AppStyle.white,
-                          elevation: 10,
-                          child: SelectFromButton(
-                            title: state.selectedCurrency?.title ??
-                                AppHelpers.getTranslation(
-                                    TrKeys.selectCurrency),
-                          ),
-                        ),
-
-
-                        Visibility(
-                          visible: state.selectCurrencyError != null,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 6.r, left: 4.r),
-                            child: Text(
-                              AppHelpers.getTranslation(
-                                  state.selectCurrencyError ?? ""),
-                              style: GoogleFonts.inter(
-                                  color: AppStyle.red, fontSize: 14.sp),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  16.horizontalSpace,
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (state.orderType == TrKeys.delivery)
-                          Column(
-                            children: [
-                              PopupMenuButton(
-                                initialValue:
-                                    state.selectedAddress?.address ?? "",
-                                itemBuilder: (context) {
-                                  AppHelpers.showAlertDialog(
-                                      context: context,
-                                      child: SizedBox(
-                                        child: SelectAddressPage(
-                                          location:
-                                              state.selectedAddress?.location,
-                                          onSelect: (address) {
-                                            notifier.setSelectedAddress(
-                                                address: address);
-                                            ref
-                                                .read(
-                                                    rightSideProvider.notifier)
-                                                .fetchCarts(
-                                                    checkYourNetwork: () {
-                                                      AppHelpers.showSnackBar(
-                                                        context,
-                                                        AppHelpers.getTranslation(
-                                                            TrKeys
-                                                                .checkYourNetworkConnection),
-                                                      );
-                                                    },
-                                                    isNotLoading: true);
-                                          },
-                                        ),
-                                      ));
-
-                                  return [];
-                                },
-                                onSelected: (s) =>
-                                    notifier.setSelectedAddress(),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                ),
-                                color: AppStyle.white,
-                                elevation: 10,
-                                child: SelectFromButton(
-                                  title: state.selectedAddress?.address ??
-                                      AppHelpers.getTranslation(
-                                          TrKeys.selectAddress),
-                                ),
-                              ),
-                              Visibility(
-                                visible: state.selectAddressError != null,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 6.r, left: 4.r),
-                                  child: Text(
-                                    AppHelpers.getTranslation(
-                                        state.selectAddressError ?? ""),
-                                    style: GoogleFonts.inter(
-                                        color: AppStyle.red, fontSize: 14.sp),
-                                  ),
-                                ),
-                              ),
-                              24.verticalSpace,
-                            ],
-                          ),
-                        if (state.orderType == TrKeys.dine)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  border: Border.all(
-                                    color: AppStyle.unselectedBottomBarBack,
-                                    width: 1.r,
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                                height: 56.r,
-                                padding: EdgeInsets.only(left: 16.r),
-                                child: CustomDropdown(
-                                  hintText: AppHelpers.getTranslation(
-                                      TrKeys.selectTable),
-                                  searchHintText:
-                                      AppHelpers.getTranslation(TrKeys.search),
-                                  dropDownType: DropDownType.table,
-                                  onChanged: (value) =>
-                                      notifier.setTableQuery(context, value),
-                                  initialValue: bag.selectedTable?.name ?? '',
-                                ),
-                              ),
-                              Visibility(
-                                visible: state.selectTableError != null,
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 6.r, left: 4.r),
-                                  child: Text(
-                                    AppHelpers.getTranslation(
-                                        state.selectTableError ?? ""),
-                                    style: GoogleFonts.inter(
-                                        color: AppStyle.red, fontSize: 14.sp),
-                                  ),
-                                ),
-                              ),
-                              24.verticalSpace,
-                            ],
-                          ),
-                        PopupMenuButton<int>(
-                          enabled: state.orderType == TrKeys.delivery,
-                          itemBuilder: (context) {
-                            return state.payments
-                                .map(
-                                  (payment) => PopupMenuItem<int>(
-                                    value: payment.id,
-                                    child: Text(
-                                      AppHelpers.getTranslation(
-                                          payment.tag ?? ""),
-                                      style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14.sp,
-                                        color: AppStyle.black,
-                                        letterSpacing: -14 * 0.02,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList();
-                          },
-                          onSelected: notifier.setSelectedPayment,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          color: AppStyle.white,
-                          elevation: 10,
-                          child: SelectFromButton(
-                            title: AppHelpers.getTranslation(
-                                state.selectedPayment?.tag ??
-                                    TrKeys.selectPayment),
-                          ),
-                        ),
-                        Visibility(
-                          visible: state.selectPaymentError != null,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 6.r, left: 4.r),
-                            child: Text(
-                              AppHelpers.getTranslation(
-                                  state.selectPaymentError ?? ""),
-                              style: GoogleFonts.inter(
-                                  color: AppStyle.red, fontSize: 14.sp),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              // 16.verticalSpace,
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           if (state.orderType == TrKeys.delivery)
+              //             Column(
+              //               children: [
+              //                 Container(
+              //                   decoration: BoxDecoration(
+              //                     borderRadius: BorderRadius.circular(12.r),
+              //                     border: Border.all(
+              //                       color: AppStyle.unselectedBottomBarBack,
+              //                       width: 1.r,
+              //                     ),
+              //                   ),
+              //                   alignment: Alignment.center,
+              //                   height: 56.r,
+              //                   padding: EdgeInsets.only(left: 16.r),
+              //                   child: CustomDropdown(
+              //                     hintText: AppHelpers.getTranslation(
+              //                         TrKeys.selectUser),
+              //                     searchHintText: AppHelpers.getTranslation(
+              //                         TrKeys.searchUser),
+              //                     dropDownType: DropDownType.users,
+              //                     onChanged: (value) =>
+              //                         notifier.setUsersQuery(context, value),
+              //                     initialValue:
+              //                         bag.selectedUser?.firstname ?? '',
+              //                   ),
+              //                 ),
+              //                 Visibility(
+              //                   visible: state.selectUserError != null,
+              //                   child: Padding(
+              //                     padding: EdgeInsets.only(top: 6.r, left: 4.r),
+              //                     child: Text(
+              //                       AppHelpers.getTranslation(
+              //                           state.selectUserError ?? ""),
+              //                       style: GoogleFonts.inter(
+              //                           color: AppStyle.red, fontSize: 14.sp),
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 24.verticalSpace,
+              //               ],
+              //             ),
+              //           if (state.orderType == TrKeys.dine)
+              //             Column(
+              //               crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 Container(
+              //                   decoration: BoxDecoration(
+              //                     borderRadius: BorderRadius.circular(12.r),
+              //                     border: Border.all(
+              //                       color: AppStyle.unselectedBottomBarBack,
+              //                       width: 1.r,
+              //                     ),
+              //                   ),
+              //                   alignment: Alignment.center,
+              //                   height: 56.r,
+              //                   padding: EdgeInsets.only(left: 16.r),
+              //                   child: CustomDropdown(
+              //                     hintText: AppHelpers.getTranslation(
+              //                         TrKeys.selectSection),
+              //                     searchHintText:
+              //                         AppHelpers.getTranslation(TrKeys.search),
+              //                     dropDownType: DropDownType.section,
+              //                     onChanged: (value) =>
+              //                         notifier.setSectionQuery(context, value),
+              //                     initialValue:
+              //                         bag.selectedSection?.translation?.title ??
+              //                             '',
+              //                   ),
+              //                 ),
+              //                 Visibility(
+              //                   visible: state.selectSectionError != null,
+              //                   child: Padding(
+              //                     padding: EdgeInsets.only(top: 6.r, left: 4.r),
+              //                     child: Text(
+              //                       AppHelpers.getTranslation(
+              //                           state.selectSectionError ?? ""),
+              //                       style: GoogleFonts.inter(
+              //                           color: AppStyle.red, fontSize: 14.sp),
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 24.verticalSpace,
+              //               ],
+              //             ),
+              //
+              //
+              //           ///here we had Currancy dropdown
+              //           PopupMenuButton<int>(
+              //             itemBuilder: (context) {
+              //               return state.currencies
+              //                   .map(
+              //                     (currency) => PopupMenuItem<int>(
+              //                       value: currency.id,
+              //                       child: Text(
+              //                         '${currency.title}(${currency.symbol})',
+              //                         style: GoogleFonts.inter(
+              //                           fontWeight: FontWeight.w500,
+              //                           fontSize: 14.sp,
+              //                           color: AppStyle.black,
+              //                           letterSpacing: -14 * 0.02,
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   )
+              //                   .toList();
+              //             },
+              //             onSelected: notifier.setSelectedCurrency,
+              //             shape: RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(10.r),
+              //             ),
+              //             color: AppStyle.white,
+              //             elevation: 10,
+              //             child: SelectFromButton(
+              //               title: state.selectedCurrency?.title ??
+              //                   AppHelpers.getTranslation(
+              //                       TrKeys.selectCurrency),
+              //             ),
+              //           ),
+              //
+              //
+              //           Visibility(
+              //             visible: state.selectCurrencyError != null,
+              //             child: Padding(
+              //               padding: EdgeInsets.only(top: 6.r, left: 4.r),
+              //               child: Text(
+              //                 AppHelpers.getTranslation(
+              //                     state.selectCurrencyError ?? ""),
+              //                 style: GoogleFonts.inter(
+              //                     color: AppStyle.red, fontSize: 14.sp),
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //     16.horizontalSpace,
+              //     Expanded(
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           if (state.orderType == TrKeys.delivery)
+              //             Column(
+              //               children: [
+              //                 PopupMenuButton(
+              //                   initialValue:
+              //                       state.selectedAddress?.address ?? "",
+              //                   itemBuilder: (context) {
+              //                     AppHelpers.showAlertDialog(
+              //                         context: context,
+              //                         child: SizedBox(
+              //                           child: SelectAddressPage(
+              //                             location:
+              //                                 state.selectedAddress?.location,
+              //                             onSelect: (address) {
+              //                               notifier.setSelectedAddress(
+              //                                   address: address);
+              //                               ref
+              //                                   .read(
+              //                                       rightSideProvider.notifier)
+              //                                   .fetchCarts(
+              //                                       checkYourNetwork: () {
+              //                                         AppHelpers.showSnackBar(
+              //                                           context,
+              //                                           AppHelpers.getTranslation(
+              //                                               TrKeys
+              //                                                   .checkYourNetworkConnection),
+              //                                         );
+              //                                       },
+              //                                       isNotLoading: true);
+              //                             },
+              //                           ),
+              //                         ));
+              //
+              //                     return [];
+              //                   },
+              //                   onSelected: (s) =>
+              //                       notifier.setSelectedAddress(),
+              //                   shape: RoundedRectangleBorder(
+              //                     borderRadius: BorderRadius.circular(10.r),
+              //                   ),
+              //                   color: AppStyle.white,
+              //                   elevation: 10,
+              //                   child: SelectFromButton(
+              //                     title: state.selectedAddress?.address ??
+              //                         AppHelpers.getTranslation(
+              //                             TrKeys.selectAddress),
+              //                   ),
+              //                 ),
+              //                 Visibility(
+              //                   visible: state.selectAddressError != null,
+              //                   child: Padding(
+              //                     padding: EdgeInsets.only(top: 6.r, left: 4.r),
+              //                     child: Text(
+              //                       AppHelpers.getTranslation(
+              //                           state.selectAddressError ?? ""),
+              //                       style: GoogleFonts.inter(
+              //                           color: AppStyle.red, fontSize: 14.sp),
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 24.verticalSpace,
+              //               ],
+              //             ),
+              //           if (state.orderType == TrKeys.dine)
+              //             Column(
+              //               crossAxisAlignment: CrossAxisAlignment.start,
+              //               children: [
+              //                 Container(
+              //                   decoration: BoxDecoration(
+              //                     borderRadius: BorderRadius.circular(12.r),
+              //                     border: Border.all(
+              //                       color: AppStyle.unselectedBottomBarBack,
+              //                       width: 1.r,
+              //                     ),
+              //                   ),
+              //                   alignment: Alignment.center,
+              //                   height: 56.r,
+              //                   padding: EdgeInsets.only(left: 16.r),
+              //                   child: CustomDropdown(
+              //                     hintText: AppHelpers.getTranslation(
+              //                         TrKeys.selectTable),
+              //                     searchHintText:
+              //                         AppHelpers.getTranslation(TrKeys.search),
+              //                     dropDownType: DropDownType.table,
+              //                     onChanged: (value) =>
+              //                         notifier.setTableQuery(context, value),
+              //                     initialValue: bag.selectedTable?.name ?? '',
+              //                   ),
+              //                 ),
+              //                 Visibility(
+              //                   visible: state.selectTableError != null,
+              //                   child: Padding(
+              //                     padding: EdgeInsets.only(top: 6.r, left: 4.r),
+              //                     child: Text(
+              //                       AppHelpers.getTranslation(
+              //                           state.selectTableError ?? ""),
+              //                       style: GoogleFonts.inter(
+              //                           color: AppStyle.red, fontSize: 14.sp),
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 24.verticalSpace,
+              //               ],
+              //             ),
+              //           PopupMenuButton<int>(
+              //             enabled: state.orderType == TrKeys.delivery,
+              //             itemBuilder: (context) {
+              //               return state.payments
+              //                   .map(
+              //                     (payment) => PopupMenuItem<int>(
+              //                       value: payment.id,
+              //                       child: Text(
+              //                         AppHelpers.getTranslation(
+              //                             payment.tag ?? ""),
+              //                         style: GoogleFonts.inter(
+              //                           fontWeight: FontWeight.w500,
+              //                           fontSize: 14.sp,
+              //                           color: AppStyle.black,
+              //                           letterSpacing: -14 * 0.02,
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   )
+              //                   .toList();
+              //             },
+              //             onSelected: notifier.setSelectedPayment,
+              //             shape: RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(10.r),
+              //             ),
+              //             color: AppStyle.white,
+              //             elevation: 10,
+              //             child: SelectFromButton(
+              //               title: AppHelpers.getTranslation(
+              //                   state.selectedPayment?.tag ??
+              //                       TrKeys.selectPayment),
+              //             ),
+              //           ),
+              //           Visibility(
+              //             visible: state.selectPaymentError != null,
+              //             child: Padding(
+              //               padding: EdgeInsets.only(top: 6.r, left: 4.r),
+              //               child: Text(
+              //                 AppHelpers.getTranslation(
+              //                     state.selectPaymentError ?? ""),
+              //                 style: GoogleFonts.inter(
+              //                     color: AppStyle.red, fontSize: 14.sp),
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
               16.verticalSpace,
               if (AppHelpers.isNumberRequiredToOrder() &&
                   state.selectedUser != null &&
@@ -589,9 +589,9 @@ class OrderInformation extends ConsumerWidget {
                           if (AppHelpers.isNumberRequiredToOrder() &&
                               state.selectedUser?.phone == null &&
                               state.selectedUser != null) {
-                            if (!(formKey.currentState?.validate() ?? false)) {
-                              return;
-                            }
+                            // if (!(formKey.currentState?.validate() ?? false)) {
+                            //   return;
+                            // }
                           }
                           notifier.placeOrder(
                             checkYourNetwork: () {
@@ -622,7 +622,7 @@ class OrderInformation extends ConsumerWidget {
                       ),
                       Text(
                         AppHelpers.numberFormat(
-                          state.paginateResponse?.totalPrice,
+                          (state.paginateResponse!.totalPrice! - state.paginateResponse!.serviceFee!),
                           symbol: bag.selectedCurrency?.symbol,
                         ),
                         style: GoogleFonts.inter(
@@ -659,11 +659,11 @@ class OrderInformation extends ConsumerWidget {
           price: state.paginateResponse?.totalTax,
           symbol: bag.selectedCurrency?.symbol,
         ),
-        _priceItem(
-          title: TrKeys.serviceFee,
-          price: state.paginateResponse?.serviceFee,
-          symbol: bag.selectedCurrency?.symbol,
-        ),
+        // _priceItem(
+        //   title: TrKeys.serviceFee,
+        //   price: state.paginateResponse?.serviceFee,
+        //   symbol: bag.selectedCurrency?.symbol,
+        // ),
         _priceItem(
           title: TrKeys.deliveryFee,
           price: state.paginateResponse?.deliveryFee,

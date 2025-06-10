@@ -79,7 +79,7 @@ class OrderCalculate extends ConsumerWidget {
                                 child: Container(
                                   height: 50,
                                   width: 170,
-                                  padding: EdgeInsets.all(20.r),
+                                  padding: EdgeInsets.only(left: 20.r, right: 20.r),
                                   decoration: BoxDecoration(
                                       border: Border.all(color: Get.find<PaymentCalculatorController>().isSelectCashBox.value ? Colors.red : AppStyle.differborder),
                                       borderRadius: BorderRadius.circular(8.r),
@@ -121,7 +121,7 @@ class OrderCalculate extends ConsumerWidget {
                               child: Container(
                                 height: 50,
                                 width: 170,
-                                padding: EdgeInsets.all(20.r),
+                                padding: EdgeInsets.only(left: 20.r, right: 20.r),
                                 decoration: BoxDecoration(
                                     border: Border.all(color:  Get.find<PaymentCalculatorController>().isSelectCashBox.value ? AppStyle.differborder : Colors.red),
                                     borderRadius: BorderRadius.circular(8.r)),

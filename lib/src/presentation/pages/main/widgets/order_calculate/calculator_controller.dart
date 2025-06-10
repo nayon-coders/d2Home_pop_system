@@ -22,6 +22,13 @@ class PaymentCalculatorController extends GetxController {
     updateCalculateFromBox(); // update box
   }
 
+  String formatToTwoDecimal(String value) {
+    double? number = double.tryParse(value);
+    if (number == null) return "0.00";
+    return number.toStringAsFixed(2);
+  }
+
+
 
   //selected payment method
   RxString selectedPaymentOption = "Cash".obs;
@@ -53,17 +60,17 @@ class PaymentCalculatorController extends GetxController {
     }
 
     if(selectedPaymentOption.value == "Cash" && isSelectCashBox.value){
-      cashAmountStr.value = calculate.value;
+      cashAmountStr.value = formatToTwoDecimal(calculate.value);
     }
     if(selectedPaymentOption.value == "Card" && isSelectCashBox.value == false){
-      cardAmountStr.value = calculate.value;
+      cardAmountStr.value = formatToTwoDecimal(calculate.value);
     }
 
     if(selectedPaymentOption.value == "Split" && isSelectCashBox.value){
-      cashAmountStr.value = calculate.value;
+      cashAmountStr.value = formatToTwoDecimal(calculate.value);
     }
     if(selectedPaymentOption.value == "Split" && isSelectCashBox.value == false){
-      cardAmountStr.value = calculate.value;
+      cardAmountStr.value = formatToTwoDecimal(calculate.value);
     }
 
   }

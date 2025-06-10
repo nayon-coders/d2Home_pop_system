@@ -156,7 +156,7 @@ class ProductsList extends ConsumerWidget {
       primary: false,
       itemCount: state.products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio: Get.find<MainController>().isShowImage.value ? (200 / 300) : (200 / 150),
+        childAspectRatio: Get.find<MainController>().isShowImage.value ? (200 / 230) : (200 / 150),
         mainAxisSpacing: 10.r,
         crossAxisSpacing: 10.r,
         crossAxisCount: 4,

@@ -36,7 +36,7 @@ class MainAppbar extends ConsumerWidget {
                       color: AppStyle.white,
                       borderRadius: BorderRadius.circular(10.r)
                     ),
-                    height: 160.h,
+                    height: 130.h,
                     child: ListView.builder( ///TODO: category view
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,

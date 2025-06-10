@@ -195,18 +195,21 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                                     ),
                                     8.verticalSpace,
                                     typedExtra.type == ExtrasType.text
-                                        ? TextExtras(
-                                            uiExtras: typedExtra.uiExtras,
-                                            groupIndex: typedExtra.groupIndex,
-                                            onUpdate: (s) {
-                                              notifier.updateSelectedIndexes(
-                                                index: typedExtra.groupIndex,
-                                                value: s.index,
-                                                bagIndex: rightSideState
-                                                    .selectedBagIndex,
-                                              );
-                                            },
-                                          )
+                                        ? SizedBox(
+                                      width: 200,
+                                          child: TextExtras(
+                                              uiExtras: typedExtra.uiExtras,
+                                              groupIndex: typedExtra.groupIndex,
+                                              onUpdate: (s) {
+                                                notifier.updateSelectedIndexes(
+                                                  index: typedExtra.groupIndex,
+                                                  value: s.index,
+                                                  bagIndex: rightSideState
+                                                      .selectedBagIndex,
+                                                );
+                                              },
+                                            ),
+                                        )
                                         : typedExtra.type == ExtrasType.color
                                             ? ColorExtras(
                                                 uiExtras: typedExtra.uiExtras,
@@ -236,7 +239,8 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                         ),
                         8.verticalSpace,
                         SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.6 - 370.w,
+                          //width: 200,
+                          width: MediaQuery.of(context).size.width / 2 - 370.w,
                           child: WIngredientScreen(
                             list: state.selectedStock?.addons ?? [],
                             onChange: (int value) {
@@ -269,10 +273,12 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      IconButton(
-                        onPressed: () => notifier.decreaseStockCount(
+                      InkWell(
+                        onTap: () => notifier.decreaseStockCount(
                             rightSideState.selectedBagIndex),
-                        icon: const Icon(FlutterRemix.subtract_line, size: 40,),
+                        child: Container(
+                            padding: EdgeInsets.all(15),
+                            child: Icon(FlutterRemix.subtract_line, size: 40,)),
                       ),
                       12.horizontalSpace,
                       Text(
@@ -285,10 +291,12 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                         ),
                       ),
                       12.horizontalSpace,
-                      IconButton(
-                        onPressed: () => notifier.increaseStockCount(
+                      InkWell(
+                        onTap: () => notifier.increaseStockCount(
                             rightSideState.selectedBagIndex),
-                        icon: const Icon(FlutterRemix.add_line,  size: 40),
+                        child: Container(
+                          padding: EdgeInsets.all(15),
+                            child: Icon(FlutterRemix.add_line,  size: 40)),
                       ),
                     ],
                   ),

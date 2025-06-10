@@ -29,21 +29,24 @@ class IngredientItem extends ConsumerWidget {
         onTap();
       },
       child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 10.r),
+        width: 200,
+        margin: EdgeInsets.symmetric(vertical: 7.r),
+        padding: EdgeInsets.only(top: 7, bottom: 7, left: 15, right: 15),
+
         decoration: BoxDecoration(
-            color: AppStyle.white,
+            border: Border.all(width: 1, color: AppStyle.primary),
+            color: addon.active == true  ? AppStyle.primary : AppStyle.white,
             borderRadius: BorderRadius.all(Radius.circular(10.r))),
         child: Column(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomCheckbox(
-                  isActive: addon.active ?? false,
-                  onTap: onTap,
-                ),
-                10.horizontalSpace,
+                // CustomCheckbox(
+                //   isActive: addon.active ?? false,
+                //   onTap: onTap,
+                // ),
+                // 10.horizontalSpace,
                 (addon.active ?? false)
                     ? Row(
                   children: [

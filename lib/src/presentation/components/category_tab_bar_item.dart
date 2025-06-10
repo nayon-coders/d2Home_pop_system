@@ -26,11 +26,11 @@ class CategoryTabBarItem extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
 
-          width: 150.r,
-          height: 110.r,
+          width: 110.r,
+          height: 80.r,
 
           decoration: BoxDecoration(
-            color: isActive ? Colors.grey.shade100 : AppStyle.white,
+            color: isActive ? AppStyle.primary.withOpacity(0.2) : AppStyle.white,
             borderRadius: BorderRadius.circular(5.r),
             boxShadow: [
               BoxShadow(
@@ -47,7 +47,7 @@ class CategoryTabBarItem extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 80.r,
+                height: 70.r,
                 child: ClipRRect(
                   borderRadius: BorderRadiusDirectional.circular(10),
                     child: Image.network(image ?? "https://cdn-icons-png.freepik.com/256/12130/12130914.png?semt=ais_hybrid", fit: BoxFit.cover
@@ -57,7 +57,7 @@ class CategoryTabBarItem extends StatelessWidget {
               Text(
                 '$title',
                 textAlign: TextAlign.center,
-                maxLines: 2,
+                maxLines: 1,
                 style: GoogleFonts.inter(
                   fontSize: 12.sp,
                   color: AppStyle.black,

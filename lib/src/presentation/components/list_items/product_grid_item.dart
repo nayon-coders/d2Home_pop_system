@@ -39,7 +39,7 @@ class ProductGridItem extends StatelessWidget {
           ),
           constraints: BoxConstraints(
             maxWidth: 227.r,
-            maxHeight: Get.find<MainController>().isShowImage.value ? 246.r : 150.r,
+            maxHeight: Get.find<MainController>().isShowImage.value ? 200.r : 150.r,
           ),
 
           child: Stack(
@@ -95,7 +95,7 @@ class ProductGridItem extends StatelessWidget {
                                         (product.stocks?.first.totalPrice ?? 0)),
                                 style: GoogleFonts.inter(
                                   decoration: TextDecoration.lineThrough,
-                                  fontSize: 16.sp,
+                                  fontSize: 25.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppStyle.discountText,
                                   letterSpacing: -14 * 0.02,
@@ -109,7 +109,7 @@ class ProductGridItem extends StatelessWidget {
                               ? 0
                               : (product.stocks?.first.totalPrice ?? 0)),
                           style: GoogleFonts.inter(
-                            fontSize: 16.sp,
+                            fontSize: 25.sp,
                             fontWeight: FontWeight.w600,
                             color: AppStyle.black,
                             letterSpacing: -14 * 0.02,
