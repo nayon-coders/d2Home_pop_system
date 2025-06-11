@@ -278,8 +278,9 @@ class PriceInfo extends StatelessWidget {
                             : (TimeOfDay.now().hour.toString().length == 2
                                 ? "${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"
                                 : "0${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"),
-                        currencyId: state.selectedCurrency?.id,
-                        rate: state.selectedCurrency?.rate,
+                        currencyId: 2, //we make it static
+                       // currencyId: state.selectedCurrency?.id,
+                        rate: state.selectedCurrency?.rate ?? 0,
                         tableId: state.selectedTable?.id,
                       ), onSuccess: () {
                     ref

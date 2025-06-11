@@ -163,79 +163,76 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                             color: AppStyle.black.withOpacity(0.2),
                           ),
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.6 - 370.w,
-                          child: ListView.builder(
-                            physics: const CustomBouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: state.typedExtras.length,
-                            padding: EdgeInsets.zero,
-                            itemBuilder: (context, index) {
-                              final TypedExtra typedExtra =
-                                  state.typedExtras[index];
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  color: AppStyle.white,
-                                ),
-                                padding: REdgeInsets.symmetric(vertical: 6),
-                                margin: REdgeInsets.only(bottom: 6),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      typedExtra.title,
-                                      style: GoogleFonts.inter(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppStyle.black,
-                                        letterSpacing: -0.4,
-                                      ),
+                        ListView.builder(
+                          physics: const CustomBouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: state.typedExtras.length,
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (context, index) {
+                            final TypedExtra typedExtra =
+                            state.typedExtras[index];
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.r),
+                                color: AppStyle.white,
+                              ),
+                              padding: REdgeInsets.symmetric(vertical: 6),
+                              margin: REdgeInsets.only(bottom: 6),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    typedExtra.title,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppStyle.black,
+                                      letterSpacing: -0.4,
                                     ),
-                                    8.verticalSpace,
-                                    typedExtra.type == ExtrasType.text
-                                        ? SizedBox(
-                                      width: 200,
-                                          child: TextExtras(
-                                              uiExtras: typedExtra.uiExtras,
-                                              groupIndex: typedExtra.groupIndex,
-                                              onUpdate: (s) {
-                                                notifier.updateSelectedIndexes(
-                                                  index: typedExtra.groupIndex,
-                                                  value: s.index,
-                                                  bagIndex: rightSideState
-                                                      .selectedBagIndex,
-                                                );
-                                              },
-                                            ),
-                                        )
-                                        : typedExtra.type == ExtrasType.color
-                                            ? ColorExtras(
-                                                uiExtras: typedExtra.uiExtras,
-                                                groupIndex: typedExtra.groupIndex,
-                                              )
-                                            : typedExtra.type == ExtrasType.image
-                                                ? ImageExtras(
-                                                    uiExtras: typedExtra.uiExtras,
-                                                    groupIndex:
-                                                        typedExtra.groupIndex,
-                                                  )
-                                                : const SizedBox(),
-                                    8.verticalSpace,
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width /
-                                              1.6 -
-                                          370.w,
-                                      child: Divider(
-                                        color: AppStyle.black.withOpacity(0.2),
-                                      ),
+                                  ),
+                                  8.verticalSpace,
+                                  typedExtra.type == ExtrasType.text
+                                      ? SizedBox(
+                                    width: MediaQuery.of(context).size.width / 1.6 - 370.w,
+                                    child: TextExtras(
+                                      uiExtras: typedExtra.uiExtras,
+                                      groupIndex: typedExtra.groupIndex,
+                                      onUpdate: (s) {
+                                        notifier.updateSelectedIndexes(
+                                          index: typedExtra.groupIndex,
+                                          value: s.index,
+                                          bagIndex: rightSideState
+                                              .selectedBagIndex,
+                                        );
+                                      },
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
+                                  )
+                                      : typedExtra.type == ExtrasType.color
+                                      ? ColorExtras(
+                                    uiExtras: typedExtra.uiExtras,
+                                    groupIndex: typedExtra.groupIndex,
+                                  )
+                                      : typedExtra.type == ExtrasType.image
+                                      ? ImageExtras(
+                                    uiExtras: typedExtra.uiExtras,
+                                    groupIndex:
+                                    typedExtra.groupIndex,
+                                  )
+                                      : const SizedBox(),
+                                  8.verticalSpace,
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width /
+                                        1.6 -
+                                        370.w,
+                                    child: Divider(
+                                      color: AppStyle.black.withOpacity(0.2),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                         8.verticalSpace,
                         SizedBox(
@@ -263,9 +260,9 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Container(
-                  width:250.r,
+                  width:200.r,
                   height: 80.r,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 2),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6.r),
                       border: Border.all(color: AppStyle.icon)),
@@ -280,7 +277,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                             padding: EdgeInsets.all(15),
                             child: Icon(FlutterRemix.subtract_line, size: 40,)),
                       ),
-                      12.horizontalSpace,
+                      2.horizontalSpace,
                       Text(
                         '${state.stockCount}',
                         style: GoogleFonts.inter(
@@ -290,7 +287,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                           letterSpacing: -0.4,
                         ),
                       ),
-                      12.horizontalSpace,
+                      2.horizontalSpace,
                       InkWell(
                         onTap: () => notifier.increaseStockCount(
                             rightSideState.selectedBagIndex),
@@ -308,7 +305,8 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
               Row(
                 children: [
                   SizedBox(
-                    width: 120.w,
+                    width: 160.w,
+                    height: 80.h,
                     child: LoginButton(
                       isLoading: state.isLoading,
                       title: AppHelpers.getTranslation(TrKeys.add),

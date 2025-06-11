@@ -11,6 +11,7 @@ class LoginButton extends StatelessWidget {
   final bool isActive;
   final Color bgColor;
   final Color titleColor;
+
   final Function()? onPressed;
 
   const LoginButton({

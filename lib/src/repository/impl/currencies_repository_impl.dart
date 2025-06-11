@@ -12,6 +12,7 @@ class CurrenciesRepositoryImpl extends CurrenciesRepository {
     try {
       final client = dioHttp.client(requireAuth: false);
       final response = await client.get('/api/v1/rest/currencies');
+      print("response.data --- ${response.data}");
       return ApiResult.success(
         data: CurrenciesResponse.fromJson(response.data),
       );
