@@ -257,56 +257,96 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                 ],
               ),
               24.verticalSpace,
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  width:200.r,
-                  height: 80.r,
-                  padding: EdgeInsets.symmetric(horizontal: 2),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6.r),
-                      border: Border.all(color: AppStyle.icon)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () => notifier.decreaseStockCount(
-                            rightSideState.selectedBagIndex),
-                        child: Container(
-                            padding: EdgeInsets.all(15),
-                            child: Icon(FlutterRemix.subtract_line, size: 40,)),
-                      ),
-                      2.horizontalSpace,
-                      Text(
-                        '${state.stockCount}',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18.sp,
-                          color: AppStyle.black,
-                          letterSpacing: -0.4,
-                        ),
-                      ),
-                      2.horizontalSpace,
-                      InkWell(
-                        onTap: () => notifier.increaseStockCount(
-                            rightSideState.selectedBagIndex),
-                        child: Container(
-                          padding: EdgeInsets.all(15),
-                            child: Icon(FlutterRemix.add_line,  size: 40)),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              10.verticalSpace,
+              // Align(
+              //   alignment: Alignment.topLeft,
+              //   child: Container(
+              //     width:200.r,
+              //     height: 80.r,
+              //     padding: EdgeInsets.symmetric(horizontal: 2),
+              //     decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(6.r),
+              //         border: Border.all(color: AppStyle.icon)),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: [
+              //         InkWell(
+              //           onTap: () => notifier.decreaseStockCount(
+              //               rightSideState.selectedBagIndex),
+              //           child: Container(
+              //               padding: EdgeInsets.all(15),
+              //               child: Icon(FlutterRemix.subtract_line, size: 40,)),
+              //         ),
+              //         2.horizontalSpace,
+              //         Text(
+              //           '${state.stockCount}',
+              //           style: GoogleFonts.inter(
+              //             fontWeight: FontWeight.w700,
+              //             fontSize: 18.sp,
+              //             color: AppStyle.black,
+              //             letterSpacing: -0.4,
+              //           ),
+              //         ),
+              //         2.horizontalSpace,
+              //         InkWell(
+              //           onTap: () => notifier.increaseStockCount(
+              //               rightSideState.selectedBagIndex),
+              //           child: Container(
+              //             padding: EdgeInsets.all(15),
+              //               child: Icon(FlutterRemix.add_line,  size: 40)),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // 10.verticalSpace,
               const Divider(),
               10.verticalSpace,
               Row(
                 children: [
+                  Container(
+                    width:200.r,
+                    height: 100.r,
+                    padding: EdgeInsets.symmetric(horizontal: 2),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.r),
+                        border: Border.all(color: AppStyle.icon)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () => notifier.decreaseStockCount(
+                              rightSideState.selectedBagIndex),
+                          child: Container(
+                              padding: EdgeInsets.all(15),
+                              child: Icon(FlutterRemix.subtract_line, size: 40,)),
+                        ),
+                        2.horizontalSpace,
+                        Text(
+                          '${state.stockCount}',
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18.sp,
+                            color: AppStyle.black,
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                        2.horizontalSpace,
+                        InkWell(
+                          onTap: () => notifier.increaseStockCount(
+                              rightSideState.selectedBagIndex),
+                          child: Container(
+                              padding: EdgeInsets.all(15),
+                              child: Icon(FlutterRemix.add_line,  size: 40)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 30,),
                   SizedBox(
-                    width: 160.w,
-                    height: 80.h,
+                    width: 200.w,
+                    height: 100.h,
                     child: LoginButton(
                       isLoading: state.isLoading,
                       title: AppHelpers.getTranslation(TrKeys.add),
@@ -345,7 +385,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                                   lineThroughPrice,
                                   style: GoogleFonts.inter(
                                     decoration: TextDecoration.lineThrough,
-                                    fontSize: 32.sp,
+                                    fontSize: 38.sp,
                                     fontWeight: FontWeight.w600,
                                     color: AppStyle.discountText,
                                     letterSpacing: -14 * 0.02,
@@ -357,7 +397,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                           Text(
                             price,
                             style: GoogleFonts.inter(
-                              fontSize: 32.sp,
+                              fontSize: 38.sp,
                               fontWeight: FontWeight.w600,
                               color: AppStyle.black,
                               letterSpacing: -14 * 0.02,
