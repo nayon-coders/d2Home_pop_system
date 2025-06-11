@@ -88,7 +88,7 @@ class OrderCalculate extends ConsumerWidget {
                                     alignment: Alignment.centerRight,
                                     child: Obx((){
                                         return Text(
-                                          Get.find<PaymentCalculatorController>().cashAmountStr.value.toString(),
+                                          "${Get.find<PaymentCalculatorController>().cashAmountStr.value.toString().isEmpty ? "0.00" : double.parse("${Get.find<PaymentCalculatorController>().cashAmountStr.value.toString()}").toStringAsFixed(2)}",
                                           style: GoogleFonts.inter(
                                               fontWeight: FontWeight.w600, fontSize: 24.sp),
                                           maxLines: 1,
@@ -129,7 +129,7 @@ class OrderCalculate extends ConsumerWidget {
                                   alignment: Alignment.centerRight,
                                   child: Obx((){
                                       return Text(
-                                         Get.find<PaymentCalculatorController>().cardAmountStr.value,
+                                        "${Get.find<PaymentCalculatorController>().cardAmountStr.value.toString().isEmpty? "0.00" : double.parse("${Get.find<PaymentCalculatorController>().cardAmountStr.value.toString()}").toStringAsFixed(2)}",
                                         style: GoogleFonts.inter(
                                             fontWeight: FontWeight.w600, fontSize: 24.sp),
                                         maxLines: 1,
@@ -206,7 +206,7 @@ class OrderCalculate extends ConsumerWidget {
             const Spacer(),
             GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: 12,
+                itemCount: 12, //aaa
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
@@ -223,7 +223,8 @@ class OrderCalculate extends ConsumerWidget {
                           ? "0"
                           : index == 11
                           ? "-1"
-                          : (index + 1).toString(), 50);
+                          : (index + 1).toString(), double.tryParse("${totalPrice}")!);
+
                       Get.find<PaymentCalculatorController>().calculateBalance(double.tryParse("${totalPrice}")!); // Call after setting cash/card amount
 
                     },
@@ -259,6 +260,7 @@ class OrderCalculate extends ConsumerWidget {
                   child: InkWell(
                     onTap: () {
                       rightSideNotifier.setCalculate(".");
+                      Get.find<PaymentCalculatorController>().setCalculate(".", totalPrice);
                     },
                     child: AnimationButtonEffect(
                       child: Container(

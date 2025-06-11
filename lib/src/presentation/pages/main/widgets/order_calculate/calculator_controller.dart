@@ -28,6 +28,43 @@ class PaymentCalculatorController extends GetxController {
     return number.toStringAsFixed(2);
   }
 
+  /// Called when a number button is tapped
+  void setCalculate(String value, totalAmount) {
+
+    if (value == "-1") {
+      if (calculate.value.isNotEmpty) {
+        calculate.value = calculate.value.substring(0, calculate.value.length - 1);
+      }
+      if(calculate.value.isEmpty){
+        cardAmountStr.value = "0.00";
+        cashAmountStr.value = "0.00";
+        return;
+      }
+    } else {
+      if (value == "." && calculate.value.contains(".")) return;
+      if (value == "." && calculate.value.isEmpty) {
+        calculate.value = "0.";
+      } else {
+        calculate.value += value;
+      }
+    }
+
+    // Live update (no formatting here)
+    if (selectedPaymentOption.value == "Cash" && isSelectCashBox.value) {
+      cashAmountStr.value = calculate.value;
+    }
+    if (selectedPaymentOption.value == "Card" && !isSelectCashBox.value) {
+      cardAmountStr.value = calculate.value;
+    }
+    if (selectedPaymentOption.value == "Split" && isSelectCashBox.value) {
+      cashAmountStr.value = calculate.value;
+      cardAmountStr.value = (totalAmount - double.parse("${cashAmountStr.value}") ).toString();
+    }
+    if (selectedPaymentOption.value == "Split" && !isSelectCashBox.value) {
+      cardAmountStr.value = calculate.value;
+      cashAmountStr.value = (totalAmount - double.parse("${cardAmountStr.value}") ).toString();
+    }
+  }
 
 
   //selected payment method
@@ -48,32 +85,7 @@ class PaymentCalculatorController extends GetxController {
     }
   }
 
-  /// Called when a number button is tapped
-  void setCalculate(String value, totalAmount) {
-    print("selectedPayment.value -- ${selectedPayment.value}");
-    if (value == "-1") {
-      if (calculate.value.isNotEmpty) {
-        calculate.value = calculate.value.substring(0, calculate.value.length - 1);
-      }
-    } else {
-      calculate.value += value;
-    }
 
-    if(selectedPaymentOption.value == "Cash" && isSelectCashBox.value){
-      cashAmountStr.value = formatToTwoDecimal(calculate.value);
-    }
-    if(selectedPaymentOption.value == "Card" && isSelectCashBox.value == false){
-      cardAmountStr.value = formatToTwoDecimal(calculate.value);
-    }
-
-    if(selectedPaymentOption.value == "Split" && isSelectCashBox.value){
-      cashAmountStr.value = formatToTwoDecimal(calculate.value);
-    }
-    if(selectedPaymentOption.value == "Split" && isSelectCashBox.value == false){
-      cardAmountStr.value = formatToTwoDecimal(calculate.value);
-    }
-
-  }
 
   void updateCalculateFromBox() {
     if (selectedPaymentOption.value == "Split") {

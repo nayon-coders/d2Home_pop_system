@@ -37,10 +37,16 @@ class RightSideNotifier extends StateNotifier<RightSideState> {
       return;
     } else if (state.calculate.length > 25) {
       return;
-    } else if (item == "." && state.calculate.isEmpty) {
-      state = state.copyWith(calculate: "${state.calculate}0$item");
+    } else if (item == ".") {
+      if (state.calculate.isEmpty) {
+        state = state.copyWith(calculate: "0.");
+      } else if (state.calculate.contains(".")) {
+        return;
+      } else {
+        state = state.copyWith(calculate: state.calculate + item);
+      }
       return;
-    } else if (item == "." && state.calculate.contains(".")) {
+    }else if (item == "." && state.calculate.contains(".")) {
       return;
     } else if (item != "-1") {
       state = state.copyWith(calculate: state.calculate + item);
