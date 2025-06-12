@@ -99,7 +99,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                   const SizedBox.shrink(),
                   const Spacer(),
                   CircleIconButton(
-                    size: 60,
+                    size: 90,
                     backgroundColor: AppStyle.transparent,
                     iconData: FlutterRemix.close_circle_line,
                     icon: AppStyle.black,
@@ -409,6 +409,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                   ),
                 ],
               ),
+              20.verticalSpace,
               20.verticalSpace,
             ],
           ),
