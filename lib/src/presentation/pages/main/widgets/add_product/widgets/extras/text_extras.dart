@@ -50,7 +50,7 @@ class TextExtras extends StatelessWidget {
               "${uiExtras[index].value}",
               style: TextStyle(
                 color: uiExtras[index].isSelected ? Colors.white : Colors.black,
-                fontSize: 18,
+                fontSize: 15,
                 fontWeight: FontWeight.w400,
               ),
             ),

@@ -25,92 +25,85 @@ class IngredientItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () {
-        onTap();
-      },
+      onTap: onTap,
       child: Container(
-        width: 200,
-        margin: EdgeInsets.symmetric(vertical: 7.r),
-        padding: EdgeInsets.only(top: 7, bottom: 7, left: 15, right: 15),
-
+        padding: EdgeInsets.all(10.r),
         decoration: BoxDecoration(
-            border: Border.all(width: 1, color: AppStyle.primary),
-            color: addon.active == true  ? AppStyle.primary : AppStyle.white,
-            borderRadius: BorderRadius.all(Radius.circular(10.r))),
+          border: Border.all(width: 1, color: AppStyle.primary),
+          color: addon.active == true ? AppStyle.primary.withOpacity(0.1) : AppStyle.white,
+          borderRadius: BorderRadius.circular(10.r),
+        ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            /// Quantity Controls (if active)
+            if (addon.active ?? false)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: remove,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppStyle.removeButtonColor,
+                      ),
+                      child: Icon(
+                        Icons.remove,
+                        size: 16,
+                        color: (addon.quantity ?? 1) == 1
+                            ? AppStyle.outlineButtonBorder
+                            : AppStyle.black,
+                      ),
+                    ),
+                  ),
+                  6.horizontalSpace,
+                  Text(
+                    "${addon.quantity ?? 1}",
+                    style: GoogleFonts.inter(fontSize: 14.sp),
+                  ),
+                  6.horizontalSpace,
+                  InkWell(
+                    onTap: add,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppStyle.addButtonColor,
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        size: 16,
+                        color: AppStyle.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            if (addon.active ?? false) 8.verticalSpace,
+
+            /// Title + Price
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // CustomCheckbox(
-                //   isActive: addon.active ?? false,
-                //   onTap: onTap,
-                // ),
-                // 10.horizontalSpace,
-                (addon.active ?? false)
-                    ? Row(
-                  children: [
-                    InkWell(
-                      onTap: remove,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppStyle.removeButtonColor
-                        ),
-                        child: Icon(
-                          Icons.remove,
-                          color: (addon.quantity ?? 1) == 1
-                              ? AppStyle.outlineButtonBorder
-                              : AppStyle.black,
-                        ),
-                      ),
+                Flexible(
+                  child: Text(
+                    addon.product?.translation?.title ?? "",
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.inter(
+                      fontSize: 13.sp,
+                      color: AppStyle.black,
+                      fontWeight: FontWeight.w500,
                     ),
-                    8.horizontalSpace,
-                    Text(
-                      "${addon.quantity ?? 1}",
-                      style: GoogleFonts.inter(
-                        fontSize: 16.sp,
-                      ),
-                    ),
-                    8.horizontalSpace,
-                    InkWell(
-                      onTap: add,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppStyle.addButtonColor
-                        ),
-                        child: const Icon(
-                          Icons.add,
-                          color: AppStyle.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-                    : const SizedBox.shrink(),
-                16.horizontalSpace,
-                Expanded(
-                  child: Row(
-                    children: [
-                      Text(
-                        addon.product?.translation?.title ?? "",
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: AppStyle.black,
-                        ),
-                      ),
-                      4.horizontalSpace,
-                      Text(
-                        "+${AppHelpers.numberFormat(
-                            addon.product?.stock?.totalPrice ?? 0,
-                        )}",
-                        style:  GoogleFonts.inter(
-                          fontSize: 14,
-                          color: AppStyle.hint,
-                        ),
-                      )
-                    ],
+                  ),
+                ),
+                4.horizontalSpace,
+                Text(
+                  "+${AppHelpers.numberFormat(addon.product?.stock?.totalPrice ?? 0)}",
+                  style: GoogleFonts.inter(
+                    fontSize: 13.sp,
+                    color: AppStyle.hint,
                   ),
                 ),
               ],

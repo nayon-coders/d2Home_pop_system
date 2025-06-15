@@ -119,23 +119,22 @@ class WIngredientScreen extends StatelessWidget {
                 ),
               ),
               16.verticalSpace,
-              ListView.builder(
+              GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: list.length,
-                padding: EdgeInsets.zero,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 12.r,
+                  mainAxisSpacing: 12.r,
+                  childAspectRatio: 1,// adjust as per design
+                ),
                 itemBuilder: (context, index) {
                   return IngredientItem(
-                    onTap: () {
-                      onChange(index);
-                    },
+                    onTap: () => onChange(index),
                     addon: list[index],
-                    add: () {
-                      add(index);
-                    },
-                    remove: () {
-                      remove(index);
-                    },
+                    add: () => add(index),
+                    remove: () => remove(index),
                   );
                 },
               ),
