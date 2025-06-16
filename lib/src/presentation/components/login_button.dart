@@ -55,7 +55,7 @@ class LoginButton extends StatelessWidget {
                 : Text(
                     title,
                     style: GoogleFonts.inter(
-                      fontSize: 16.sp,
+                      fontSize: 25.sp,
                       color: isActive ? titleColor : AppStyle.black,
                       fontWeight: FontWeight.w400,
                     ),
