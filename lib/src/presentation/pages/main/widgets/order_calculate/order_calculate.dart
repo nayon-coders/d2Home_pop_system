@@ -13,13 +13,18 @@ import 'package:admin_desktop/src/presentation/pages/main/widgets/right_side/riv
 import 'package:admin_desktop/src/presentation/pages/main/widgets/right_side/riverpod/right_side_state.dart';
 import 'package:admin_desktop/src/presentation/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as intl;
+
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../models/data/order_body_data.dart';
+import '../orders_table/orders/accepted/accepted_orders_provider.dart';
+import '../orders_table/orders/new/new_orders_provider.dart';
 import '../right_side/riverpod/right_side_provider.dart';
-
+import 'package:flutter/material.dart';
 
 ///TODO: Order checkout pages (NayonCoders)
 class OrderCalculate extends ConsumerWidget {
@@ -315,166 +320,272 @@ class OrderCalculate extends ConsumerWidget {
       RightSideState stateRight) {
 
     return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.find<PaymentCalculatorController>().clearAll();
-                    notifier.setPriceDate(null);
-
-                  },
-                  child: Row(
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                left: 16.r,
+                right: 16.r,
+                bottom: 80.r,  // Enough padding to avoid content under button
+                top: 0,
+              ),
+              child: Column(
+                children: [
+                  Row(
                     children: [
-                      Icon(
-                        FlutterRemix.arrow_left_s_line,
-                        size: 32.r,
-                      ),
-                      Text(
-                        AppHelpers.getTranslation(TrKeys.back),
-                        style: GoogleFonts.inter(
-                          fontSize: 16.sp,
+                      InkWell(
+                        onTap: () {
+                          Get.find<PaymentCalculatorController>().clearAll();
+                          notifier.setPriceDate(null);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              FlutterRemix.arrow_left_s_line,
+                              size: 32.r,
+                            ),
+                            SizedBox(width: 8.r),
+                            Text(
+                              AppHelpers.getTranslation(TrKeys.back),
+                              style: GoogleFonts.inter(
+                                fontSize: 16.sp,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      Spacer(),
+                      InkWell(
+                        onTap: () {
+                          rightSideNotifier.fetchCarts();
+                        },
+                        child: AnimationButtonEffect(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppStyle.white,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            padding: EdgeInsets.all(8.r),
+                            child: const Icon(FlutterRemix.restart_line),
+                          ),
+                        ),
+                      )
                     ],
                   ),
-                ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {
-                    rightSideNotifier.fetchCarts();
-                  },
-                  child: AnimationButtonEffect(
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: AppStyle.white,
-                            borderRadius: BorderRadius.circular(10.r)),
-                        padding: EdgeInsets.all(8.r),
-                        child: const Icon(FlutterRemix.restart_line)),
+                  16.verticalSpace,
+
+                  SizedBox(
+                    height: 40,
+                    child: PaymentSelector(),
                   ),
-                )
-              ],
-            ),
-            16.verticalSpace,
-            //show the payment options
-           SizedBox(
-             height: 40,
-             child: PaymentSelector(),
-           ),
-            16.verticalSpace,
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 20.r, horizontal: 16.r),
-              decoration: BoxDecoration(
-                  color: AppStyle.white,
-                  borderRadius: BorderRadius.circular(10.r)),
-              child: ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: [
-                  Text(
-                    AppHelpers.getTranslation(TrKeys.order),
-                    style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w600, fontSize: 22.sp),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "${stateRight.bags[stateRight.selectedBagIndex].selectedUser?.firstname ?? ""} ${stateRight.bags[stateRight.selectedBagIndex].selectedUser?.lastname ?? ""}",
-                        style: GoogleFonts.inter(
-                            fontSize: 16.sp, color: AppStyle.icon),
-                      ),
-                      Text(
-                        stateRight.orderType,
-                        style: GoogleFonts.inter(
-                            fontSize: 16.sp, color: AppStyle.icon),
-                      ),
-                    ],
-                  ),
-                  8.verticalSpace,
-                  const Divider(),
-                  8.verticalSpace,
-                  Text(
-                    AppHelpers.getTranslation(TrKeys.totalItem),
-                    style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w600, fontSize: 18.sp),
-                  ),
-                  ListView.builder(
-                      padding: EdgeInsets.only(top: 16.r),
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount:
+                  16.verticalSpace,
+
+                  // Wrap the white background container here
+                  Container(
+                    width: double.infinity,
+                    height:  Get.width - 200,
+                    padding: EdgeInsets.symmetric(vertical: 20.r, horizontal: 16.r),
+                    decoration: BoxDecoration(
+                      color: AppStyle.white,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppHelpers.getTranslation(TrKeys.order),
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22.sp,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "${stateRight.bags[stateRight.selectedBagIndex].selectedUser?.firstname ?? ""} ${stateRight.bags[stateRight.selectedBagIndex].selectedUser?.lastname ?? ""}",
+                              style: GoogleFonts.inter(
+                                fontSize: 16.sp,
+                                color: AppStyle.icon,
+                              ),
+                            ),
+                            Text(
+                              stateRight.orderType,
+                              style: GoogleFonts.inter(
+                                fontSize: 16.sp,
+                                color: AppStyle.icon,
+                              ),
+                            ),
+                          ],
+                        ),
+                        8.verticalSpace,
+                        Divider(),
+                        8.verticalSpace,
+                        Text(
+                          AppHelpers.getTranslation(TrKeys.totalItem),
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18.sp,
+                          ),
+                        ),
+                        ListView.builder(
+                          padding: EdgeInsets.only(top: 16.r),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount:
                           stateRight.paginateResponse?.stocks?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 16.r),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Column(
+                          itemBuilder: (context, index) {
+                            final stock =
+                            stateRight.paginateResponse?.stocks?[index];
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: 16.r),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    stateRight
-                                            .paginateResponse
-                                            ?.stocks?[index]
-                                            .stock
-                                            ?.product
-                                            ?.translation
-                                            ?.title ??
-                                        "",
-                                    style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16.sp,
-                                        color: AppStyle.black),
-                                  ),
-                                  for (Addons e in (stateRight.paginateResponse
-                                          ?.stocks?[index].addons ??
-                                      []))
-                                    Text(
-                                      "${e.product?.translation?.title ?? ""} ( ${AppHelpers.numberFormat(
-                                        (e.price ?? 0) / (e.quantity ?? 1),
-                                      )} x ${(e.quantity ?? 1)} )",
-                                      style: GoogleFonts.inter(
-                                        fontSize: 15.sp,
-                                        color: AppStyle.unselectedTab,
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        stock?.stock?.product?.translation?.title ?? "",
+                                        style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16.sp,
+                                          color: AppStyle.black,
+                                        ),
                                       ),
+                                      for (Addons e in (stock?.addons ?? []))
+                                        Text(
+                                          "${e.product?.translation?.title ?? ""} ( ${AppHelpers.numberFormat((e.price ?? 0) / (e.quantity ?? 1))} x ${(e.quantity ?? 1)} )",
+                                          style: GoogleFonts.inter(
+                                            fontSize: 15.sp,
+                                            color: AppStyle.unselectedTab,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                  Text(
+                                    AppHelpers.numberFormat(stock?.totalPrice ?? 0),
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14.sp,
+                                      color: AppStyle.black,
                                     ),
+                                  ),
                                 ],
                               ),
-                              Text(
-                                AppHelpers.numberFormat(
-                                    stateRight.paginateResponse
-                                        ?.stocks?[index].totalPrice ??
-                                        0,
-                                ),
-                                style: GoogleFonts.inter(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14.sp,
-                                    color: AppStyle.black),
-                              )
-                            ],
-                          ),
-                        );
-                      }),
-                  const Divider(),
-                  PriceInfo(
-                    bag: stateRight.bags[stateRight.selectedBagIndex],
-                    state: stateRight,
-                    notifier: rightSideNotifier,
-                    mainNotifier: notifier,
-                      selectedPayment: Get.find<PaymentCalculatorController>().selectedPaymentOption.value
-                  )
+                            );
+                          },
+                        ),
+                        Divider(),
+                        PriceInfo(
+                          bag: stateRight.bags[stateRight.selectedBagIndex],
+                          state: stateRight,
+                          notifier: rightSideNotifier,
+                          mainNotifier: notifier,
+                          selectedPayment: Get.find<PaymentCalculatorController>()
+                              .selectedPaymentOption
+                              .value,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+
+          // Fixed bottom button with full width and horizontal padding
+          Positioned(
+            bottom: 20,
+            left: 16,
+            right: 16,
+            child: Consumer(
+              builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                return LoginButton(
+                  isLoading: stateRight.isOrderLoading,
+                  title: AppHelpers.getTranslation(TrKeys.confirmOrder),
+                  onPressed: () {
+                    rightSideNotifier.createOrder(
+                      context,
+                      OrderBodyData(
+                        bagData: stateRight.bags[stateRight.selectedBagIndex],
+                        coupon: stateRight.coupon,
+                        phone: stateRight.selectedUser?.phone,
+                        note: stateRight.comment,
+                        userId: stateRight.selectedUser?.id,
+                        deliveryFee: (stateRight.paginateResponse?.deliveryFee),
+                        deliveryType: stateRight.orderType,
+                        location: stateRight.selectedAddress?.location,
+                        address: AddressModel(
+                          address: stateRight.selectedAddress?.address,
+                        ),
+                        deliveryDate:
+                        intl.DateFormat("yyyy-MM-dd").format(stateRight.orderDate ?? DateTime.now()),
+                        deliveryTime: stateRight.orderTime != null
+                            ? (stateRight.orderTime!.hour.toString().length == 2
+                            ? "${stateRight.orderTime!.hour}:${stateRight.orderTime!.minute.toString().padLeft(2, '0')}"
+                            : "0${stateRight.orderTime!.hour}:${stateRight.orderTime!.minute.toString().padLeft(2, '0')}")
+                            : (TimeOfDay.now().hour.toString().length == 2
+                            ? "${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"
+                            : "0${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"),
+                        currencyId: 2,
+                        rate: stateRight.selectedCurrency?.rate ?? 0,
+                        tableId: stateRight.selectedTable?.id,
+                      ),
+                      onSuccess: () {
+                        ref.read(newOrdersProvider.notifier).fetchNewOrders(isRefresh: true);
+                        ref.read(acceptedOrdersProvider.notifier).fetchAcceptedOrders(isRefresh: true);
+                        AppHelpers.showAlertDialog(
+                          context: context,
+                          child: Container(
+                            width: 200.w,
+                            height: 200.w,
+                            padding: EdgeInsets.all(30.r),
+                            decoration: BoxDecoration(
+                              color: AppStyle.white,
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    color: AppStyle.primary,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  padding: EdgeInsets.all(12.r),
+                                  child: Icon(
+                                    Icons.check,
+                                    size: 56.r,
+                                    color: AppStyle.white,
+                                  ),
+                                ),
+                                Spacer(),
+                                Text(
+                                  AppHelpers.getTranslation(TrKeys.thankYouForOrder),
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 22.r,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                        notifier.setPriceDate(null);
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
+
   }
 }
 
