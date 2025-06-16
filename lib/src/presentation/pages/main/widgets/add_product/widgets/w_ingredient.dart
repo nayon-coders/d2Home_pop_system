@@ -107,7 +107,8 @@ class WIngredientScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 AppHelpers.getTranslation(TrKeys.ingredients),
@@ -124,20 +125,25 @@ class WIngredientScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: list.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 12.r,
-                  mainAxisSpacing: 12.r,
-                  childAspectRatio: 1,// adjust as per design
+                  crossAxisCount: 2, // fewer columns = bigger buttons
+                  crossAxisSpacing: 16.r,
+                  mainAxisSpacing: 16.r,
+                  childAspectRatio: 1.1, // width / height
                 ),
                 itemBuilder: (context, index) {
-                  return IngredientItem(
-                    onTap: () => onChange(index),
-                    addon: list[index],
-                    add: () => add(index),
-                    remove: () => remove(index),
+                  return SizedBox(
+                    width: double.infinity,
+                    height: 170.h, // Adjust height as needed
+                    child: IngredientItem(
+                      onTap: () => onChange(index),
+                      addon: list[index],
+                      add: () => add(index),
+                      remove: () => remove(index),
+                    ),
                   );
                 },
               ),
+
             ],
           ),
         );

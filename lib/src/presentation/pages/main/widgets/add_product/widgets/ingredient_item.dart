@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:admin_desktop/src/presentation/theme/theme.dart';
-
 class IngredientItem extends ConsumerWidget {
   final VoidCallback onTap;
   final VoidCallback add;
@@ -15,92 +14,83 @@ class IngredientItem extends ConsumerWidget {
   final Addons addon;
 
   const IngredientItem({
+    required this.onTap,
     required this.add,
     required this.remove,
-    super.key,
-    required this.onTap,
     required this.addon,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isActive = addon.active ?? false;
+    final quantity = addon.quantity ?? 1;
+    final title = addon.product?.translation?.title ?? '';
+    final price = addon.product?.stock?.totalPrice ?? 0;
+
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(10.r),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),
         decoration: BoxDecoration(
-          border: Border.all(width: 1, color: AppStyle.primary),
-          color: addon.active == true ? AppStyle.primary.withOpacity(0.1) : AppStyle.white,
-          borderRadius: BorderRadius.circular(10.r),
+          border: Border.all(color: AppStyle.primary, width: 1),
+          borderRadius: BorderRadius.circular(12.r),
+          color: isActive ? AppStyle.primary.withOpacity(0.08) : AppStyle.white,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            /// Quantity Controls (if active)
-            if (addon.active ?? false)
+            /// Quantity Controls (Only visible if active)
+            if (isActive) ...[
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  InkWell(
-                    onTap: remove,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppStyle.removeButtonColor,
-                      ),
-                      child: Icon(
-                        Icons.remove,
-                        size: 16,
-                        color: (addon.quantity ?? 1) == 1
-                            ? AppStyle.outlineButtonBorder
-                            : AppStyle.black,
-                      ),
-                    ),
+                  _CircleIconButton(
+                    icon: Icons.remove,
+                    onPressed: remove,
+                    color: AppStyle.removeButtonColor,
+                    iconColor: quantity == 1
+                        ? AppStyle.outlineButtonBorder
+                        : AppStyle.black,
                   ),
-                  6.horizontalSpace,
+                  10.horizontalSpace,
                   Text(
-                    "${addon.quantity ?? 1}",
-                    style: GoogleFonts.inter(fontSize: 14.sp),
-                  ),
-                  6.horizontalSpace,
-                  InkWell(
-                    onTap: add,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppStyle.addButtonColor,
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        size: 16,
-                        color: AppStyle.black,
-                      ),
+                    "$quantity",
+                    style: GoogleFonts.inter(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
                     ),
+                  ),
+                  10.horizontalSpace,
+                  _CircleIconButton(
+                    icon: Icons.add,
+                    onPressed: add,
+                    color: AppStyle.addButtonColor,
+                    iconColor: AppStyle.black,
                   ),
                 ],
               ),
-            if (addon.active ?? false) 8.verticalSpace,
+              12.verticalSpace,
+            ],
 
-            /// Title + Price
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            /// Title & Price
+            Column(
+             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
-                  child: Text(
-                    addon.product?.translation?.title ?? "",
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.inter(
-                      fontSize: 13.sp,
-                      color: AppStyle.black,
-                      fontWeight: FontWeight.w500,
-                    ),
+                Text(
+                  title,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.inter(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppStyle.black,
                   ),
                 ),
-                4.horizontalSpace,
+                8.horizontalSpace,
                 Text(
-                  "+${AppHelpers.numberFormat(addon.product?.stock?.totalPrice ?? 0)}",
+                  "+${AppHelpers.numberFormat(price)}",
                   style: GoogleFonts.inter(
                     fontSize: 13.sp,
                     color: AppStyle.hint,
@@ -109,6 +99,41 @@ class IngredientItem extends ConsumerWidget {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CircleIconButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onPressed;
+  final Color color;
+  final Color iconColor;
+
+  const _CircleIconButton({
+    required this.icon,
+    required this.onPressed,
+    required this.color,
+    required this.iconColor,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(20.r),
+      child: Container(
+        padding: EdgeInsets.all(6.r),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+        ),
+        child: Icon(
+          icon,
+          size: 16.sp,
+          color: iconColor,
         ),
       ),
     );
