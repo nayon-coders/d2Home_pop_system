@@ -192,63 +192,7 @@ class PriceInfo extends StatelessWidget {
               )
             : const SizedBox.shrink(),
         const Divider(),
-        20.verticalSpace,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              AppHelpers.getTranslation(TrKeys.totalPrice),
-              style: GoogleFonts.inter(
-                color: AppStyle.black,
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
-                letterSpacing: -0.4,
-              ),
-            ),
-            Text(
-              AppHelpers.numberFormat(totalPrice ?? 0,
-                  symbol: bag.selectedCurrency?.symbol),
-              style: GoogleFonts.inter(
-                color: AppStyle.black,
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w600,
-                letterSpacing: -0.4,
-              ),
-            ),
-          ],
-        ),
-        20.verticalSpace,
-        Obx(() {
-            return Get.find<PaymentCalculatorController>().balanceAmount.isEmpty
-                ? const SizedBox.shrink()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Obx(() => Text(
-                        "${Get.find<PaymentCalculatorController>().balanceType.value}: ",
-                        style: GoogleFonts.inter(
-                          color: AppStyle.black,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.4,
-                        ),
-                      )),
-                      Obx((){
-                          return Text(
-                            "\$ ${Get.find<PaymentCalculatorController>().balanceAmount.value}",
-                            style: GoogleFonts.inter(
-                              color: AppStyle.black,
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.4,
-                            ),
-                          );
-                        }
-                      ),
-                    ],
-                  );
-          }
-        ),
+
 
       ],
     );

@@ -501,85 +501,153 @@ class OrderCalculate extends ConsumerWidget {
             bottom: 20,
             left: 16,
             right: 16,
-            child: Consumer(
-              builder: (BuildContext context, WidgetRef ref, Widget? child) {
-                return LoginButton(
-                  isLoading: stateRight.isOrderLoading,
-                  title: AppHelpers.getTranslation(TrKeys.confirmOrder),
-                  onPressed: () {
-                    rightSideNotifier.createOrder(
-                      context,
-                      OrderBodyData(
-                        bagData: stateRight.bags[stateRight.selectedBagIndex],
-                        coupon: stateRight.coupon,
-                        phone: stateRight.selectedUser?.phone,
-                        note: stateRight.comment,
-                        userId: stateRight.selectedUser?.id,
-                        deliveryFee: (stateRight.paginateResponse?.deliveryFee),
-                        deliveryType: stateRight.orderType,
-                        location: stateRight.selectedAddress?.location,
-                        address: AddressModel(
-                          address: stateRight.selectedAddress?.address,
+            child: Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              decoration: BoxDecoration(
+                color: Colors.white
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        AppHelpers.getTranslation(TrKeys.totalPrice),
+                        style: GoogleFonts.inter(
+                          color: AppStyle.black,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.4,
                         ),
-                        deliveryDate:
-                        intl.DateFormat("yyyy-MM-dd").format(stateRight.orderDate ?? DateTime.now()),
-                        deliveryTime: stateRight.orderTime != null
-                            ? (stateRight.orderTime!.hour.toString().length == 2
-                            ? "${stateRight.orderTime!.hour}:${stateRight.orderTime!.minute.toString().padLeft(2, '0')}"
-                            : "0${stateRight.orderTime!.hour}:${stateRight.orderTime!.minute.toString().padLeft(2, '0')}")
-                            : (TimeOfDay.now().hour.toString().length == 2
-                            ? "${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"
-                            : "0${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"),
-                        currencyId: 2,
-                        rate: stateRight.selectedCurrency?.rate ?? 0,
-                        tableId: stateRight.selectedTable?.id,
                       ),
-                      onSuccess: () {
-                        ref.read(newOrdersProvider.notifier).fetchNewOrders(isRefresh: true);
-                        ref.read(acceptedOrdersProvider.notifier).fetchAcceptedOrders(isRefresh: true);
-                        AppHelpers.showAlertDialog(
-                          context: context,
-                          child: Container(
-                            width: 200.w,
-                            height: 200.w,
-                            padding: EdgeInsets.all(30.r),
-                            decoration: BoxDecoration(
-                              color: AppStyle.white,
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: const BoxDecoration(
-                                    color: AppStyle.primary,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  padding: EdgeInsets.all(12.r),
-                                  child: Icon(
-                                    Icons.check,
-                                    size: 56.r,
-                                    color: AppStyle.white,
-                                  ),
-                                ),
-                                Spacer(),
-                                Text(
-                                  AppHelpers.getTranslation(TrKeys.thankYouForOrder),
-                                  style: GoogleFonts.inter(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 22.r,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
+                      Text(
+                        AppHelpers.numberFormat(stateRight.paginateResponse!.totalPrice! - stateRight.paginateResponse!.serviceFee! ?? 0,
+                            symbol: stateRight.bags[stateRight.selectedBagIndex].selectedCurrency?.symbol),
+                        style: GoogleFonts.inter(
+                          color: AppStyle.black,
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                  20.verticalSpace,
+                  Obx(() {
+                    return Get.find<PaymentCalculatorController>().balanceAmount.isEmpty
+                        ? const SizedBox.shrink()
+                        : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Obx(() => Text(
+                          "${Get.find<PaymentCalculatorController>().balanceType.value}: ",
+                          style: GoogleFonts.inter(
+                            color: AppStyle.black,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.4,
                           ),
-                        );
-                        notifier.setPriceDate(null);
-                      },
+                        )),
+                        Obx((){
+                          return Text(
+                            "\$ ${Get.find<PaymentCalculatorController>().balanceAmount.value}",
+                            style: GoogleFonts.inter(
+                              color: AppStyle.black,
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: -0.4,
+                            ),
+                          );
+                        }
+                        ),
+                      ],
                     );
-                  },
-                );
-              },
+                  }
+                  ),
+                  SizedBox(height: 20),
+                  Consumer(
+                    builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                      return LoginButton(
+                        isLoading: stateRight.isOrderLoading,
+                        title: AppHelpers.getTranslation(TrKeys.confirmOrder),
+                        onPressed: () {
+                          rightSideNotifier.createOrder(
+                            context,
+                            OrderBodyData(
+                              bagData: stateRight.bags[stateRight.selectedBagIndex],
+                              coupon: stateRight.coupon,
+                              phone: stateRight.selectedUser?.phone,
+                              note: stateRight.comment,
+                              userId: stateRight.selectedUser?.id,
+                              deliveryFee: (stateRight.paginateResponse?.deliveryFee),
+                              deliveryType: stateRight.orderType,
+                              location: stateRight.selectedAddress?.location,
+                              address: AddressModel(
+                                address: stateRight.selectedAddress?.address,
+                              ),
+                              deliveryDate:
+                              intl.DateFormat("yyyy-MM-dd").format(stateRight.orderDate ?? DateTime.now()),
+                              deliveryTime: stateRight.orderTime != null
+                                  ? (stateRight.orderTime!.hour.toString().length == 2
+                                  ? "${stateRight.orderTime!.hour}:${stateRight.orderTime!.minute.toString().padLeft(2, '0')}"
+                                  : "0${stateRight.orderTime!.hour}:${stateRight.orderTime!.minute.toString().padLeft(2, '0')}")
+                                  : (TimeOfDay.now().hour.toString().length == 2
+                                  ? "${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"
+                                  : "0${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"),
+                              currencyId: 2,
+                              rate: stateRight.selectedCurrency?.rate ?? 0,
+                              tableId: stateRight.selectedTable?.id,
+                            ),
+                            onSuccess: () {
+                              ref.read(newOrdersProvider.notifier).fetchNewOrders(isRefresh: true);
+                              ref.read(acceptedOrdersProvider.notifier).fetchAcceptedOrders(isRefresh: true);
+                              AppHelpers.showAlertDialog(
+                                context: context,
+                                child: Container(
+                                  width: 200.w,
+                                  height: 200.w,
+                                  padding: EdgeInsets.all(30.r),
+                                  decoration: BoxDecoration(
+                                    color: AppStyle.white,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          color: AppStyle.primary,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding: EdgeInsets.all(12.r),
+                                        child: Icon(
+                                          Icons.check,
+                                          size: 56.r,
+                                          color: AppStyle.white,
+                                        ),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        AppHelpers.getTranslation(TrKeys.thankYouForOrder),
+                                        style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 22.r,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                              notifier.setPriceDate(null);
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
