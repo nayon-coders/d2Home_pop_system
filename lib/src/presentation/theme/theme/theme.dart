@@ -1,6 +1,9 @@
 import 'package:admin_desktop/src/presentation/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../theme_controller_getx.dart';
 
 part 'color_set.dart';
 
@@ -27,7 +30,11 @@ class AppTheme with ChangeNotifier {
   static Future<AppTheme> get create async {
     final themePreference = await _ThemePreference.create;
     final mode = themePreference.getMode();
-    final colorSet = CustomColorSet.createOrUpdate(mode);
+    final colorSet = CustomColorSet.createOrUpdate(
+      mode,
+      dynamicPrimary: AppStyle.primary, // or any color you want
+    );
+
 
     return AppTheme._(
       colorSet,
@@ -48,17 +55,31 @@ class AppTheme with ChangeNotifier {
     await _preference.clean();
   }
 
-  Future toggle() async {
-    if (_mode.isLight) {
-      return await setDark();
-    }
-    return await setLight();
-  }
-
   Future<void> _update(CustomThemeMode mode) async {
-    _colorSet = CustomColorSet.createOrUpdate(mode);
+    final dynamicPrimary = AppStyle.primary; // or get from provider if needed
+
+    _colorSet = CustomColorSet.createOrUpdate(mode, dynamicPrimary: dynamicPrimary);
     _mode = mode;
     notifyListeners();
     await _preference.setMode(mode);
   }
+
+
+  Future<void> toggle() async {
+    if (_mode.isLight) {
+      await setDark();
+      Get.changeThemeMode(ThemeMode.dark);  // Update GetX theme
+    } else {
+      await setLight();
+      Get.changeThemeMode(ThemeMode.light); // Update GetX theme
+    }
+  }
+
+
+  // Future<void> _update(CustomThemeMode mode) async {
+  //   _colorSet = CustomColorSet.createOrUpdate(mode);
+  //   _mode = mode;
+  //   notifyListeners();
+  //   await _preference.setMode(mode);
+  // }
 }

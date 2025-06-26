@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:admin_desktop/src/models/models.dart';
+import 'package:get/get.dart';
 import '../../../../../../theme/theme.dart';
+import '../../../../../../theme/theme_controller_getx.dart';
 import '../../../right_side/riverpod/right_side_provider.dart';
 import '../../provider/add_product_provider.dart';
 
@@ -42,21 +44,24 @@ class ColorExtras extends ConsumerWidget {
                   );
                 },
                 child: uiExtra.isSelected
-                    ? Container(
-                        width: 42.r,
-                        height: 42.r,
-                        alignment: Alignment.center,
-                        child: Container(
-                          width: 22.r,
-                          height: 22.r,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(11.r),
-                            color: AppStyle.primary,
-                            border:
-                                Border.all(color: AppStyle.white, width: 8.r),
-                          ),
-                        ),
-                      )
+                    ? Obx(() {
+                        return Container(
+                            width: 42.r,
+                            height: 42.r,
+                            alignment: Alignment.center,
+                            child: Container(
+                              width: 22.r,
+                              height: 22.r,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(11.r),
+                                color: ChangeColorController.to.selectedColor,
+                                border:
+                                    Border.all(color: AppStyle.white, width: 8.r),
+                              ),
+                            ),
+                          );
+                      }
+                    )
                     : SizedBox(width: 42.r, height: 42.r),
               ),
             ),

@@ -50,7 +50,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          42.verticalSpace,
+                          32.verticalSpace,
                           Row(
                             children: [
                               SvgPicture.asset(
@@ -71,7 +71,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                             ],
                           ),
-                          56.verticalSpace,
+                          50.verticalSpace,
                           Text(
                             AppHelpers.getTranslation(TrKeys.login),
                             style: GoogleFonts.inter(
@@ -79,7 +79,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 color: AppStyle.black,
                                 fontWeight: FontWeight.bold),
                           ),
-                          36.verticalSpace,
+                          30.verticalSpace,
                           Text(
                             AppHelpers.getTranslation(TrKeys.email),
                             style: GoogleFonts.inter(

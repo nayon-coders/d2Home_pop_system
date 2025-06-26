@@ -2,11 +2,13 @@ import 'package:admin_desktop/src/core/constants/constants.dart';
 import 'package:admin_desktop/src/models/data/addons_data.dart';
 import 'package:admin_desktop/src/models/data/product_data.dart';
 import 'package:admin_desktop/src/presentation/components/buttons/animation_button_effect.dart';
+import 'package:admin_desktop/src/presentation/theme/theme_controller_getx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -159,21 +161,24 @@ class CartOrderItem extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.h, horizontal: 16.w),
-                        decoration: BoxDecoration(
-                            color: AppStyle.primary,
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(10.r),
-                                bottomRight: Radius.circular(10.r))),
-                        child: Text(
-                          "${(cart?.quantity ?? 1).toString()}x",
-                          style: GoogleFonts.inter(
-                              fontSize: 14.sp,
-                              color: AppStyle.black,
-                              fontWeight: FontWeight.w700),
-                        ),
+                      Obx((){
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 16.w),
+                            decoration: BoxDecoration(
+                                color: ChangeColorController.to.selectedColor,
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(10.r),
+                                    bottomRight: Radius.circular(10.r))),
+                            child: Text(
+                              "${(cart?.quantity ?? 1).toString()}x",
+                              style: GoogleFonts.inter(
+                                  fontSize: 14.sp,
+                                  color: AppStyle.black,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          );
+                        }
                       ),
                       24.horizontalSpace,
                       GestureDetector(

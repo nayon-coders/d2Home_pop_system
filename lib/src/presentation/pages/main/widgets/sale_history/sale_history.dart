@@ -8,6 +8,7 @@ import 'package:admin_desktop/src/presentation/pages/main/widgets/sale_history/r
 import 'package:admin_desktop/src/presentation/pages/main/widgets/sale_history/sale_tab.dart';
 import 'package:admin_desktop/src/presentation/pages/printer_manage/controller/printer_controller.dart';
 import 'package:admin_desktop/src/presentation/theme/theme.dart';
+import 'package:admin_desktop/src/presentation/theme/theme_controller_getx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -106,18 +107,23 @@ class _SaleHistoryState extends ConsumerState<SaleHistory> {
                   ],
                 ),
                 const Spacer(),
-                Container(
-                    padding: EdgeInsets.all(8.r),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppStyle.primary.withOpacity(0.01),
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 32.r,
-                              spreadRadius: 12.r,
-                              color: AppStyle.primary.withOpacity(0.5))
-                        ]),
-                    child: SvgPicture.asset(Assets.svgCart))
+                Obx(() {
+                    return Container(
+                        padding: EdgeInsets.all(8.r),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: ChangeColorController.to.selectedColor.withOpacity(0.01),
+                            //color: AppStyle.primary.withOpacity(0.01),
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 32.r,
+                                  spreadRadius: 12.r,
+                                  color:  ChangeColorController.to.selectedColor.withOpacity(0.5))
+                                  //color: AppStyle.primary.withOpacity(0.5))
+                            ]),
+                        child: SvgPicture.asset(Assets.svgCart));
+                  }
+                )
               ],
             ),
           ),

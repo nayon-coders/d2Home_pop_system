@@ -63,7 +63,7 @@ class PinCodePage extends ConsumerWidget {
                     Center(
                       child: Column(
                         children: [
-                          60.r.verticalSpace,
+                          50.r.verticalSpace,
                           Text(
                             AppHelpers.getTranslation(isNewPassword
                                 ? TrKeys.enterNewPinCode
@@ -79,7 +79,7 @@ class PinCodePage extends ConsumerWidget {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          12.r.verticalSpace,
+                          10.r.verticalSpace,
                           Text(
                             AppHelpers.getTranslation(
                                 state.isPinCodeNotValid == false
@@ -95,7 +95,7 @@ class PinCodePage extends ConsumerWidget {
                             maxLines: 2,
                             textAlign: TextAlign.center,
                           ),
-                          28.r.verticalSpace,
+                          22.r.verticalSpace,
                           SizedBox(
                             height: 28.r,
                             child: ListView.builder(

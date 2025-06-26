@@ -1,9 +1,11 @@
 import 'package:admin_desktop/src/presentation/components/buttons/animation_button_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../theme/theme.dart';
+import '../../theme/theme_controller_getx.dart';
 
 class ConfirmButton extends StatelessWidget {
   final String title;
@@ -56,47 +58,47 @@ class ConfirmButton extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.r),
                 border: Border.all(color: border),
-                color: isActive ? bgColor : AppStyle.dontHaveAccBtnBack,
+                color: isActive ? ChangeColorController.to.selectedColor : AppStyle.dontHaveAccBtnBack,
                 boxShadow: isShadow
                     ? [
-                        BoxShadow(
-                          blurRadius: 2,
-                          offset: const Offset(0, 1),
-                          color: AppStyle.black.withOpacity(0.07),
-                        )
-                      ]
+                  BoxShadow(
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
+                    color: AppStyle.black.withOpacity(0.07),
+                  )
+                ]
                     : []),
             height: height.r,
             padding: REdgeInsets.symmetric(horizontal: paddingSize ?? 36),
             alignment: Alignment.center,
             child: isLoading
                 ? SizedBox(
-                    height: 24.r,
-                    width: 24.r,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.r,
-                      color: isActive ? AppStyle.white : AppStyle.black,
-                    ),
-                  )
+              height: 24.r,
+              width: 24.r,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.r,
+                color: isActive ? AppStyle.white : AppStyle.black,
+              ),
+            )
                 : icon ??
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        prefixIcon ?? const SizedBox.shrink(),
-                        prefixIcon != null
-                            ? 12.r.horizontalSpace
-                            : const SizedBox.shrink(),
-                        Text(
-                          title,
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w500,
-                            fontSize: textSize?.sp ?? 16.sp,
-                            color: isActive ? textColor : AppStyle.black,
-                          ),
-                        )
-                      ],
-                    ),
-          ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    prefixIcon ?? const SizedBox.shrink(),
+                    prefixIcon != null
+                        ? 12.r.horizontalSpace
+                        : const SizedBox.shrink(),
+                    Text(
+                      title,
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w500,
+                        fontSize: textSize?.sp ?? 16.sp,
+                        color: isActive ? textColor : AppStyle.black,
+                      ),
+                    )
+                  ],
+                ),
+          )
         ),
       ),
     );

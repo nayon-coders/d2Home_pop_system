@@ -6,6 +6,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_isolate/flutter_isolate.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'core/di/dependency_manager.dart';
 import 'core/routes/app_router.dart';
@@ -19,7 +20,7 @@ Future<int> getOtherTranslation(int arg) async {
       success: (l) {
         l.data?.forEach((e) async {
           final translations =
-              await settingsRepository.getMobileTranslations(lang: e.locale);
+          await settingsRepository.getMobileTranslations(lang: e.locale);
           translations.when(
               success: (d) {
                 LocalStorage.setOtherTranslations(
@@ -86,7 +87,7 @@ class _AppWidgetState extends State<AppWidget> {
               builder: (context, child) {
                 return ChangeNotifierProvider(
                   create: (BuildContext context) => theme,
-                  child: MaterialApp.router(
+                  child: GetMaterialApp.router(
                     theme: ThemeData(
                       useMaterial3: false,
                       primaryColor: AppStyle.primary,

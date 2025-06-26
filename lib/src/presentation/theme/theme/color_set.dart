@@ -1,5 +1,7 @@
 part of 'theme.dart';
 
+
+
 class CustomColorSet {
   final Color primary;
 
@@ -49,8 +51,11 @@ class CustomColorSet {
     required this.newBoxColor,
   });
 
-  factory CustomColorSet._create(CustomThemeMode mode) {
+  factory CustomColorSet._create(CustomThemeMode mode, {required Color dynamicPrimary}) {
     final isLight = mode.isLight;
+
+    final primary = dynamicPrimary;
+
 
     final textHint = isLight ? AppStyle.hint : AppStyle.white;
 
@@ -62,7 +67,6 @@ class CustomColorSet {
 
     final categoryTitleColor = isLight ? AppStyle.black : AppStyle.white;
 
-    const primary = AppStyle.primary;
 
     const white = AppStyle.white;
 
@@ -104,7 +108,9 @@ class CustomColorSet {
     );
   }
 
-  static CustomColorSet createOrUpdate(CustomThemeMode mode) {
-    return CustomColorSet._create(mode);
+  static CustomColorSet createOrUpdate(CustomThemeMode mode, {required Color dynamicPrimary}) {
+    return CustomColorSet._create(mode, dynamicPrimary: dynamicPrimary);
   }
+
+
 }

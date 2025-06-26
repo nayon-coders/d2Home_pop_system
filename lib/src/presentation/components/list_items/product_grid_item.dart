@@ -1,4 +1,5 @@
 import 'package:admin_desktop/src/presentation/pages/main/getx_controller/main_controller.dart';
+import 'package:admin_desktop/src/presentation/theme/theme_controller_getx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -46,78 +47,79 @@ class ProductGridItem extends StatelessWidget {
             children: [
               Padding(
                 padding: REdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Obx(() {
-                      return Get.find<MainController>().isShowImage.value ?  Expanded(
-                        child: CommonImage(
-                          imageUrl: product.img,
-                        ),
-                      )  : Center();
-                    }
-                    ),
-                    16.verticalSpace,
-                    Text(
-                      '${product.translation?.title}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: -14 * 0.02,
-                        color: AppStyle.black,
-                      ),
-                    ),
-                    6.verticalSpace,
-                    Text(
-                      isOutOfStock
-                          ? AppHelpers.getTranslation(TrKeys.outOfStock)
-                          : '${AppHelpers.getTranslation(TrKeys.inStock)} - ${product.stocks?[0].quantity}',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: -14 * 0.02,
-                        color: isOutOfStock ? AppStyle.red : AppStyle.inStockText,
-                      ),
-                    ),
-                    8.verticalSpace,
-                    Row(
+                child: Obx(() {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (hasDiscount)
-                          Row(
-                            children: [
-                              Text(
-                                AppHelpers.numberFormat(
-                                    (product.stocks?.first.discount ?? 0) +
-                                        (product.stocks?.first.totalPrice ?? 0)),
-                                style: GoogleFonts.inter(
-                                  decoration: TextDecoration.lineThrough,
-                                  fontSize: 25.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppStyle.discountText,
-                                  letterSpacing: -14 * 0.02,
-                                ),
-                              ),
-                              10.horizontalSpace,
-                            ],
-                          ),
+                         Get.find<MainController>().isShowImage.value ?  Expanded(
+                            child: CommonImage(
+                              imageUrl: product.img,
+                            ),
+                          )  : Center(),
+
+                        16.verticalSpace,
                         Text(
-                          AppHelpers.numberFormat(isOutOfStock
-                              ? 0
-                              : (product.stocks?.first.totalPrice ?? 0)),
+                          '${product.translation?.title}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.inter(
-                            fontSize: 25.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppStyle.black,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
                             letterSpacing: -14 * 0.02,
+                            color: AppStyle.black,
                           ),
+                        ),
+                        6.verticalSpace,
+                        Text(
+                          isOutOfStock
+                              ? AppHelpers.getTranslation(TrKeys.outOfStock)
+                              : '${AppHelpers.getTranslation(TrKeys.inStock)} - ${product.stocks?[0].quantity}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.inter(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: -14 * 0.02,
+                            color: isOutOfStock ? AppStyle.red : ChangeColorController.to.selectedColor,
+                          ),
+                        ),
+                        8.verticalSpace,
+                        Row(
+                          children: [
+                            if (hasDiscount)
+                              Row(
+                                children: [
+                                  Text(
+                                    AppHelpers.numberFormat(
+                                        (product.stocks?.first.discount ?? 0) +
+                                            (product.stocks?.first.totalPrice ?? 0)),
+                                    style: GoogleFonts.inter(
+                                      decoration: TextDecoration.lineThrough,
+                                      fontSize: 25.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppStyle.discountText,
+                                      letterSpacing: -14 * 0.02,
+                                    ),
+                                  ),
+                                  10.horizontalSpace,
+                                ],
+                              ),
+                            Text(
+                              AppHelpers.numberFormat(isOutOfStock
+                                  ? 0
+                                  : (product.stocks?.first.totalPrice ?? 0)),
+                              style: GoogleFonts.inter(
+                                fontSize: 25.sp,
+                                fontWeight: FontWeight.w600,
+                                color: AppStyle.black,
+                                letterSpacing: -14 * 0.02,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
-                    ),
-                  ],
+                    );
+                  }
                 ),
               ),
               Visibility(
@@ -126,24 +128,27 @@ class ProductGridItem extends StatelessWidget {
                   bottom: 0, right: 0,
                   child:Stack(
                     children: [
-                      Container(
-                        constraints: BoxConstraints(
-                          maxWidth: 227.r,
-                          maxHeight: Get.find<MainController>().isShowImage.value ? 246.r : 150.r,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomRight,
-                            end: Alignment.topLeft,
-                            colors: [
-                              AppStyle.green,
-                              Colors.transparent,
-                            ],
-                            stops: [0.0, 0.4],
-                          ),
-                        ),
-                        // your other container content here...
+                      Obx((){
+                          return Container(
+                            constraints: BoxConstraints(
+                              maxWidth: 227.r,
+                              maxHeight: Get.find<MainController>().isShowImage.value ? 246.r : 150.r,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomRight,
+                                end: Alignment.topLeft,
+                                colors: [
+                                  ChangeColorController.to.selectedColor,
+                                  Colors.transparent,
+                                ],
+                                stops: [0.0, 0.4],
+                              ),
+                            ),
+                            // your other container content here...
+                          );
+                        }
                       ),
 
                       // Positioned badge for quantity

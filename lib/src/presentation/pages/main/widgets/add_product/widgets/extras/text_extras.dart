@@ -1,7 +1,9 @@
 import 'package:admin_desktop/src/models/models.dart';
 import 'package:admin_desktop/src/presentation/theme/app_style.dart';
+import 'package:admin_desktop/src/presentation/theme/theme_controller_getx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'size_item.dart';
 
@@ -38,22 +40,25 @@ class TextExtras extends StatelessWidget {
             }
             onUpdate(uiExtras[index]);
           },
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            decoration: BoxDecoration(
-              color: uiExtras[index].isSelected ? AppStyle.primary : Colors.white,
-              border: Border.all(width: 1, color: AppStyle.primary),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            alignment: Alignment.center, // Center text inside grid cell
-            child: Text(
-              "${uiExtras[index].value}",
-              style: TextStyle(
-                color: uiExtras[index].isSelected ? Colors.white : Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+          child: Obx(() {
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                decoration: BoxDecoration(
+                  color: uiExtras[index].isSelected ? ChangeColorController.to.selectedColor : Colors.white,
+                  border: Border.all(width: 1, color: ChangeColorController.to.selectedColor),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                alignment: Alignment.center, // Center text inside grid cell
+                child: Text(
+                  "${uiExtras[index].value}",
+                  style: TextStyle(
+                    color: uiExtras[index].isSelected ? Colors.white : Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              );
+            }
           ),
         );
       },

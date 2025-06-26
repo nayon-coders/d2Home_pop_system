@@ -1,5 +1,6 @@
 import 'package:admin_desktop/src/presentation/pages/main/getx_controller/bag_controller.dart';
 import 'package:admin_desktop/src/presentation/pages/printer_manage/controller/printer_controller.dart';
+import 'package:admin_desktop/src/presentation/theme/theme_controller_getx.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -36,8 +37,10 @@ void main() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 
+  Get.put(ChangeColorController());
   Get.put(PrinterController());
   Get.put(BagController());
+  Get.put(PaymentCalculatorController());
 
   // if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
   //   doWhenWindowReady(() {
@@ -53,7 +56,7 @@ void main() async {
 
   await LocalStorage.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft,DeviceOrientation.landscapeRight]);
-  runApp(const ProviderScope(child: GetMaterialApp(debugShowCheckedModeBanner: false, home: AppWidget())));
+  runApp(const ProviderScope(child:AppWidget()));
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

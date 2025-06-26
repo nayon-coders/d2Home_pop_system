@@ -41,6 +41,7 @@ import 'package:admin_desktop/src/core/constants/constants.dart';
 import 'package:admin_desktop/src/core/utils/utils.dart';
 import '../../components/components.dart';
 import '../../theme/theme.dart';
+import '../../theme/theme_controller_getx.dart';
 import '../printer_manage/controller/printer_controller.dart';
 import '../printer_manage/view/manage_printer.dart';
 import 'riverpod/provider/main_provider.dart';
@@ -117,9 +118,9 @@ class _MainPageState extends ConsumerState<MainPage>
       }
       if(mounted) {
         AppHelpers.showSnackBar(
-        context,
-        "${AppHelpers.getTranslation(TrKeys.id)} #${message.notification?.title} ${message.notification?.body}",
-      );
+          context,
+          "${AppHelpers.getTranslation(TrKeys.id)} #${message.notification?.title} ${message.notification?.body}",
+        );
       }
     });
   }
@@ -199,7 +200,7 @@ class _MainPageState extends ConsumerState<MainPage>
       if (mounted) {
         Timer.periodic(
           AppConstants.refreshTime,
-          (s) {
+              (s) {
             ref.read(notificationProvider.notifier).fetchCount(context);
           },
         );
@@ -235,28 +236,28 @@ class _MainPageState extends ConsumerState<MainPage>
         backgroundColor: AppStyle.mainBack,
         body: (c) => Directionality(
           textDirection:
-              LocalStorage.getLangLtr() ? TextDirection.ltr : TextDirection.rtl,
+          LocalStorage.getLangLtr() ? TextDirection.ltr : TextDirection.rtl,
           child: KeyboardDismisser(
               child: Row(
-            children: [
-              ///TODO: This is left menu part (Nayon Coders)
-              user?.role == TrKeys.seller
-                  ? bottomLeftNavigationBar(state)
-                  : user?.role == TrKeys.cooker
+                children: [
+                  ///TODO: This is left menu part (Nayon Coders)
+                  user?.role == TrKeys.seller
+                      ? bottomLeftNavigationBar(state)
+                      : user?.role == TrKeys.cooker
                       ? bottomLeftNavigationBarKitchen(state)
                       : bottomLeftNavigationBarWaiter(state),
-              Expanded(
-                child: ProsteIndexedStack(
-                  index: state.selectIndex,
-                  children: user?.role == TrKeys.seller
-                      ? list
-                      : user?.role == TrKeys.cooker
+                  Expanded(
+                    child: ProsteIndexedStack(
+                      index: state.selectIndex,
+                      children: user?.role == TrKeys.seller
+                          ? list
+                          : user?.role == TrKeys.cooker
                           ? listKitchen
                           : listWaiter,
-                ),
-              ),
-            ],
-          )),
+                    ),
+                  ),
+                ],
+              )),
         ),
       ),
     );
@@ -300,9 +301,9 @@ class _MainPageState extends ConsumerState<MainPage>
                           if (user?.role == TrKeys.seller) {
                             ref.watch(mainProvider).selectIndex == 2
                                 ? customerNotifier.searchUsers(
-                                    context, value.trim())
+                                context, value.trim())
                                 : notifier.setProductsQuery(
-                                    context, value.trim());
+                                context, value.trim());
                             if (ref.watch(mainProvider).selectIndex == 1) {
                               ref
                                   .read(newOrdersProvider.notifier)
@@ -357,11 +358,11 @@ class _MainPageState extends ConsumerState<MainPage>
                           hintText: ref.watch(mainProvider).selectIndex == 1
                               ? AppHelpers.getTranslation(TrKeys.searchOrders)
                               : ref.watch(mainProvider).selectIndex == 2 &&
-                                      user?.role != TrKeys.waiter
-                                  ? AppHelpers.getTranslation(
-                                      TrKeys.searchCustomers)
-                                  : AppHelpers.getTranslation(
-                                      TrKeys.searchProducts),
+                              user?.role != TrKeys.waiter
+                              ? AppHelpers.getTranslation(
+                              TrKeys.searchCustomers)
+                              : AppHelpers.getTranslation(
+                              TrKeys.searchProducts),
                           hintStyle: GoogleFonts.inter(
                             fontWeight: FontWeight.w500,
                             fontSize: 18.sp,
@@ -402,11 +403,11 @@ class _MainPageState extends ConsumerState<MainPage>
                     showDialog(
                         context: context,
                         builder: (_) => const Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Dialog(child: NotificationDialog()),
-                              ],
-                            ));
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Dialog(child: NotificationDialog()),
+                          ],
+                        ));
                   },
                   icon: const Icon(
                     FlutterRemix.notification_2_line,
@@ -414,38 +415,38 @@ class _MainPageState extends ConsumerState<MainPage>
                   )),
               NotificationCountsContainer(
                   count:
-                      '${ref.watch(notificationProvider).countOfNotifications?.notification ?? 0}'),
+                  '${ref.watch(notificationProvider).countOfNotifications?.notification ?? 0}'),
               IconButton(
                 onPressed: () {
                   ref.read(languagesProvider.notifier).getLanguages(context);
                   showDialog(
                       context: context,
                       builder: (_) => Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Consumer(
-                                builder: (context, ref, child) => Dialog(
-                                  alignment: Alignment.topRight,
-                                  child: Container(
-                                    width: MediaQuery.sizeOf(context).width / 4,
-                                    constraints: BoxConstraints(
-                                        maxHeight:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.9),
-                                    child: Expanded(
-                                      child: LanguagesModal(
-                                        afterUpdate: () {
-                                          controller.toggle();
-                                          controller.toggle();
-                                        },
-                                      ),
-                                    ),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Consumer(
+                            builder: (context, ref, child) => Dialog(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                width: MediaQuery.sizeOf(context).width / 4,
+                                constraints: BoxConstraints(
+                                    maxHeight:
+                                    MediaQuery.sizeOf(context).height *
+                                        0.9),
+                                child: Expanded(
+                                  child: LanguagesModal(
+                                    afterUpdate: () {
+                                      controller.toggle();
+                                      controller.toggle();
+                                    },
                                   ),
                                 ),
                               ),
-                            ],
-                          ));
+                            ),
+                          ),
+                        ],
+                      ));
                 },
                 icon: const Icon(
                   FlutterRemix.global_line,
@@ -528,498 +529,557 @@ class _MainPageState extends ConsumerState<MainPage>
     );
   }
 
-  Container bottomLeftNavigationBar(MainState state) {
-    return Container(
-      height: double.infinity,
-      width: 90.w,
-      color: AppStyle.white,
-      child: ListView( //fixed scrolling.
-        children: [
-          24.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 0
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-                onPressed: () {
-                  ref.read(mainProvider.notifier).changeIndex(0);
-                },
-                icon:SvgPicture.asset(
-                  state.selectIndex == 3
-                      ? Assets.svgposmachine
-                      : Assets.svgposmachine,
+  Obx bottomLeftNavigationBar(MainState state) {
+    return Obx(() {
+        return Container(
+          height: double.infinity,
+          width: 90.w,
+          color: AppStyle.white,
+          child: ListView( //fixed scrolling.
+            children: [
+              24.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 0
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                  onPressed: () {
+                    ref.read(mainProvider.notifier).changeIndex(0);
+                  },
+                  icon:SvgPicture.asset(
+                    state.selectIndex == 3
+                        ? Assets.svgposmachine
+                        : Assets.svgposmachine,
+                  ),
                 ),
-            ),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 1
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-                onPressed: () {
-                  ref.read(mainProvider.notifier).changeIndex(1);
-                },
-                icon: Icon(
-                  state.selectIndex == 1
-                      ? FlutterRemix.shopping_bag_fill
-                      : FlutterRemix.shopping_bag_line,
-                  color:
-                      state.selectIndex == 1 ? AppStyle.white : AppStyle.icon,
-                )),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 2
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-                onPressed: () {
-                  ref.read(mainProvider.notifier).changeIndex(2);
-                },
-                icon: Icon(
-                  state.selectIndex == 2
-                      ? FlutterRemix.user_3_fill
-                      : FlutterRemix.user_3_line,
-                  color:
-                      state.selectIndex == 2 ? AppStyle.white : AppStyle.icon,
-                )),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 3
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-              onPressed: () {
-                ref.read(mainProvider.notifier).changeIndex(3);
-              },
-              icon: SvgPicture.asset(
-                state.selectIndex == 3
-                    ? Assets.svgSelectTable
-                    : Assets.svgTable,
               ),
-            ),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 4
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-                onPressed: () {
-                  ref.read(mainProvider.notifier).changeIndex(4);
-                },
-                icon: Icon(
-                  state.selectIndex == 4
-                      ? FlutterRemix.money_dollar_circle_fill
-                      : FlutterRemix.money_dollar_circle_line,
-                  color:
-                      state.selectIndex == 4 ? AppStyle.white : AppStyle.icon,
-                )),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 5
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-                onPressed: () {
-                  ref.read(mainProvider.notifier).changeIndex(5);
-                },
-                icon: Icon(
-                  state.selectIndex == 5
-                      ? FlutterRemix.pie_chart_fill
-                      : FlutterRemix.pie_chart_line,
-                  color:
-                      state.selectIndex == 5 ? AppStyle.white : AppStyle.icon,
-                )),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 7
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-              onPressed: () {
-                ref.read(mainProvider.notifier).changeIndex(7);
-              },
-              icon: const Icon(
-                FlutterRemix.printer_fill,
-                color: AppStyle.black,
-              ),
-            ),
-          ),
-          32.verticalSpace,
-          const Spacer(),
-          InkWell(
-            onTap: () {
-              ref.read(mainProvider.notifier).changeIndex(6);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color: state.selectIndex == 6
-                        ? AppStyle.primary
-                        : AppStyle.transparent,
-                  ),
-                  borderRadius: BorderRadius.circular(20.r)),
-              child: CommonImage(
-                  width: 40,
-                  height: 40,
-                  radius: 20,
-                  imageUrl: LocalStorage.getUser()?.img ?? ""),
-            ),
-          ),
-          24.verticalSpace,
-          IconButton(
-              onPressed: () {
-                context.replaceRoute(const LoginRoute());
-                ref.read(newOrdersProvider.notifier).stopTimer();
-                ref.read(acceptedOrdersProvider.notifier).stopTimer();
-                ref.read(cookingOrdersProvider.notifier).stopTimer();
-                ref.read(readyOrdersProvider.notifier).stopTimer();
-                ref.read(onAWayOrdersProvider.notifier).stopTimer();
-                ref.read(deliveredOrdersProvider.notifier).stopTimer();
-                ref.read(canceledOrdersProvider.notifier).stopTimer();
-                LocalStorage.clearStore();
-              },
-              icon: const Icon(
-                FlutterRemix.logout_circle_line,
-                color: AppStyle.icon,
-              )),
-          32.verticalSpace,
-
-        ],
-      ),
-    );
-  }
-
-  Container bottomLeftNavigationBarKitchen(MainState state) {
-    return Container(
-      height: double.infinity,
-      width: 90.w,
-      color: AppStyle.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 0
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-              onPressed: () {
-                ref.read(mainProvider.notifier).changeIndex(0);
-              },
-              icon: SvgPicture.asset(
-                state.selectIndex == 0
-                    ? Assets.svgSelectKitchen
-                    : Assets.svgKitchen,
-              ),
-            ),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 7
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-              onPressed: () {
-                ref.read(mainProvider.notifier).changeIndex(7);
-              },
-              icon: const Icon(
-                FlutterRemix.printer_fill,
-                color: AppStyle.black,
-              ),
-            ),
-          ),
-          32.verticalSpace,
-          const Spacer(),
-          InkWell(
-            onTap: () {
-              ref.read(mainProvider.notifier).changeIndex(1);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
                     color: state.selectIndex == 1
-                        ? AppStyle.primary
+                        ?   ChangeColorController.to.selectedColor
                         : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                    onPressed: () {
+                      ref.read(mainProvider.notifier).changeIndex(1);
+                    },
+                    icon: Icon(
+                      state.selectIndex == 1
+                          ? FlutterRemix.shopping_bag_fill
+                          : FlutterRemix.shopping_bag_line,
+                      color:
+                      state.selectIndex == 1 ? AppStyle.white : AppStyle.icon,
+                    )),
+              ),
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 2
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                    onPressed: () {
+                      ref.read(mainProvider.notifier).changeIndex(2);
+                    },
+                    icon: Icon(
+                      state.selectIndex == 2
+                          ? FlutterRemix.user_3_fill
+                          : FlutterRemix.user_3_line,
+                      color:
+                      state.selectIndex == 2 ? AppStyle.white : AppStyle.icon,
+                    )),
+              ),
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 3
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                  onPressed: () {
+                    ref.read(mainProvider.notifier).changeIndex(3);
+                  },
+                  icon: SvgPicture.asset(
+                    state.selectIndex == 3
+                        ? Assets.svgSelectTable
+                        : Assets.svgTable,
                   ),
-                  borderRadius: BorderRadius.circular(20.r)),
-              child: CommonImage(
-                  width: 40,
-                  height: 40,
-                  radius: 20,
-                  imageUrl: LocalStorage.getUser()?.img ?? ""),
-            ),
+                ),
+              ),
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 4
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                    onPressed: () {
+                      ref.read(mainProvider.notifier).changeIndex(4);
+                    },
+                    icon: Icon(
+                      state.selectIndex == 4
+                          ? FlutterRemix.money_dollar_circle_fill
+                          : FlutterRemix.money_dollar_circle_line,
+                      color:
+                      state.selectIndex == 4 ? AppStyle.white : AppStyle.icon,
+                    )),
+              ),
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 5
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                    onPressed: () {
+                      ref.read(mainProvider.notifier).changeIndex(5);
+                    },
+                    icon: Icon(
+                      state.selectIndex == 5
+                          ? FlutterRemix.pie_chart_fill
+                          : FlutterRemix.pie_chart_line,
+                      color:
+                      state.selectIndex == 5 ? AppStyle.white : AppStyle.icon,
+                    )),
+              ),
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 7
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                  onPressed: () {
+                    ref.read(mainProvider.notifier).changeIndex(7);
+                  },
+                  icon: const Icon(
+                    FlutterRemix.printer_fill,
+                    color: AppStyle.black,
+                  ),
+                ),
+              ),
+              32.verticalSpace,
+              const Spacer(),
+              InkWell(
+                onTap: () {
+                  ref.read(mainProvider.notifier).changeIndex(6);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: state.selectIndex == 6
+                            ?   ChangeColorController.to.selectedColor
+                            : AppStyle.transparent,
+                      ),
+                      borderRadius: BorderRadius.circular(20.r)),
+                  child: CommonImage(
+                      width: 40,
+                      height: 40,
+                      radius: 20,
+                      imageUrl: LocalStorage.getUser()?.img ?? ""),
+                ),
+              ),
+              24.verticalSpace,
+              IconButton(
+                  onPressed: () {
+                    context.replaceRoute(const LoginRoute());
+                    ref.read(newOrdersProvider.notifier).stopTimer();
+                    ref.read(acceptedOrdersProvider.notifier).stopTimer();
+                    ref.read(cookingOrdersProvider.notifier).stopTimer();
+                    ref.read(readyOrdersProvider.notifier).stopTimer();
+                    ref.read(onAWayOrdersProvider.notifier).stopTimer();
+                    ref.read(deliveredOrdersProvider.notifier).stopTimer();
+                    ref.read(canceledOrdersProvider.notifier).stopTimer();
+                    LocalStorage.clearStore();
+                  },
+                  icon: const Icon(
+                    FlutterRemix.logout_circle_line,
+                    color: AppStyle.icon,
+                  )),
+              32.verticalSpace,
+
+            ],
           ),
-          24.verticalSpace,
-          IconButton(
-              onPressed: () {
-                context.replaceRoute(const LoginRoute());
-                ref.read(kitchenProvider.notifier).stopTimer();
-                LocalStorage.clearStore();
-              },
-              icon: const Icon(
-                FlutterRemix.logout_circle_line,
-                color: AppStyle.icon,
-              )),
-          32.verticalSpace
-        ],
-      ),
+        );
+      }
     );
   }
 
-  Container bottomLeftNavigationBarWaiter(MainState state) {
-    return Container(
-      height: double.infinity,
-      width: 90.w,
-      color: AppStyle.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          24.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 0
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-                onPressed: () {
-                  ref.read(mainProvider.notifier).changeIndex(0);
-                },
-                icon: Icon(
-                  state.selectIndex == 0
-                      ? FlutterRemix.home_smile_fill
-                      : FlutterRemix.home_smile_line,
-                  color:
-                      state.selectIndex == 0 ? AppStyle.white : AppStyle.icon,
-                )),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 1
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-                onPressed: () {
+  Obx bottomLeftNavigationBarKitchen(MainState state) {
+    return Obx(() {
+        return Container(
+          height: double.infinity,
+          width: 90.w,
+          color: AppStyle.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 0
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                  onPressed: () {
+                    ref.read(mainProvider.notifier).changeIndex(0);
+                  },
+                  icon: SvgPicture.asset(
+                    state.selectIndex == 0
+                        ? Assets.svgSelectKitchen
+                        : Assets.svgKitchen,
+                  ),
+                ),
+              ),
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 7
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                  onPressed: () {
+                    ref.read(mainProvider.notifier).changeIndex(7);
+                  },
+                  icon: const Icon(
+                    FlutterRemix.printer_fill,
+                    color: AppStyle.black,
+                  ),
+                ),
+              ),
+              32.verticalSpace,
+              const Spacer(),
+              InkWell(
+                onTap: () {
                   ref.read(mainProvider.notifier).changeIndex(1);
                 },
-                icon: Icon(
-                  state.selectIndex == 1
-                      ? FlutterRemix.shopping_bag_fill
-                      : FlutterRemix.shopping_bag_line,
-                  color:
-                      state.selectIndex == 1 ? AppStyle.white : AppStyle.icon,
-                )),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 2
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-              onPressed: () {
-                ref.read(mainProvider.notifier).changeIndex(2);
-              },
-              icon: SvgPicture.asset(
-                state.selectIndex == 2
-                    ? Assets.svgSelectTable
-                    : Assets.svgTable,
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: state.selectIndex == 1
+                            ?   ChangeColorController.to.selectedColor
+                            : AppStyle.transparent,
+                      ),
+                      borderRadius: BorderRadius.circular(20.r)),
+                  child: CommonImage(
+                      width: 40,
+                      height: 40,
+                      radius: 20,
+                      imageUrl: LocalStorage.getUser()?.img ?? ""),
+                ),
               ),
-            ),
+              24.verticalSpace,
+              IconButton(
+                  onPressed: () {
+                    context.replaceRoute(const LoginRoute());
+                    ref.read(kitchenProvider.notifier).stopTimer();
+                    LocalStorage.clearStore();
+                  },
+                  icon: const Icon(
+                    FlutterRemix.logout_circle_line,
+                    color: AppStyle.icon,
+                  )),
+              32.verticalSpace
+            ],
           ),
-          28.verticalSpace,
-          IconButton(
-            onPressed: () => Get.to(PrinterSetting()),
-            icon: const Icon(
-              FlutterRemix.printer_fill,
-              color: AppStyle.black,
-            ),
-          ),
-          28.verticalSpace,
-          Container(
-            decoration: BoxDecoration(
-                color: state.selectIndex == 7
-                    ? AppStyle.primary
-                    : AppStyle.transparent,
-                borderRadius: BorderRadius.circular(10.r)),
-            child: IconButton(
-              onPressed: () {
-                ref.read(mainProvider.notifier).changeIndex(7);
-              },
-              icon: const Icon(
-                FlutterRemix.printer_fill,
-                color: AppStyle.black,
-              ),
-            ),
-          ),
-          32.verticalSpace,
-          const Spacer(),
-          InkWell(
-            onTap: () {
-              ref.read(mainProvider.notifier).changeIndex(3);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color: state.selectIndex == 3
-                        ? AppStyle.primary
+        );
+      }
+    );
+  }
+
+  Obx bottomLeftNavigationBarWaiter(MainState state) {
+    return Obx(() {
+        return Container(
+          height: double.infinity,
+          width: 90.w,
+          color: AppStyle.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              24.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 0
+                        ?   ChangeColorController.to.selectedColor
                         : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                    onPressed: () {
+                      ref.read(mainProvider.notifier).changeIndex(0);
+                    },
+                    icon: Icon(
+                      state.selectIndex == 0
+                          ? FlutterRemix.home_smile_fill
+                          : FlutterRemix.home_smile_line,
+                      color:
+                      state.selectIndex == 0 ? AppStyle.white : AppStyle.icon,
+                    )),
+              ),
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 1
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                    onPressed: () {
+                      ref.read(mainProvider.notifier).changeIndex(1);
+                    },
+                    icon: Icon(
+                      state.selectIndex == 1
+                          ? FlutterRemix.shopping_bag_fill
+                          : FlutterRemix.shopping_bag_line,
+                      color:
+                      state.selectIndex == 1 ? AppStyle.white : AppStyle.icon,
+                    )),
+              ),
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 2
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                  onPressed: () {
+                    ref.read(mainProvider.notifier).changeIndex(2);
+                  },
+                  icon: SvgPicture.asset(
+                    state.selectIndex == 2
+                        ? Assets.svgSelectTable
+                        : Assets.svgTable,
                   ),
-                  borderRadius: BorderRadius.circular(20.r)),
-              child: CommonImage(
-                  width: 40,
-                  height: 40,
-                  radius: 20,
-                  imageUrl: LocalStorage.getUser()?.img ?? ""),
-            ),
+                ),
+              ),
+              28.verticalSpace,
+              IconButton(
+                onPressed: () => Get.to(PrinterSetting()),
+                icon: const Icon(
+                  FlutterRemix.printer_fill,
+                  color: AppStyle.black,
+                ),
+              ),
+              28.verticalSpace,
+              Container(
+                decoration: BoxDecoration(
+                    color: state.selectIndex == 7
+                        ?   ChangeColorController.to.selectedColor
+                        : AppStyle.transparent,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: IconButton(
+                  onPressed: () {
+                    ref.read(mainProvider.notifier).changeIndex(7);
+                  },
+                  icon: const Icon(
+                    FlutterRemix.printer_fill,
+                    color: AppStyle.black,
+                  ),
+                ),
+              ),
+              32.verticalSpace,
+              const Spacer(),
+              InkWell(
+                onTap: () {
+                  ref.read(mainProvider.notifier).changeIndex(3);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: state.selectIndex == 3
+                            ?   ChangeColorController.to.selectedColor
+                            : AppStyle.transparent,
+                      ),
+                      borderRadius: BorderRadius.circular(20.r)),
+                  child: CommonImage(
+                      width: 40,
+                      height: 40,
+                      radius: 20,
+                      imageUrl: LocalStorage.getUser()?.img ?? ""),
+                ),
+              ),
+              24.verticalSpace,
+              IconButton(
+                  onPressed: () {
+                    context.replaceRoute(const LoginRoute());
+                    ref.read(newOrdersProvider.notifier).stopTimer();
+                    ref.read(acceptedOrdersProvider.notifier).stopTimer();
+                    ref.read(cookingOrdersProvider.notifier).stopTimer();
+                    ref.read(readyOrdersProvider.notifier).stopTimer();
+                    ref.read(onAWayOrdersProvider.notifier).stopTimer();
+                    ref.read(deliveredOrdersProvider.notifier).stopTimer();
+                    ref.read(canceledOrdersProvider.notifier).stopTimer();
+                    LocalStorage.clearStore();
+                  },
+                  icon: const Icon(
+                    FlutterRemix.logout_circle_line,
+                    color: AppStyle.icon,
+                  )),
+              32.verticalSpace
+            ],
           ),
-          24.verticalSpace,
-          IconButton(
-              onPressed: () {
-                context.replaceRoute(const LoginRoute());
-                ref.read(newOrdersProvider.notifier).stopTimer();
-                ref.read(acceptedOrdersProvider.notifier).stopTimer();
-                ref.read(cookingOrdersProvider.notifier).stopTimer();
-                ref.read(readyOrdersProvider.notifier).stopTimer();
-                ref.read(onAWayOrdersProvider.notifier).stopTimer();
-                ref.read(deliveredOrdersProvider.notifier).stopTimer();
-                ref.read(canceledOrdersProvider.notifier).stopTimer();
-                LocalStorage.clearStore();
-              },
-              icon: const Icon(
-                FlutterRemix.logout_circle_line,
-                color: AppStyle.icon,
-              )),
-          32.verticalSpace
-        ],
-      ),
+        );
+      }
     );
   }
 
   _showAlertDilog()async{
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Select view for items'),
+          content: Obx(() {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CheckboxListTile(
+                  title: Row(
+                    children: [
+                      Icon(Icons.grid_view_rounded),
+                      SizedBox(width: 10),
+                      Text('Grid View'),
+                    ],
+                  ),
+                  value: mainController.isGridView.value,
+                  onChanged: (value) {
+                    if (value!) {
+                      mainController.isGridView.value = true;
+                      mainController.isListView.value = false; // Auto uncheck ListView
+                    }
+                  },
+                ),
 
-   return showDialog(
-     context: context,
-     barrierDismissible: false,
-     builder: (context) {
-       return AlertDialog(
-         title: Text('Select view for items'),
-         content: Obx(() {
-           return Column(
-             mainAxisSize: MainAxisSize.min,
-             children: [
-               CheckboxListTile(
-                 title: Row(
-                   children: [
-                     Icon(Icons.grid_view_rounded),
-                     SizedBox(width: 10),
-                     Text('Grid View'),
-                   ],
-                 ),
-                 value: mainController.isGridView.value,
-                 onChanged: (value) {
-                   if (value!) {
-                     mainController.isGridView.value = true;
-                     mainController.isListView.value = false; // Auto uncheck ListView
-                   }
-                 },
-               ),
+                CheckboxListTile(
+                  title: Row(
+                    children: [
+                      Icon(Icons.list_alt),
+                      SizedBox(width: 10),
+                      Text('List View'),
+                    ],
+                  ),
+                  value: mainController.isListView.value,
+                  onChanged: (value) {
+                    if (value!) {
+                      mainController.isListView.value = true;
+                      mainController.isGridView.value = false; // Auto uncheck GridView
+                    }
+                  },
+                ),
 
-               CheckboxListTile(
-                 title: Row(
-                   children: [
-                     Icon(Icons.list_alt),
-                     SizedBox(width: 10),
-                     Text('List View'),
-                   ],
-                 ),
-                 value: mainController.isListView.value,
-                 onChanged: (value) {
-                   if (value!) {
-                     mainController.isListView.value = true;
-                     mainController.isGridView.value = false; // Auto uncheck GridView
-                   }
-                 },
-               ),
+                CheckboxListTile(
+                  title: Row(
+                    children: [
+                      Icon(Icons.photo),
+                      SizedBox(width: 10,),
+                      Text('Show Image'),
+                    ],
+                  ),
+                  value: mainController.isShowImage.value,
+                  onChanged: (value) {
+                    mainController.isShowImage.value = value!;
+                  },
+                ),
 
-               CheckboxListTile(
-                 title: Row(
-                   children: [
-                     Icon(Icons.photo),
-                     SizedBox(width: 10,),
-                     Text('Show Image'),
-                   ],
-                 ),
-                 value: mainController.isShowImage.value,
-                 onChanged: (value) {
-                   mainController.isShowImage.value = value!;
-                 },
-               ),
-             ],
-           );
-         }),
-         actions: [
-           TextButton(
-             style: TextButton.styleFrom(
-               backgroundColor: Colors.blue,
-               foregroundColor: Colors.white,
-               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-               shape: RoundedRectangleBorder(
-                 borderRadius: BorderRadius.circular(8),
-               ),
-             ),
-             onPressed: () {
-               mainController.savePrefs();
-               Navigator.of(context).pop();
-             },
-             child: Text('Save', style: TextStyle(fontWeight: FontWeight.bold)),
-           ),
-           SizedBox(width: 10),
-           TextButton(
-             style: TextButton.styleFrom(
-               backgroundColor: Colors.grey.shade200,
-               foregroundColor: Colors.black,
-               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-               shape: RoundedRectangleBorder(
-                 borderRadius: BorderRadius.circular(8),
-               ),
-             ),
-             onPressed: () => Navigator.of(context).pop(),
-             child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold)),
-           ),
-         ],
+                ColorPickerWidget()
+              ],
+            );
+          }),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                mainController.savePrefs();
+                Navigator.of(context).pop();
+              },
+              child: Text('Save', style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(width: 10),
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.grey,
+                foregroundColor: Colors.black,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(height: 10),
 
-       );
-     },
-   );
+
+          ],
+
+        );
+      },
+    );
+  }
+}
+
+class ColorPickerWidget extends StatelessWidget {
+  ColorPickerWidget({Key? key}) : super(key: key);
+
+  final List<Color> colors = [
+    Colors.red,
+    Colors.yellow,
+    Colors.green,
+    Colors.purple,
+    Colors.blue,
+    Colors.orange,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final selectedColor =   ChangeColorController.to.selectedColor;
+
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: colors.map((color) {
+          final isSelected = selectedColor.value == color.value;
+
+          return GestureDetector(
+            onTap: () {
+                ChangeColorController.to.selectedColor = color;
+            },
+            child: Container(
+              width: isSelected ? 48 : 40,
+              height: isSelected ? 48 : 40,
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+                border: isSelected
+                    ? Border.all(color: Colors.black, width: 3)
+                    : null,
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    });
   }
 }

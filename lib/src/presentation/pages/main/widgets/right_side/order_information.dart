@@ -15,8 +15,10 @@ import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import '../../../../theme/theme_controller_getx.dart';
 import 'address/select_address_page.dart';
 import 'riverpod/right_side_provider.dart';
 import 'riverpod/right_side_state.dart';
@@ -423,12 +425,12 @@ class OrderInformation extends ConsumerWidget {
                                 }
                               },
                               child: AnimationButtonEffect(
-                                child: Container(
+                                child:Container(
                                   margin: EdgeInsets.symmetric(horizontal: 4.r),
                                   decoration: BoxDecoration(
                                     color: state.orderType.toLowerCase() ==
-                                            e.toString().toLowerCase()
-                                        ? AppStyle.primary
+                                        e.toString().toLowerCase()
+                                        ?ChangeColorController.to.selectedColor
                                         : AppStyle.editProfileCircle,
                                     borderRadius: BorderRadius.circular(6.r),
                                   ),
@@ -436,7 +438,7 @@ class OrderInformation extends ConsumerWidget {
                                   child: Center(
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
@@ -448,14 +450,14 @@ class OrderInformation extends ConsumerWidget {
                                           padding: EdgeInsets.all(6.r),
                                           child: e == TrKeys.delivery
                                               ? Icon(
-                                                  FlutterRemix.takeaway_fill,
-                                                  size: 18.sp,
-                                                )
+                                            FlutterRemix.takeaway_fill,
+                                            size: 18.sp,
+                                          )
                                               : e == TrKeys.pickup
-                                                  ? SvgPicture.asset(
-                                                      "assets/svg/pickup.svg")
-                                                  : SvgPicture.asset(
-                                                      "assets/svg/dine.svg"),
+                                              ? SvgPicture.asset(
+                                              "assets/svg/pickup.svg")
+                                              : SvgPicture.asset(
+                                              "assets/svg/dine.svg"),
                                         ),
                                         8.horizontalSpace,
                                         Text(
@@ -467,7 +469,7 @@ class OrderInformation extends ConsumerWidget {
                                       ],
                                     ),
                                   ),
-                                ),
+                                )
                               ),
                             ),
                           )),
@@ -490,8 +492,8 @@ class OrderInformation extends ConsumerWidget {
                             builder: (context, child) {
                               return Theme(
                                 data: Theme.of(context).copyWith(
-                                  colorScheme: const ColorScheme.light(
-                                    primary: AppStyle.primary,
+                                  colorScheme:  ColorScheme.light(
+                                    primary: ChangeColorController.to.selectedColor,
                                     onPrimary: AppStyle.black,
                                     onSurface: AppStyle.black,
                                   ),
@@ -536,8 +538,8 @@ class OrderInformation extends ConsumerWidget {
                             builder: (context, child) {
                               return Theme(
                                 data: Theme.of(context).copyWith(
-                                  colorScheme: const ColorScheme.light(
-                                    primary: AppStyle.primary,
+                                  colorScheme:  ColorScheme.light(
+                                    primary: ChangeColorController.to.selectedColor,
                                     onPrimary: AppStyle.black,
                                     onSurface: AppStyle.black,
                                   ),

@@ -8,6 +8,7 @@ import 'package:admin_desktop/src/presentation/pages/main/widgets/income/riverpo
 import 'package:admin_desktop/src/presentation/pages/main/widgets/income/riverpod/income_state.dart';
 import 'package:admin_desktop/src/presentation/pages/main/widgets/income/widgets/statistics_page.dart';
 import 'package:admin_desktop/src/presentation/theme/theme.dart';
+import 'package:admin_desktop/src/presentation/theme/theme_controller_getx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -141,7 +142,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                     state.incomeCart?.revenueType == TrKeys.plus
                         ? Icon(
                             FlutterRemix.arrow_up_line,
-                            color: AppStyle.primary,
+                            color: ChangeColorController.to.selectedColor,
                             size: 18.r,
                           )
                         : Icon(
@@ -155,7 +156,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                       style: GoogleFonts.inter(
                           fontSize: 16.sp,
                           color: state.incomeCart?.revenueType == TrKeys.plus
-                              ? AppStyle.primary
+                              ?  ChangeColorController.to.selectedColor
                               : AppStyle.red),
                     ),
                   ],
@@ -186,9 +187,9 @@ class _InComePageState extends ConsumerState<InComePage> {
                     Row(
                       children: [
                         Container(
-                          decoration: const BoxDecoration(
+                          decoration:  BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppStyle.primary,
+                            color:  ChangeColorController.to.selectedColor,
                           ),
                           padding: EdgeInsets.all(10.r),
                           child: const Icon(
@@ -214,7 +215,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                     state.incomeCart?.ordersType == TrKeys.plus
                         ? Icon(
                             FlutterRemix.arrow_up_line,
-                            color: AppStyle.primary,
+                            color:  ChangeColorController.to.selectedColor,
                             size: 18.r,
                           )
                         : Icon(
@@ -228,7 +229,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                       style: GoogleFonts.inter(
                           fontSize: 16.sp,
                           color: state.incomeCart?.ordersType == TrKeys.plus
-                              ? AppStyle.primary
+                              ?  ChangeColorController.to.selectedColor
                               : AppStyle.red),
                     ),
                   ],
@@ -284,7 +285,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                     state.incomeCart?.averageType == TrKeys.plus
                         ? Icon(
                             FlutterRemix.arrow_up_line,
-                            color: AppStyle.primary,
+                            color:  ChangeColorController.to.selectedColor,
                             size: 18.r,
                           )
                         : Icon(
@@ -298,7 +299,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                       style: GoogleFonts.inter(
                           fontSize: 16.sp,
                           color: state.incomeCart?.averageType == TrKeys.plus
-                              ? AppStyle.primary
+                              ?  ChangeColorController.to.selectedColor
                               : AppStyle.red),
                     ),
                   ],
@@ -326,7 +327,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.r),
                     color: state.selectType == e
-                        ? AppStyle.primary
+                        ?  ChangeColorController.to.selectedColor
                         : AppStyle.white),
                 child: Text(
                   AppHelpers.getTranslation(e),
