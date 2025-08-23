@@ -293,6 +293,7 @@ class PriceInfo extends StatelessWidget {
                     ref
                         .read(acceptedOrdersProvider.notifier)
                         .fetchAcceptedOrders(isRefresh: true);
+
                     AppHelpers.showAlertDialog(
                         context: context,
                         child: Container(
@@ -327,6 +328,9 @@ class PriceInfo extends StatelessWidget {
                             ],
                           ),
                         ));
+
+
+
                     mainNotifier.setPriceDate(null);
                   });
                 });
