@@ -28,11 +28,11 @@ class ChangeColorController extends GetxController {
   ].obs;
 
   RxList<Color> selectedColors = <Color>[
-    Colors.white,
-    Colors.grey.shade100,
-    Colors.blue,
-    Colors.green,
-    Colors.black,
+    Color(0xffFFE080),
+    Color(0xffF57900),
+    Color(0xffE65000),
+    Color(0xffFFE080),
+    Color(0xff000000),
   ].obs;
 
   final String _colorKeyPrefix = 'custom_color_';
@@ -64,6 +64,7 @@ class ChangeColorController extends GetxController {
       final savedColorValue = prefs.getInt('$_colorKeyPrefix$i');
       if (savedColorValue != null) {
         selectedColors[i] = Color(savedColorValue);
+        print("print color  ${selectedColors[i]}");
       }
     }
   }
