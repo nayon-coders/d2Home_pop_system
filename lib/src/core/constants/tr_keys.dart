@@ -73,7 +73,7 @@ class TrKeys {
   static const String average = 'average';
   static const String startEnd = 'start_end';
   static const String saleHistory = 'sale_history';
-  static const String thankYouForOrder = 'thank_you_for_order';
+  static const String thankYouForOrder = 'order_submit';
   static const String shippingInformation = 'shipping_information';
   static const String customers = 'customers';
   static const String na = 'na';

@@ -36,8 +36,8 @@ class PinCodePage extends ConsumerWidget {
             Container(
               constraints: BoxConstraints(maxWidth: 500.r),
               child: SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: ListView(
+                 // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     32.verticalSpace,
                     Row(

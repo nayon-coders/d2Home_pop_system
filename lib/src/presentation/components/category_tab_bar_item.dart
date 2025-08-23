@@ -31,8 +31,8 @@ class CategoryTabBarItem extends StatelessWidget {
             onTap: isActive ? null : onTap,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              width: 110.r,
-              height: 80.r,
+              width: 150.r,
+              height: 140.r,
               decoration: BoxDecoration(
                 color: isActive ? AppStyle.white : ChangeColorController.to.selectedColors[3],
                 borderRadius: BorderRadius.circular(5.r),
@@ -46,12 +46,13 @@ class CategoryTabBarItem extends StatelessWidget {
                 ],
               ),
               alignment: Alignment.center,
-              padding: REdgeInsets.symmetric(horizontal: 18, vertical: 5),
+              padding: REdgeInsets.symmetric(horizontal: 8, vertical: 5),
               margin: REdgeInsets.only(right: 8),
               child: Column(
                 children: [
                   SizedBox(
-                    height: 65.r,
+                    height: 95.r,
+                    width: 100,
                     child: ClipRRect(
                       borderRadius: BorderRadiusDirectional.circular(10),
                       child: Image.network(
@@ -61,13 +62,13 @@ class CategoryTabBarItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
                   Text(
                     '$title',
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     style: GoogleFonts.inter(
-                      fontSize: 16.sp,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
                       color: AppStyle.black,
                     ),

@@ -98,10 +98,12 @@ class WIngredientScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double itemWidth = MediaQuery.of(context).size.width / 2 - 24;
+    double itemHeight = 120;
     return list.isEmpty
         ? const SizedBox.shrink()
         : Container(
-          width:200,
+          width: 600,
           decoration: BoxDecoration(
             color: list.isEmpty ? AppStyle.transparent : AppStyle.white,
             borderRadius: BorderRadius.circular(10.r),
@@ -125,24 +127,20 @@ class WIngredientScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: list.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // fewer columns = bigger buttons
+                  crossAxisCount: 2, // Always 2 columns
                   crossAxisSpacing: 16.r,
                   mainAxisSpacing: 16.r,
-                  childAspectRatio: 1.1, // width / height
+                  mainAxisExtent: 170.h, // 👈 fixes height directly
                 ),
                 itemBuilder: (context, index) {
-                  return SizedBox(
-                    width: double.infinity,
-                    height: 170.h, // Adjust height as needed
-                    child: IngredientItem(
-                      onTap: () => onChange(index),
-                      addon: list[index],
-                      add: () => add(index),
-                      remove: () => remove(index),
-                    ),
+                  return IngredientItem(
+                    onTap: () => onChange(index),
+                    addon: list[index],
+                    add: () => add(index),
+                    remove: () => remove(index),
                   );
                 },
-              ),
+              )
 
             ],
           ),

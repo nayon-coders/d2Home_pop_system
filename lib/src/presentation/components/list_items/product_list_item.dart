@@ -34,14 +34,14 @@ class ProductListItemView extends StatelessWidget {
       onTap: onTap,
       child: Obx(() {
         return  Container(
-          margin: EdgeInsets.only(bottom: 15),
+          margin: EdgeInsets.only(bottom: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
             color: ChangeColorController.to.selectedColors[1],
           ),
           constraints: BoxConstraints(
             maxWidth: 227.r,
-            maxHeight: Get.find<MainController>().isShowImage.value ? 118.r : 118.r,
+            maxHeight: Get.find<MainController>().isShowImage.value ? 130.r : 130.r,
           ),
 
           child: Stack(
@@ -68,7 +68,7 @@ class ProductListItemView extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.inter(
-                                fontSize: 18.sp,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: -14 * 0.02,
                                 color: ChangeColorController.to.selectedColors[4],

@@ -59,7 +59,7 @@ class IngredientItem extends ConsumerWidget {
                   Text(
                     "$quantity",
                     style: GoogleFonts.inter(
-                      fontSize: 15.sp,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -132,7 +132,7 @@ class _CircleIconButton extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          size: 16.sp,
+          size: 50.sp,
           color: iconColor,
         ),
       ),

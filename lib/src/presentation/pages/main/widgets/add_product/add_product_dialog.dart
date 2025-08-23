@@ -46,6 +46,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
     final rightSideNotifier = ref.read(rightSideProvider.notifier);
     final List<Stocks> stocks = state.product?.stocks ?? <Stocks>[];
     if (stocks.isEmpty) {
+      print("width: ${MediaQuery.of(context).size.width * 0.5}");
       return Align(
 
         child: Dialog(
@@ -53,6 +54,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Container(
+           // width: 300,
 
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.r),
@@ -61,6 +63,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
             constraints: BoxConstraints(
               maxHeight: 700.r,
               maxWidth: 500.r,
+             // maxWidth: MediaQuery.of(context).size.width * 0.5,
             ),
             padding: REdgeInsets.symmetric(horizontal: 40, vertical: 50),
             child: Text(
@@ -82,7 +85,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
     print(" MediaQuery.of(context).size.height / 1.6 -- ${ MediaQuery.of(context).size.height / 1.6}");
     print(" MediaQuery.of(context).size.height / 1.6 -- ${ MediaQuery.of(context).size.width / 1.6}");
     return Transform.translate(
-      offset: const Offset(-100, 0), // 👈 shift dialog 200px left
+      offset: const Offset(-140, 0), // 👈 shift dialog 200px left
       child: Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
@@ -94,7 +97,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
           ),
           constraints: BoxConstraints(
             maxHeight:  550.0,
-            maxWidth: 700.0,
+            maxWidth: 550.0,
           ),
           padding: REdgeInsets.symmetric(horizontal: 40),
           child: Column(
@@ -108,7 +111,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                       const SizedBox.shrink(),
                       const Spacer(),
                       CircleIconButton(
-                        size: 80,
+                        size: 70,
                         backgroundColor: AppStyle.transparent,
                         iconData: FlutterRemix.close_circle_line,
                         icon: AppStyle.black,
@@ -203,7 +206,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                                       8.verticalSpace,
                                       typedExtra.type == ExtrasType.text
                                           ? SizedBox(
-                                        width: MediaQuery.of(context).size.width / 1.6 - 370.w,
+                                        width: 500,
                                         child: TextExtras(
                                           uiExtras: typedExtra.uiExtras,
                                           groupIndex: typedExtra.groupIndex,
@@ -246,7 +249,7 @@ class _AddProductDialogState extends ConsumerState<AddProductDialog> {
                             8.verticalSpace,
                             SizedBox(
                               //width: 200,
-                              width: MediaQuery.of(context).size.width / 2 - 370.w,
+                              width: 300,
                               child: WIngredientScreen(
                                 list: state.selectedStock?.addons ?? [],
                                 onChange: (int value) {
