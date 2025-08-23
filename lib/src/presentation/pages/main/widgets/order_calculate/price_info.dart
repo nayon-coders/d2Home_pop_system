@@ -258,6 +258,7 @@ class PriceInfo extends StatelessWidget {
                 isLoading: state.isOrderLoading,
                 title: AppHelpers.getTranslation(TrKeys.confirmOrder),
                 onPressed: () {
+                  print("state.selectedCurrency?.id -- ${state.selectedCurrency?.id}");
                   notifier.createOrder(
                       context,
                       OrderBodyData(
@@ -280,8 +281,10 @@ class PriceInfo extends StatelessWidget {
                             : (TimeOfDay.now().hour.toString().length == 2
                             ? "${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"
                             : "0${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"),
-                        currencyId: state.selectedCurrency?.id,
-                        rate: state.selectedCurrency?.rate,
+                       // currencyId: state.selectedCurrency?.id,
+                        currencyId: 2,
+                        rate: 1,
+                       // rate: state.selectedCurrency?.rate,
                         tableId: state.selectedTable?.id,
                       ), onSuccess: () {
                     ref
