@@ -98,7 +98,7 @@ class OrderCalculate extends ConsumerWidget {
                                   border: Border.all(color: Get
                                       .find<PaymentCalculatorController>()
                                       .isSelectCashBox
-                                      .value ? ChangeColorController.to.selectedColor : AppStyle
+                                      .value ? ChangeColorController.to.selectedColors[2] : AppStyle
                                       .differborder),
                                   borderRadius: BorderRadius.circular(8.r),
                                 ),
@@ -161,11 +161,12 @@ class OrderCalculate extends ConsumerWidget {
                               width: 170,
                               padding: EdgeInsets.only(left: 20.r, right: 20.r),
                               decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.r),
                                   border: Border.all(color: Get
                                       .find<PaymentCalculatorController>()
                                       .isSelectCashBox
-                                      .value ? AppStyle.differborder : ChangeColorController.to.selectedColor),
-                                  borderRadius: BorderRadius.circular(8.r)),
+                                      .value ? AppStyle.differborder : ChangeColorController.to.selectedColors[2],
+                               ),),
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Obx(() {
@@ -562,94 +563,97 @@ class OrderCalculate extends ConsumerWidget {
               ),
             ),
           ),
-          Positioned(
-            bottom: 20,
-            left: 16,
-            right: 16,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(color: Colors.white),
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        AppHelpers.getTranslation(TrKeys.totalPrice),
-                        style: GoogleFonts.inter(
-                          color: AppStyle.black,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.4,
-                        ),
-                      ),
-                      Text(
-                        AppHelpers.numberFormat(
-                          (stateRight.paginateResponse!.totalPrice ?? 0) -
-                              (stateRight.paginateResponse!.serviceFee ?? 0),
-                          symbol: stateRight.bags[stateRight.selectedBagIndex]
-                              .selectedCurrency
-                              ?.symbol,
-                        ),
-                        style: GoogleFonts.inter(
-                          color: AppStyle.black,
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.4,
-                        ),
-                      ),
-                    ],
-                  ),
-                  20.verticalSpace,
-                  Obx(() {
-                    final controller = Get.find<PaymentCalculatorController>();
-                    return controller.balanceAmount.isEmpty
-                        ? const SizedBox.shrink()
-                        : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(() =>
-                            Text(
-                              "${controller.balanceType.value}: ",
-                              style: GoogleFonts.inter(
-                                color: AppStyle.black,
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: -0.4,
-                              ),
-                            )),
-                        Obx(() {
-                          return Text(
-                            "\$ ${controller.balanceAmount.value}",
-                            style: GoogleFonts.inter(
-                              color: AppStyle.black,
-                              fontSize: 22.sp,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.4,
-                            ),
-                          );
-                        }),
-                      ],
-                    );
-                  }),
-                  SizedBox(height: 20),
-                  Consumer(
-                    builder: (BuildContext context, WidgetRef ref,
-                        Widget? child) {
-                      return LoginButton(
-                        isLoading: stateRight.isOrderLoading,
-                        title: AppHelpers.getTranslation(TrKeys.confirmOrder),
-                        onPressed: () {
-                          // Order creation logic here...
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 20,
+          //   left: 16,
+          //   right: 16,
+          //   child: Container(
+          //     padding: EdgeInsets.symmetric(horizontal: 10),
+          //     decoration: BoxDecoration(color: Colors.white),
+          //     child: Column(
+          //       children: [
+          //         SizedBox(height: 20),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: [
+          //             Text(
+          //               AppHelpers.getTranslation(TrKeys.totalPrice),
+          //               style: GoogleFonts.inter(
+          //                 color: AppStyle.black,
+          //                 fontSize: 18.sp,
+          //                 fontWeight: FontWeight.w600,
+          //                 letterSpacing: -0.4,
+          //               ),
+          //             ),
+          //             Text(
+          //               AppHelpers.numberFormat(
+          //                 (stateRight.paginateResponse!.totalPrice ?? 0) -
+          //                     (stateRight.paginateResponse!.serviceFee ?? 0),
+          //                 symbol: stateRight.bags[stateRight.selectedBagIndex]
+          //                     .selectedCurrency
+          //                     ?.symbol,
+          //               ),
+          //               style: GoogleFonts.inter(
+          //                 color: AppStyle.black,
+          //                 fontSize: 22.sp,
+          //                 fontWeight: FontWeight.w600,
+          //                 letterSpacing: -0.4,
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         20.verticalSpace,
+          //         Obx(() {
+          //           final controller = Get.find<PaymentCalculatorController>();
+          //           return controller.balanceAmount.isEmpty
+          //               ? const SizedBox.shrink()
+          //               : Row(
+          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //             children: [
+          //               Obx(() =>
+          //                   Text(
+          //                     "${controller.balanceType.value}: ",
+          //                     style: GoogleFonts.inter(
+          //                       color: AppStyle.black,
+          //                       fontSize: 18.sp,
+          //                       fontWeight: FontWeight.w600,
+          //                       letterSpacing: -0.4,
+          //                     ),
+          //                   )),
+          //               Obx(() {
+          //                 return Text(
+          //                   "\$ ${controller.balanceAmount.value}",
+          //                   style: GoogleFonts.inter(
+          //                     color: AppStyle.black,
+          //                     fontSize: 22.sp,
+          //                     fontWeight: FontWeight.w600,
+          //                     letterSpacing: -0.4,
+          //                   ),
+          //                 );
+          //               }),
+          //             ],
+          //           );
+          //         }),
+          //
+          //
+          //         // SizedBox(height: 20),
+          //         // Consumer(
+          //         //   builder: (BuildContext context, WidgetRef ref,
+          //         //       Widget? child) {
+          //         //     return LoginButton(
+          //         //       isLoading: stateRight.isOrderLoading,
+          //         //       title: AppHelpers.getTranslation(TrKeys.confirmOrder),
+          //         //       onPressed: () {
+          //         //         // Order creation logic here...
+          //         //
+          //         //       },
+          //         //     );
+          //         //   },
+          //         // ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -677,7 +681,7 @@ class OrderCalculate extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  color:   Get.find<PaymentCalculatorController>().selectedPaymentOption.value == paymentOption[index] ? ChangeColorController.to.selectedColor : Colors.white,
+                  color:   Get.find<PaymentCalculatorController>().selectedPaymentOption.value == paymentOption[index] ? ChangeColorController.to.selectedColors[2]  : Colors.white,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Center(

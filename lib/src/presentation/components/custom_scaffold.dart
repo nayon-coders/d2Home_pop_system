@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import '../theme/theme/theme.dart';
 import '../theme/theme/theme_warpper.dart';
+import '../theme/theme_controller_getx.dart';
 import 'components.dart';
 
 class CustomScaffold extends StatefulWidget {
@@ -84,8 +85,9 @@ class _CustomScaffoldState extends State<CustomScaffold>
               extendBody: widget.extendBody,
               resizeToAvoidBottomInset: false,
               appBar: widget.appBar?.call(colors),
-              backgroundColor: widget.backgroundColor ?? colors.backgroundColor,
-              body: widget.body(colors),
+             // backgroundColor: widget.backgroundColor ?? colors.backgroundColor,
+              backgroundColor: ChangeColorController.to.selectedColors[0],
+                body: widget.body(colors),
               floatingActionButton: widget.floatingActionButton?.call(colors),
               floatingActionButtonLocation: widget.floatingActionButtonLocation,
               bottomNavigationBar: widget.bottomNavigationBar?.call(colors),

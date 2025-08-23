@@ -112,13 +112,14 @@ class _SaleHistoryState extends ConsumerState<SaleHistory> {
                         padding: EdgeInsets.all(8.r),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: ChangeColorController.to.selectedColor.withOpacity(0.01),
+                            color: ChangeColorController.to.selectedColors[2],
                             //color: AppStyle.primary.withOpacity(0.01),
                             boxShadow: [
                               BoxShadow(
                                   blurRadius: 32.r,
                                   spreadRadius: 12.r,
-                                  color:  ChangeColorController.to.selectedColor.withOpacity(0.5))
+                                  color:  ChangeColorController.to.selectedColors[2]
+                              )
                                   //color: AppStyle.primary.withOpacity(0.5))
                             ]),
                         child: SvgPicture.asset(Assets.svgCart));

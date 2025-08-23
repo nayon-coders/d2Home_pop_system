@@ -17,7 +17,7 @@ class PinContainer extends StatelessWidget {
       margin: EdgeInsets.only(right: 12.w),
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: isActive ?  ChangeColorController.to.selectedColor: AppStyle.transparent,
+          color: isActive ?  ChangeColorController.to.selectedColors[2] :  AppStyle.transparent,
         border: Border.all(color: isActive? AppStyle.transparent: AppStyle.outlineButtonBorder)
       ),
     );

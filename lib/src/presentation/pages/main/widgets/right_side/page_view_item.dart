@@ -17,6 +17,7 @@ import 'package:admin_desktop/src/core/utils/utils.dart';
 import 'package:admin_desktop/src/models/models.dart';
 import '../../../../components/components.dart';
 import '../../../../theme/theme.dart';
+import '../../../../theme/theme_controller_getx.dart';
 import '../../getx_controller/bag_controller.dart';
 import 'riverpod/right_side_provider.dart';
 
@@ -78,6 +79,7 @@ class _PageViewItemState extends ConsumerState<PageViewItem> {
                       ...List.generate(
                         state.paginateResponse?.stocks?.length ?? 0,
                             (index) => CartOrderItem(
+                              bgColor: index.isEven ? ChangeColorController.to.selectedColors[3] :  ChangeColorController.to.selectedColors[3].withOpacity(0.4),
                           symbol: widget.bag.selectedCurrency?.symbol,
                           add: () {
                             notifier.increaseProductCount(productIndex: index);

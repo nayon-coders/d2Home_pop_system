@@ -36,7 +36,7 @@ class ProductGridItem extends StatelessWidget {
         return  Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
-            color: AppStyle.white,
+            color: ChangeColorController.to.selectedColors[1] // Button Color // Button Color,
           ),
           constraints: BoxConstraints(
             maxWidth: 227.r,
@@ -63,10 +63,10 @@ class ProductGridItem extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.inter(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
                             letterSpacing: -14 * 0.02,
-                            color: AppStyle.black,
+                            color: ChangeColorController.to.selectedColors[4] ,
                           ),
                         ),
                         6.verticalSpace,
@@ -80,7 +80,7 @@ class ProductGridItem extends StatelessWidget {
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
                             letterSpacing: -14 * 0.02,
-                            color: isOutOfStock ? AppStyle.red : ChangeColorController.to.selectedColor,
+                            color: isOutOfStock ? AppStyle.red : ChangeColorController.to.selectedColors[4] // Button Color // Button Color,
                           ),
                         ),
                         8.verticalSpace,
@@ -111,7 +111,7 @@ class ProductGridItem extends StatelessWidget {
                               style: GoogleFonts.inter(
                                 fontSize: 25.sp,
                                 fontWeight: FontWeight.w600,
-                                color: AppStyle.black,
+                                color:  ChangeColorController.to.selectedColors[4] ,
                                 letterSpacing: -14 * 0.02,
                               ),
                             ),
@@ -140,7 +140,7 @@ class ProductGridItem extends StatelessWidget {
                                 begin: Alignment.bottomRight,
                                 end: Alignment.topLeft,
                                 colors: [
-                                  ChangeColorController.to.selectedColor,
+                                  ChangeColorController.to.selectedColors[1],
                                   Colors.transparent,
                                 ],
                                 stops: [0.0, 0.4],

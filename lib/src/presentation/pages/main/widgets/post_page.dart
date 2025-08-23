@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../theme/theme_controller_getx.dart';
 import 'left_side.dart';
 import 'order_calculate/order_calculate.dart';
 import 'right_side/right_side.dart';
@@ -13,7 +14,9 @@ class PostPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,ref) {
-    return CustomScaffold(body: (c)=> ref.watch(mainProvider).priceDate != null
+    return CustomScaffold(
+
+        body: (c)=> ref.watch(mainProvider).priceDate != null
         ?  OrderCalculate()
         :  Padding(
           padding: REdgeInsets.symmetric(horizontal: 15),

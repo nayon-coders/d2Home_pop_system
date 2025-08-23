@@ -430,7 +430,7 @@ class OrderInformation extends ConsumerWidget {
                                   decoration: BoxDecoration(
                                     color: state.orderType.toLowerCase() ==
                                         e.toString().toLowerCase()
-                                        ?ChangeColorController.to.selectedColor
+                                        ?ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                                         : AppStyle.editProfileCircle,
                                     borderRadius: BorderRadius.circular(6.r),
                                   ),
@@ -493,7 +493,7 @@ class OrderInformation extends ConsumerWidget {
                               return Theme(
                                 data: Theme.of(context).copyWith(
                                   colorScheme:  ColorScheme.light(
-                                    primary: ChangeColorController.to.selectedColor,
+                                    primary: ChangeColorController.to.selectedColors[2], // Button Color // Button Color,
                                     onPrimary: AppStyle.black,
                                     onSurface: AppStyle.black,
                                   ),
@@ -539,7 +539,7 @@ class OrderInformation extends ConsumerWidget {
                               return Theme(
                                 data: Theme.of(context).copyWith(
                                   colorScheme:  ColorScheme.light(
-                                    primary: ChangeColorController.to.selectedColor,
+                                    primary: ChangeColorController.to.selectedColors[2], // Button Color // Button Color,
                                     onPrimary: AppStyle.black,
                                     onSurface: AppStyle.black,
                                   ),

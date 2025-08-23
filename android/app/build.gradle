@@ -24,7 +24,8 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.posd2home.tableapp"
+    //namespace "com.pos.d2home"
+    namespace "com.pos.d2home"
     compileSdkVersion 35
 //    buildToolsVersion "35.0.0"
     ndkVersion "26.1.10909125"
@@ -43,7 +44,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.posd2home.tableapp"
+        applicationId "com.pos.d2home"
         minSdkVersion 25
         targetSdkVersion 35
         multiDexEnabled true

@@ -142,7 +142,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                     state.incomeCart?.revenueType == TrKeys.plus
                         ? Icon(
                             FlutterRemix.arrow_up_line,
-                            color: ChangeColorController.to.selectedColor,
+                            color: ChangeColorController.to.selectedColors[2], // Button Color // Button Color,
                             size: 18.r,
                           )
                         : Icon(
@@ -156,7 +156,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                       style: GoogleFonts.inter(
                           fontSize: 16.sp,
                           color: state.incomeCart?.revenueType == TrKeys.plus
-                              ?  ChangeColorController.to.selectedColor
+                              ?  ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                               : AppStyle.red),
                     ),
                   ],
@@ -189,7 +189,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                         Container(
                           decoration:  BoxDecoration(
                             shape: BoxShape.circle,
-                            color:  ChangeColorController.to.selectedColor,
+                            color:  ChangeColorController.to.selectedColors[2] // Button Color // Button Color,
                           ),
                           padding: EdgeInsets.all(10.r),
                           child: const Icon(
@@ -215,7 +215,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                     state.incomeCart?.ordersType == TrKeys.plus
                         ? Icon(
                             FlutterRemix.arrow_up_line,
-                            color:  ChangeColorController.to.selectedColor,
+                            color:  ChangeColorController.to.selectedColors[2], // Button Color // Button Color,
                             size: 18.r,
                           )
                         : Icon(
@@ -229,7 +229,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                       style: GoogleFonts.inter(
                           fontSize: 16.sp,
                           color: state.incomeCart?.ordersType == TrKeys.plus
-                              ?  ChangeColorController.to.selectedColor
+                              ?  ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                               : AppStyle.red),
                     ),
                   ],
@@ -285,7 +285,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                     state.incomeCart?.averageType == TrKeys.plus
                         ? Icon(
                             FlutterRemix.arrow_up_line,
-                            color:  ChangeColorController.to.selectedColor,
+                            color:  ChangeColorController.to.selectedColors[2], // Button Color // Button Color,
                             size: 18.r,
                           )
                         : Icon(
@@ -299,7 +299,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                       style: GoogleFonts.inter(
                           fontSize: 16.sp,
                           color: state.incomeCart?.averageType == TrKeys.plus
-                              ?  ChangeColorController.to.selectedColor
+                              ?  ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                               : AppStyle.red),
                     ),
                   ],
@@ -327,7 +327,7 @@ class _InComePageState extends ConsumerState<InComePage> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.r),
                     color: state.selectType == e
-                        ?  ChangeColorController.to.selectedColor
+                        ?  ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                         : AppStyle.white),
                 child: Text(
                   AppHelpers.getTranslation(e),

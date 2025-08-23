@@ -29,11 +29,11 @@ class PriceInfo extends StatelessWidget {
 
   const PriceInfo(
       {super.key,
-      required this.state,
-      required this.notifier,
-      required this.bag,
-      required this.selectedPayment,
-      required this.mainNotifier});
+        required this.state,
+        required this.notifier,
+        required this.bag,
+        required this.selectedPayment,
+        required this.mainNotifier});
 
   @override
   Widget build(BuildContext context) {
@@ -168,32 +168,167 @@ class PriceInfo extends StatelessWidget {
         12.verticalSpace,
         state.paginateResponse?.couponPrice != 0
             ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppHelpers.getTranslation(TrKeys.promoCode),
-                    style: GoogleFonts.inter(
-                      color: AppStyle.black,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                  Text(
-                    "-${AppHelpers.numberFormat(state.paginateResponse?.couponPrice ?? 0, symbol: bag.selectedCurrency?.symbol)}",
-                    style: GoogleFonts.inter(
-                      color: AppStyle.red,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: -0.4,
-                    ),
-                  ),
-                ],
-              )
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              AppHelpers.getTranslation(TrKeys.promoCode),
+              style: GoogleFonts.inter(
+                color: AppStyle.black,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                letterSpacing: -0.4,
+              ),
+            ),
+            Text(
+              "-${AppHelpers.numberFormat(state.paginateResponse?.couponPrice ?? 0, symbol: bag.selectedCurrency?.symbol)}",
+              style: GoogleFonts.inter(
+                color: AppStyle.red,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400,
+                letterSpacing: -0.4,
+              ),
+            ),
+          ],
+        )
             : const SizedBox.shrink(),
         const Divider(),
+        20.verticalSpace,
 
-
+        //static alway from bottom
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              AppHelpers.getTranslation(TrKeys.totalPrice),
+              style: GoogleFonts.inter(
+                color: AppStyle.black,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.4,
+              ),
+            ),
+            Text(
+              AppHelpers.numberFormat(totalPrice ?? 0,
+                  symbol: bag.selectedCurrency?.symbol),
+              style: GoogleFonts.inter(
+                color: AppStyle.black,
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.4,
+              ),
+            ),
+          ],
+        ),
+        20.verticalSpace,
+        Obx(() {
+          return Get.find<PaymentCalculatorController>().balanceAmount.isEmpty
+              ? const SizedBox.shrink()
+              : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Obx(() => Text(
+                "${Get.find<PaymentCalculatorController>().balanceType.value}: ",
+                style: GoogleFonts.inter(
+                  color: AppStyle.black,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.4,
+                ),
+              )),
+              Obx((){
+                return Text(
+                  "\$ ${Get.find<PaymentCalculatorController>().balanceAmount.value}",
+                  style: GoogleFonts.inter(
+                    color: AppStyle.black,
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -0.4,
+                  ),
+                );
+              }
+              ),
+            ],
+          );
+        }
+        ),
+        32.verticalSpace,
+        Consumer(
+          builder: (BuildContext context, WidgetRef ref, Widget? child) {
+            return LoginButton(
+                isLoading: state.isOrderLoading,
+                title: AppHelpers.getTranslation(TrKeys.confirmOrder),
+                onPressed: () {
+                  notifier.createOrder(
+                      context,
+                      OrderBodyData(
+                        bagData: bag,
+                        coupon: state.coupon,
+                        phone: state.selectedUser?.phone,
+                        note: state.comment,
+                        userId: state.selectedUser?.id,
+                        deliveryFee: (state.paginateResponse?.deliveryFee),
+                        deliveryType: state.orderType,
+                        location: state.selectedAddress?.location,
+                        address: AddressModel(
+                            address: state.selectedAddress?.address),
+                        deliveryDate: intl.DateFormat("yyyy-MM-dd")
+                            .format(state.orderDate ?? DateTime.now()),
+                        deliveryTime: state.orderTime != null
+                            ? (state.orderTime?.hour.toString().length == 2
+                            ? "${state.orderTime?.hour}:${state.orderTime?.minute.toString().padLeft(2, '0')}"
+                            : "0${state.orderTime?.hour}:${state.orderTime?.minute.toString().padLeft(2, '0')}")
+                            : (TimeOfDay.now().hour.toString().length == 2
+                            ? "${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"
+                            : "0${TimeOfDay.now().hour}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}"),
+                        currencyId: state.selectedCurrency?.id,
+                        rate: state.selectedCurrency?.rate,
+                        tableId: state.selectedTable?.id,
+                      ), onSuccess: () {
+                    ref
+                        .read(newOrdersProvider.notifier)
+                        .fetchNewOrders(isRefresh: true);
+                    ref
+                        .read(acceptedOrdersProvider.notifier)
+                        .fetchAcceptedOrders(isRefresh: true);
+                    AppHelpers.showAlertDialog(
+                        context: context,
+                        child: Container(
+                          width: 200.w,
+                          height: 200.w,
+                          padding: EdgeInsets.all(30.r),
+                          decoration: BoxDecoration(
+                              color: AppStyle.white,
+                              borderRadius: BorderRadius.circular(10.r)),
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                    color: AppStyle.primary,
+                                    shape: BoxShape.circle),
+                                padding: EdgeInsets.all(12.r),
+                                child: Icon(
+                                  Icons.check,
+                                  size: 56.r,
+                                  color: AppStyle.white,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                AppHelpers.getTranslation(
+                                    TrKeys.thankYouForOrder),
+                                style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 22.r),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                        ));
+                    mainNotifier.setPriceDate(null);
+                  });
+                });
+          },
+        )
       ],
     );
   }

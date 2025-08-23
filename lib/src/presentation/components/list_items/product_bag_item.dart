@@ -22,6 +22,7 @@ class CartOrderItem extends StatelessWidget {
   final VoidCallback remove;
   final VoidCallback delete;
   final bool isActive;
+  final Color bgColor;
   final bool isOwn;
 
   const CartOrderItem({
@@ -33,6 +34,7 @@ class CartOrderItem extends StatelessWidget {
     this.isActive = true,
     this.isOwn = true,
     required this.symbol,
+    required this.bgColor
   });
 
   @override
@@ -86,205 +88,208 @@ class CartOrderItem extends StatelessWidget {
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: AppStyle.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.r),
-                ),
+                color: bgColor,
+                // borderRadius: BorderRadius.all(
+                //   Radius.circular(10.r),
+                // ),
               ),
-              child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.r),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              RichText(
-                                  text: TextSpan(
-                                      text: cart
-                                          ?.stock?.product?.translation?.title,
-                                      style: GoogleFonts.inter(
-                                        fontSize: 14.sp,
-                                        color: AppStyle.black,
-                                      ),
-                                      children: [
-                                        if (cart?.stock?.extras?.isNotEmpty ??
-                                            false)
-                                          TextSpan(
-                                            text:
-                                            " (${cart?.stock?.extras?.first.value ?? ""})",
-                                            style: GoogleFonts.inter(
-                                              fontSize: 14.sp,
-                                              color: AppStyle.hint,
-                                            ),
-                                          )
-                                      ])),
-                              8.verticalSpace,
-                              for (Addons e in (cart?.addons ?? []))
-                                Text(
-                                  "${e.product?.translation?.title ?? ""} ( ${AppHelpers.numberFormat((e.price ?? 0) / (e.quantity ?? 1), symbol: symbol)} x ${(e.quantity ?? 1)} )",
-                                  style: GoogleFonts.inter(
-                                    fontSize: 12.sp,
-                                    color: AppStyle.unselectedTab,
-                                  ),
-                                ),
-                              16.verticalSpace,
-                            ],
-                          ),
-                        ),
-                      ),
-                      4.horizontalSpace,
-                      (cart?.stock?.bonus != null || (cart?.bonus ?? false))
-                          ? Positioned(
-                        bottom: 4.r,
-                        right: 4.r,
-                        child: Container(
-                          width: 22.w,
-                          height: 22.h,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppStyle.blue),
-                          child: Icon(
-                            FlutterRemix.gift_2_fill,
-                            size: 14.r,
-                            color: AppStyle.white,
-                          ),
-                        ),
-                      )
-                          : const SizedBox.shrink(),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Obx((){
-                          return Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10.h, horizontal: 16.w),
-                            decoration: BoxDecoration(
-                                color: ChangeColorController.to.selectedColor,
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(10.r),
-                                    bottomRight: Radius.circular(10.r))),
-                            child: Text(
-                              "${(cart?.quantity ?? 1).toString()}x",
-                              style: GoogleFonts.inter(
-                                  fontSize: 14.sp,
-                                  color: AppStyle.black,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          );
-                        }
-                      ),
-                      24.horizontalSpace,
-                      GestureDetector(
-                        onTap: remove,
-                        child: AnimationButtonEffect(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppStyle.removeButtonColor,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10.r),
-                                bottomLeft: Radius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8.h, horizontal: 25.w),
-                              child: const Icon(
-                                Icons.remove,
-                                color: AppStyle.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      4.horizontalSpace,
-                      GestureDetector(
-                        onTap: add,
-                        child: AnimationButtonEffect(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: AppStyle.addButtonColor,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(10.r),
-                                bottomRight: Radius.circular(10.r),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8.h, horizontal: 25.w),
-                              child: const Icon(
-                                Icons.add,
-                                color: AppStyle.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      !(cart?.stock?.bonus != null || (cart?.bonus ?? false))
-                          ? Column(
-                        children: [
-                          Text(
-                            intl.NumberFormat.currency(
-                              symbol: symbol ??
-                                  LocalStorage.getSelectedCurrency()
-                                      .symbol,
-                            ).format((cart?.discount ?? 0) != 0
-                                ? disSumPrice
-                                : sumPrice),
-                            style: GoogleFonts.inter(
-                                fontWeight: FontWeight.w600,
-                                fontSize: (cart?.discount ?? 0) != 0
-                                    ? 12.sp
-                                    : 16.sp,
-                                color: AppStyle.black,
-                                decoration: (cart?.discount ?? 0) != 0
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none),
-                          ),
-                          (cart?.discount ?? 0) != 0
-                              ? Container(
-                            margin: EdgeInsets.only(top: 8.r),
-                            decoration: BoxDecoration(
-                                color: AppStyle.red,
-                                borderRadius:
-                                BorderRadius.circular(30.r)),
-                            padding: EdgeInsets.all(4.r),
-                            child: Row(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.r),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SvgPicture.asset(
-                                    "assets/svg/discount.svg"),
-                                4.horizontalSpace,
-                                Text(
-                                  AppHelpers.numberFormat(
-                                    sumPrice,
-                                    symbol: symbol,
+                                RichText(
+                                    text: TextSpan(
+                                        text: cart
+                                            ?.stock?.product?.translation?.title,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 14.sp,
+                                          color: AppStyle.black,
+                                        ),
+                                        children: [
+                                          if (cart?.stock?.extras?.isNotEmpty ??
+                                              false)
+                                            TextSpan(
+                                              text:
+                                              " (${cart?.stock?.extras?.first.value ?? ""})",
+                                              style: GoogleFonts.inter(
+                                                fontSize: 14.sp,
+                                                color: AppStyle.hint,
+                                              ),
+                                            )
+                                        ])),
+                                8.verticalSpace,
+                                for (Addons e in (cart?.addons ?? []))
+                                  Text(
+                                    "${e.product?.translation?.title ?? ""} ( ${AppHelpers.numberFormat((e.price ?? 0) / (e.quantity ?? 1), symbol: symbol)} x ${(e.quantity ?? 1)} )",
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12.sp,
+                                      color: AppStyle.unselectedTab,
+                                    ),
                                   ),
-
-                                  /// usage
-
-                                  style: GoogleFonts.inter(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14.sp,
-                                      color: AppStyle.white),
-                                )
+                                16.verticalSpace,
                               ],
                             ),
-                          )
-                              : const SizedBox.shrink()
-                        ],
-                      )
-                          : const SizedBox.shrink(),
-                      16.horizontalSpace,
-                    ],
-                  ),
-                ],
+                          ),
+                        ),
+                        4.horizontalSpace,
+                        (cart?.stock?.bonus != null || (cart?.bonus ?? false))
+                            ? Positioned(
+                          bottom: 4.r,
+                          right: 4.r,
+                          child: Container(
+                            width: 22.w,
+                            height: 22.h,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppStyle.blue),
+                            child: Icon(
+                              FlutterRemix.gift_2_fill,
+                              size: 14.r,
+                              color: AppStyle.white,
+                            ),
+                          ),
+                        )
+                            : const SizedBox.shrink(),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Obx((){
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.h, horizontal: 16.w),
+                              decoration: BoxDecoration(
+                                  color: ChangeColorController.to.selectedColors[2],
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(10.r),
+                                      bottomRight: Radius.circular(10.r))),
+                              child: Text(
+                                "${(cart?.quantity ?? 1).toString()}x",
+                                style: GoogleFonts.inter(
+                                    fontSize: 14.sp,
+                                    color: AppStyle.black,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            );
+                          }
+                        ),
+                        24.horizontalSpace,
+                        GestureDetector(
+                          onTap: remove,
+                          child: AnimationButtonEffect(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppStyle.removeButtonColor,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10.r),
+                                  bottomLeft: Radius.circular(10.r),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8.h, horizontal: 25.w),
+                                child: const Icon(
+                                  Icons.remove,
+                                  color: AppStyle.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        4.horizontalSpace,
+                        GestureDetector(
+                          onTap: add,
+                          child: AnimationButtonEffect(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppStyle.addButtonColor,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10.r),
+                                  bottomRight: Radius.circular(10.r),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8.h, horizontal: 25.w),
+                                child: const Icon(
+                                  Icons.add,
+                                  color: AppStyle.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        !(cart?.stock?.bonus != null || (cart?.bonus ?? false))
+                            ? Column(
+                          children: [
+                            Text(
+                              intl.NumberFormat.currency(
+                                symbol: symbol ??
+                                    LocalStorage.getSelectedCurrency()
+                                        .symbol,
+                              ).format((cart?.discount ?? 0) != 0
+                                  ? disSumPrice
+                                  : sumPrice),
+                              style: GoogleFonts.inter(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: (cart?.discount ?? 0) != 0
+                                      ? 12.sp
+                                      : 16.sp,
+                                  color: AppStyle.black,
+                                  decoration: (cart?.discount ?? 0) != 0
+                                      ? TextDecoration.lineThrough
+                                      : TextDecoration.none),
+                            ),
+                            (cart?.discount ?? 0) != 0
+                                ? Container(
+                              margin: EdgeInsets.only(top: 8.r),
+                              decoration: BoxDecoration(
+                                  color: AppStyle.red,
+                                  borderRadius:
+                                  BorderRadius.circular(30.r)),
+                              padding: EdgeInsets.all(4.r),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                      "assets/svg/discount.svg"),
+                                  4.horizontalSpace,
+                                  Text(
+                                    AppHelpers.numberFormat(
+                                      sumPrice,
+                                      symbol: symbol,
+                                    ),
+
+                                    /// usage
+
+                                    style: GoogleFonts.inter(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14.sp,
+                                        color: AppStyle.white),
+                                  )
+                                ],
+                              ),
+                            )
+                                : const SizedBox.shrink()
+                          ],
+                        )
+                            : const SizedBox.shrink(),
+                        16.horizontalSpace,
+                      ],
+                    ),
+                  ],
+                ),
               ),
             )
           else
@@ -364,7 +369,7 @@ class CartOrderItem extends StatelessWidget {
                 ],
               ),
             ),
-          isActive ? const Divider() : const SizedBox.shrink(),
+         // isActive ? const Divider() : const SizedBox.shrink(),
         ],
       ),
     );

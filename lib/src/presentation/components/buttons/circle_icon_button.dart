@@ -14,7 +14,7 @@ class CircleIconButton extends StatelessWidget {
     required this.iconData,
     required this.icon,
     required this.onTap,
-    this.size = 40,
+    this.size = 70,
   });
 
   @override
@@ -31,7 +31,7 @@ class CircleIconButton extends StatelessWidget {
           alignment: Alignment.center,
           child: Icon(
             iconData,
-            size: (size / 2).r,
+            size: 60,
             color: icon,
           ),
         ),

@@ -47,10 +47,10 @@
               "client_type": 3
             },
             {
-              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.foodyman.seller"
+                "bundle_id": "com.d2home.d2user"
               }
             }
           ]
@@ -83,10 +83,10 @@
               "client_type": 3
             },
             {
-              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.foodyman.seller"
+                "bundle_id": "com.d2home.d2user"
               }
             }
           ]
@@ -119,10 +119,10 @@
               "client_type": 3
             },
             {
-              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.foodyman.seller"
+                "bundle_id": "com.d2home.d2user"
               }
             }
           ]
@@ -131,9 +131,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:91552841385:android:5a4e42400f3b1985cff3b8",
+        "mobilesdk_app_id": "1:91552841385:android:299b23ee3c01484ecff3b8",
         "android_client_info": {
-          "package_name": "com.d2home.d2user"
+          "package_name": "com.d2home.d2use"
         }
       },
       "oauth_client": [
@@ -155,10 +155,62 @@
               "client_type": 3
             },
             {
-              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.foodyman.seller"
+                "bundle_id": "com.d2home.d2user"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91552841385:android:5a4e42400f3b1985cff3b8",
+        "android_client_info": {
+          "package_name": "com.d2home.d2user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91552841385-0b49cgi48bcm6u33kac58ihq744eucm0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.d2home.d2user",
+            "certificate_hash": "027116b592edbc205d085ace698682be25b3fb7d"
+          }
+        },
+        {
+          "client_id": "91552841385-vje7hc1iohvsrcgos50slodki2180hos.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.d2home.d2user",
+            "certificate_hash": "3d1f85ea414ebcbab609326ca5b69bc22741d5df"
+          }
+        },
+        {
+          "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjHTb1wQ-j9MH1rivRpTGmWbK4EGN-0XA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.d2home.d2user"
               }
             }
           ]
@@ -207,10 +259,10 @@
               "client_type": 3
             },
             {
-              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.foodyman.seller"
+                "bundle_id": "com.d2home.d2user"
               }
             }
           ]
@@ -221,7 +273,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:91552841385:android:267888a7c37068cecff3b8",
         "android_client_info": {
-          "package_name": "com.posd2home.tableapp"
+          "package_name": "com.d2home.pos"
         }
       },
       "oauth_client": [
@@ -229,7 +281,7 @@
           "client_id": "91552841385-ena5h2tkjk9a3oo4i31sm3j3vin8oltm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.posd2home.tableapp",
+            "package_name": "com.d2home.pos",
             "certificate_hash": "b56f02e2de7b9d6883a88e082be55a10d69ea4ff"
           }
         },
@@ -237,7 +289,7 @@
           "client_id": "91552841385-v1k30nlntbmjculbglb1bhbqfbuq4ke9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.posd2home.tableapp",
+            "package_name": "com.d2home.pos",
             "certificate_hash": "027116b592edbc205d085ace698682be25b3fb7d"
           }
         },
@@ -259,10 +311,10 @@
               "client_type": 3
             },
             {
-              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.foodyman.seller"
+                "bundle_id": "com.d2home.d2user"
               }
             }
           ]
@@ -311,10 +363,10 @@
               "client_type": 3
             },
             {
-              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.foodyman.seller"
+                "bundle_id": "com.d2home.d2user"
               }
             }
           ]
@@ -363,10 +415,46 @@
               "client_type": 3
             },
             {
-              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.foodyman.seller"
+                "bundle_id": "com.d2home.d2user"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91552841385:android:e1ebefbe1272dc24cff3b8",
+        "android_client_info": {
+          "package_name": "com.pos.d2home"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjHTb1wQ-j9MH1rivRpTGmWbK4EGN-0XA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91552841385-v4i5d6das9ojob3g113f12l5l1qcgl62.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.d2home.d2user"
               }
             }
           ]
@@ -399,10 +487,10 @@
               "client_type": 3
             },
             {
-              "client_id": "91552841385-6a6scd3pqd0sv5v24iblsmdgdkm93rmn.apps.googleusercontent.com",
+              "client_id": "91552841385-1oq7hi6e8dh3k914sk5muhpe194ovqmj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.foodyman.seller"
+                "bundle_id": "com.d2home.d2user"
               }
             }
           ]

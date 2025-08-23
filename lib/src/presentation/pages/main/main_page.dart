@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'dart:async';
 
+import 'package:admin_desktop/main.dart';
 import 'package:admin_desktop/src/core/routes/app_router.dart';
 import 'package:admin_desktop/src/presentation/components/custom_clock/custom_clock.dart';
 import 'package:admin_desktop/src/presentation/components/custom_scaffold.dart';
@@ -29,6 +30,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -233,7 +235,8 @@ class _MainPageState extends ConsumerState<MainPage>
       child: CustomScaffold(
         extendBody: true,
         appBar: (colors) => customAppBar(notifier, customerNotifier),
-        backgroundColor: AppStyle.mainBack,
+        backgroundColor: ChangeColorController.to.selectedColors[2], // Button Color // Button Color,
+       // backgroundColor: AppStyle.mainBack,
         body: (c) => Directionality(
           textDirection:
           LocalStorage.getLangLtr() ? TextDirection.ltr : TextDirection.rtl,
@@ -266,7 +269,7 @@ class _MainPageState extends ConsumerState<MainPage>
   AppBar customAppBar(
       MainNotifier notifier, CustomerNotifier customerNotifier) {
     return AppBar(
-      backgroundColor: AppStyle.white,
+      backgroundColor: ChangeColorController.to.selectedColors[1],
       automaticallyImplyLeading: false,
       elevation: 0.5,
       title: IntrinsicHeight(
@@ -464,6 +467,17 @@ class _MainPageState extends ConsumerState<MainPage>
                 ),
               ),
 
+              IconButton(
+                onPressed: () {
+                  print("you press here");
+                  _changeThemeColor(); //show alert dialog
+                },
+                icon: const Icon(
+                  Icons.palette,
+                  color: AppStyle.black,
+                ),
+              ),
+
 
               // IconButton(
               //   onPressed: () {
@@ -534,16 +548,17 @@ class _MainPageState extends ConsumerState<MainPage>
         return Container(
           height: double.infinity,
           width: 90.w,
-          color: AppStyle.white,
+          color: ChangeColorController.to.selectedColors[1],
           child: ListView( //fixed scrolling.
             children: [
               24.verticalSpace,
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 0
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[0] // Button Color // Button Color
                         : AppStyle.transparent,
-                    borderRadius: BorderRadius.circular(10.r)),
+                   // borderRadius: BorderRadius.circular(10.r)),
+                ),
                 child: IconButton(
                   onPressed: () {
                     ref.read(mainProvider.notifier).changeIndex(0);
@@ -559,9 +574,10 @@ class _MainPageState extends ConsumerState<MainPage>
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 1
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[0] // Button Color // Button Color
                         : AppStyle.transparent,
-                    borderRadius: BorderRadius.circular(10.r)),
+                 //   borderRadius: BorderRadius.circular(10.r)
+                ),
                 child: IconButton(
                     onPressed: () {
                       ref.read(mainProvider.notifier).changeIndex(1);
@@ -571,16 +587,17 @@ class _MainPageState extends ConsumerState<MainPage>
                           ? FlutterRemix.shopping_bag_fill
                           : FlutterRemix.shopping_bag_line,
                       color:
-                      state.selectIndex == 1 ? AppStyle.white : AppStyle.icon,
+                      state.selectIndex == 1 ?  ChangeColorController.to.selectedColors[2] : AppStyle.white,
                     )),
               ),
               28.verticalSpace,
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 2
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[0] // Button Color // Button Color
                         : AppStyle.transparent,
-                    borderRadius: BorderRadius.circular(10.r)),
+                   // borderRadius: BorderRadius.circular(10.r)
+                ),
                 child: IconButton(
                     onPressed: () {
                       ref.read(mainProvider.notifier).changeIndex(2);
@@ -590,14 +607,14 @@ class _MainPageState extends ConsumerState<MainPage>
                           ? FlutterRemix.user_3_fill
                           : FlutterRemix.user_3_line,
                       color:
-                      state.selectIndex == 2 ? AppStyle.white : AppStyle.icon,
+                      state.selectIndex == 2 ? ChangeColorController.to.selectedColors[2] : AppStyle.white,
                     )),
               ),
               28.verticalSpace,
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 3
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[0] // Button Color // Button Color
                         : AppStyle.transparent,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: IconButton(
@@ -615,9 +632,10 @@ class _MainPageState extends ConsumerState<MainPage>
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 4
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[0] // Button Color // Button Color
                         : AppStyle.transparent,
-                    borderRadius: BorderRadius.circular(10.r)),
+                   // borderRadius: BorderRadius.circular(10.r)
+                ),
                 child: IconButton(
                     onPressed: () {
                       ref.read(mainProvider.notifier).changeIndex(4);
@@ -627,14 +645,14 @@ class _MainPageState extends ConsumerState<MainPage>
                           ? FlutterRemix.money_dollar_circle_fill
                           : FlutterRemix.money_dollar_circle_line,
                       color:
-                      state.selectIndex == 4 ? AppStyle.white : AppStyle.icon,
+                      state.selectIndex == 4 ?  ChangeColorController.to.selectedColors[2] : AppStyle.white,
                     )),
               ),
               28.verticalSpace,
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 5
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[0] // Button Color // Button Color
                         : AppStyle.transparent,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: IconButton(
@@ -646,23 +664,24 @@ class _MainPageState extends ConsumerState<MainPage>
                           ? FlutterRemix.pie_chart_fill
                           : FlutterRemix.pie_chart_line,
                       color:
-                      state.selectIndex == 5 ? AppStyle.white : AppStyle.icon,
+                      state.selectIndex == 5 ?  ChangeColorController.to.selectedColors[2] : AppStyle.white,
                     )),
               ),
               28.verticalSpace,
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 7
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[0] // Button Color // Button Color
                         : AppStyle.transparent,
-                    borderRadius: BorderRadius.circular(10.r)),
+                    //borderRadius: BorderRadius.circular(10.r)
+                ),
                 child: IconButton(
                   onPressed: () {
                     ref.read(mainProvider.notifier).changeIndex(7);
                   },
-                  icon: const Icon(
+                  icon:  Icon(
                     FlutterRemix.printer_fill,
-                    color: AppStyle.black,
+                    color:  state.selectIndex == 6 ?  ChangeColorController.to.selectedColors[2] : AppStyle.white,
                   ),
                 ),
               ),
@@ -676,7 +695,7 @@ class _MainPageState extends ConsumerState<MainPage>
                   decoration: BoxDecoration(
                       border: Border.all(
                         color: state.selectIndex == 6
-                            ?   ChangeColorController.to.selectedColor
+                            ?   ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                             : AppStyle.transparent,
                       ),
                       borderRadius: BorderRadius.circular(20.r)),
@@ -718,7 +737,7 @@ class _MainPageState extends ConsumerState<MainPage>
         return Container(
           height: double.infinity,
           width: 90.w,
-          color: AppStyle.white,
+          color: ChangeColorController.to.selectedColors[1],
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -727,7 +746,7 @@ class _MainPageState extends ConsumerState<MainPage>
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 0
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                         : AppStyle.transparent,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: IconButton(
@@ -745,7 +764,7 @@ class _MainPageState extends ConsumerState<MainPage>
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 7
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                         : AppStyle.transparent,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: IconButton(
@@ -768,7 +787,7 @@ class _MainPageState extends ConsumerState<MainPage>
                   decoration: BoxDecoration(
                       border: Border.all(
                         color: state.selectIndex == 1
-                            ?   ChangeColorController.to.selectedColor
+                            ?   ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                             : AppStyle.transparent,
                       ),
                       borderRadius: BorderRadius.circular(20.r)),
@@ -803,7 +822,7 @@ class _MainPageState extends ConsumerState<MainPage>
         return Container(
           height: double.infinity,
           width: 90.w,
-          color: AppStyle.white,
+          color: ChangeColorController.to.selectedColors[1],
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -812,7 +831,7 @@ class _MainPageState extends ConsumerState<MainPage>
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 0
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                         : AppStyle.transparent,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: IconButton(
@@ -831,7 +850,7 @@ class _MainPageState extends ConsumerState<MainPage>
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 1
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                         : AppStyle.transparent,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: IconButton(
@@ -850,7 +869,7 @@ class _MainPageState extends ConsumerState<MainPage>
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 2
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                         : AppStyle.transparent,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: IconButton(
@@ -876,7 +895,7 @@ class _MainPageState extends ConsumerState<MainPage>
               Container(
                 decoration: BoxDecoration(
                     color: state.selectIndex == 7
-                        ?   ChangeColorController.to.selectedColor
+                        ?   ChangeColorController.to.selectedColors[2] // Button Color // Button Color
                         : AppStyle.transparent,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: IconButton(
@@ -899,8 +918,8 @@ class _MainPageState extends ConsumerState<MainPage>
                   decoration: BoxDecoration(
                       border: Border.all(
                         color: state.selectIndex == 3
-                            ?   ChangeColorController.to.selectedColor
-                            : AppStyle.transparent,
+                            ?   ChangeColorController.to.selectedColors[2] // Button Color // Button Color
+                            : AppStyle.transparent, 
                       ),
                       borderRadius: BorderRadius.circular(20.r)),
                   child: CommonImage(
@@ -935,6 +954,7 @@ class _MainPageState extends ConsumerState<MainPage>
     );
   }
 
+  //Theme changes
   _showAlertDilog()async{
     return showDialog(
       context: context,
@@ -943,59 +963,60 @@ class _MainPageState extends ConsumerState<MainPage>
         return AlertDialog(
           title: Text('Select view for items'),
           content: Obx(() {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CheckboxListTile(
-                  title: Row(
-                    children: [
-                      Icon(Icons.grid_view_rounded),
-                      SizedBox(width: 10),
-                      Text('Grid View'),
-                    ],
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CheckboxListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.grid_view_rounded),
+                        SizedBox(width: 10),
+                        Text('Grid View'),
+                      ],
+                    ),
+                    value: mainController.isGridView.value,
+                    onChanged: (value) {
+                      if (value!) {
+                        mainController.isGridView.value = true;
+                        mainController.isListView.value = false; // Auto uncheck ListView
+                      }
+                    },
                   ),
-                  value: mainController.isGridView.value,
-                  onChanged: (value) {
-                    if (value!) {
-                      mainController.isGridView.value = true;
-                      mainController.isListView.value = false; // Auto uncheck ListView
-                    }
-                  },
-                ),
-
-                CheckboxListTile(
-                  title: Row(
-                    children: [
-                      Icon(Icons.list_alt),
-                      SizedBox(width: 10),
-                      Text('List View'),
-                    ],
+              
+                  CheckboxListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.list_alt),
+                        SizedBox(width: 10),
+                        Text('List View'),
+                      ],
+                    ),
+                    value: mainController.isListView.value,
+                    onChanged: (value) {
+                      if (value!) {
+                        mainController.isListView.value = true;
+                        mainController.isGridView.value = false; // Auto uncheck GridView
+                      }
+                    },
                   ),
-                  value: mainController.isListView.value,
-                  onChanged: (value) {
-                    if (value!) {
-                      mainController.isListView.value = true;
-                      mainController.isGridView.value = false; // Auto uncheck GridView
-                    }
-                  },
-                ),
-
-                CheckboxListTile(
-                  title: Row(
-                    children: [
-                      Icon(Icons.photo),
-                      SizedBox(width: 10,),
-                      Text('Show Image'),
-                    ],
+              
+                  CheckboxListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.photo),
+                        SizedBox(width: 10,),
+                        Text('Show Image'),
+                      ],
+                    ),
+                    value: mainController.isShowImage.value,
+                    onChanged: (value) {
+                      mainController.isShowImage.value = value!;
+                    },
                   ),
-                  value: mainController.isShowImage.value,
-                  onChanged: (value) {
-                    mainController.isShowImage.value = value!;
-                  },
-                ),
 
-                ColorPickerWidget()
-              ],
+                ],
+              ),
             );
           }),
           actions: [
@@ -1038,47 +1059,283 @@ class _MainPageState extends ConsumerState<MainPage>
       },
     );
   }
+
+  _changeThemeColor()async {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (_) =>
+          AlertDialog(
+            titlePadding: EdgeInsets.only(left: 10,right: 10, top: 5),
+            iconPadding: EdgeInsets.zero,
+            insetPadding: EdgeInsets.zero,
+            actionsPadding: EdgeInsets.zero,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Choose Theme Colors"),
+                IconButton(
+                  onPressed: ()=>Navigator.pop(context),
+                  icon: Icon(Icons.close, size: 20,),
+                )
+              ],
+            ),
+            content: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Expanded(child: ColorPickerWidget()),
+                  FutureBuilder<Map<String, List<Color>>>(
+                    future: ChangeColorController.to.getAllPresets(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Text("No presets found.");
+                      }
+
+                      final presets = snapshot.data!;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // Show each preset as a button or chip
+                          Text("All Your Preset: ",
+                            style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+
+                          Wrap(
+                            spacing: 10,
+                            children: presets.entries.map((entry) {
+                              final presetName = entry.key;
+                              final presetColors = entry.value;
+                              return  ListTile(
+                                title: Text(presetName, style: TextStyle(color: Colors.black),),
+                                trailing: SizedBox(
+                                  width: 200,
+                                  child: Row(
+                                    children: [
+                                      TextButton(
+                                          onPressed: ()async{
+                                            await ChangeColorController.to.applyPreset(presetName);
+                                            Get.snackbar("Applied", "$presetName applied!");
+                                          },
+                                          child: Text("Apply")
+                                      ),
+
+                                      TextButton(
+                                          onPressed: ()async{
+                                            await ChangeColorController.to.deletePreset(presetName);
+                                            Get.snackbar("Delete", "$presetName Delete!");
+                                          },
+                                          child: Text("Delete",style: TextStyle(color: Colors.red),)
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+
+                              return ActionChip(
+                                label: Text("Applied: " +presetName, style: TextStyle(color: Colors.white),),
+                                backgroundColor: presetColors[0], // show preview
+                                onPressed: () async {
+                                  await ChangeColorController.to.applyPreset(presetName);
+                                  Get.snackbar("Applied", "$presetName applied!");
+                                },
+
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  _openInputToSavePreset(context);
+                },
+                child: Text('Save Preset', style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(width: 10),
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.grey,
+                  foregroundColor: Colors.black,
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+              SizedBox(height: 10),
+
+
+            ],
+
+          ),
+    );
+  }
+
+
 }
+
+//show a popup to add preset name...
+Future<void> _openInputToSavePreset(context) async {
+  final TextEditingController name = TextEditingController();
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        titlePadding:  EdgeInsets.only(left: 10, right: 10),
+        insetPadding: EdgeInsets.zero,
+        actionsPadding: EdgeInsets.zero,
+        contentPadding: EdgeInsets.all(10),
+        
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Preset Name'),
+            IconButton(
+              onPressed: ()=>Navigator.pop(context),
+              icon: Icon(Icons.close),
+            )
+          ],
+        ),
+        content:  SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              TextField(
+                controller: name,
+                decoration: InputDecoration(
+                  hintText: "Name of your preset"
+                ),
+              )
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Save'),
+            onPressed: () {
+              ChangeColorController.to.saveCurrentAsPreset(name.text);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 
 class ColorPickerWidget extends StatelessWidget {
   ColorPickerWidget({Key? key}) : super(key: key);
 
-  final List<Color> colors = [
-    Colors.red,
-    Colors.yellow,
-    Colors.green,
-    Colors.purple,
-    Colors.blue,
-    Colors.orange,
+  final List<Map<String, Color>> colorPairs = [
+    {
+      'primary': Color(0xffE8650B),
+      'secondary': Color(0xff912A03),
+      'tertiary': Color(0xffffad6c)
+    },
+
+    {
+      'primary':  Color(0xff4D991D),
+      'secondary':Color(0xff90100E),
+      'tertiary': Color(0xffCAE325),
+    },
+     {
+      'primary':Color(0xff2C73A8),
+      'secondary': Color(0xff061E35),
+      'tertiary': Color(0xffD4DEE5),
+    },
+
   ];
+
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
+
+  // ValueChanged<Color> callback
+  void changeColor(Color color) {
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final selectedColor =   ChangeColorController.to.selectedColor;
 
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: colors.map((color) {
-          final isSelected = selectedColor.value == color.value;
-
-          return GestureDetector(
-            onTap: () {
-                ChangeColorController.to.selectedColor = color;
-            },
-            child: Container(
-              width: isSelected ? 48 : 40,
-              height: isSelected ? 48 : 40,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                border: isSelected
-                    ? Border.all(color: Colors.black, width: 3)
-                    : null,
-              ),
-            ),
-          );
-        }).toList(),
+      return SizedBox(
+        width: MediaQuery.of(context).size.width * .70,
+        child: ListView.builder(
+          itemCount: ChangeColorController.to.colorsListString.length,
+          itemBuilder: (_, index){
+            return  Container(
+              margin: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade50
+                ),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        for (int i = 0; i < ChangeColorController.to.colorsListBool.length; i++) {
+                          ChangeColorController.to.colorsListBool[i] = (i == index);
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("${ChangeColorController.to.colorsListString[index]}: "),
+                          Icon(
+                            Icons.arrow_drop_down, size: 30,
+                          )
+                        ],
+                      ),
+                    ),
+                    Obx(() {
+                        return Visibility(
+                          visible: ChangeColorController.to.colorsListBool[index],
+                          child: MaterialPicker(
+                            pickerColor: pickerColor,
+                            portraitOnly: false,
+                            onColorChanged: (Color color) {
+                              ChangeColorController.to.setColorAtIndex(index, color);
+                            },
+                            enableLabel: true, // only on portrait mode
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                )
+            );
+          },
+        )
       );
     });
   }

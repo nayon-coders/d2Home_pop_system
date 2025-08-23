@@ -34,7 +34,7 @@ class CategoryTabBarItem extends StatelessWidget {
               width: 110.r,
               height: 80.r,
               decoration: BoxDecoration(
-                color: isActive ? ChangeColorController.to.selectedColor.withOpacity(0.2) : AppStyle.white,
+                color: isActive ? AppStyle.white : ChangeColorController.to.selectedColors[3],
                 borderRadius: BorderRadius.circular(5.r),
                 boxShadow: [
                   BoxShadow(
@@ -51,7 +51,7 @@ class CategoryTabBarItem extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 70.r,
+                    height: 65.r,
                     child: ClipRRect(
                       borderRadius: BorderRadiusDirectional.circular(10),
                       child: Image.network(
@@ -67,7 +67,8 @@ class CategoryTabBarItem extends StatelessWidget {
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     style: GoogleFonts.inter(
-                      fontSize: 12.sp,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
                       color: AppStyle.black,
                     ),
                   ),

@@ -54,7 +54,7 @@ class ColorExtras extends ConsumerWidget {
                               height: 22.r,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(11.r),
-                                color: ChangeColorController.to.selectedColor,
+                                color: ChangeColorController.to.selectedColors[2], // Button Color // Button Color,
                                 border:
                                     Border.all(color: AppStyle.white, width: 8.r),
                               ),

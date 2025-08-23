@@ -32,9 +32,9 @@ class LoginButton extends StatelessWidget {
       child: Obx((){
           return Material(
             borderRadius: BorderRadius.circular(8.r),
-            color: isActive ? ChangeColorController.to.selectedColor : AppStyle.selectedItemsText,
+            color: isActive ? ChangeColorController.to.selectedColors[2]  : AppStyle.selectedItemsText,
             child: InkWell(
-              onTap: onPressed,
+              onTap: onPressed, 
               borderRadius: BorderRadius.circular(8.r),
               child: Container(
                 height: 80.r,
@@ -59,7 +59,7 @@ class LoginButton extends StatelessWidget {
                         title,
                         style: GoogleFonts.inter(
                           fontSize: 25.sp,
-                          color: isActive ? titleColor : AppStyle.black,
+                          color:  AppStyle.white,
                           fontWeight: FontWeight.w400,
                         ),
                       ),

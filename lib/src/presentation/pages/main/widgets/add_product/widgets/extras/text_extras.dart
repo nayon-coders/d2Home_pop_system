@@ -44,8 +44,8 @@ class TextExtras extends StatelessWidget {
               return Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 decoration: BoxDecoration(
-                  color: uiExtras[index].isSelected ? ChangeColorController.to.selectedColor : Colors.white,
-                  border: Border.all(width: 1, color: ChangeColorController.to.selectedColor),
+                  color: uiExtras[index].isSelected ? ChangeColorController.to.selectedColors[2] : Colors.white,
+                  border: Border.all(width: 1, color: ChangeColorController.to.selectedColors[2],),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 alignment: Alignment.center, // Center text inside grid cell

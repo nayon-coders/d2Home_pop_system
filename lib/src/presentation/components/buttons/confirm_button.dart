@@ -58,7 +58,7 @@ class ConfirmButton extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.r),
                 border: Border.all(color: border),
-                color: isActive ? ChangeColorController.to.selectedColor : AppStyle.dontHaveAccBtnBack,
+                color: isActive ? ChangeColorController.to.selectedColors[2] :  AppStyle.dontHaveAccBtnBack,
                 boxShadow: isShadow
                     ? [
                   BoxShadow(

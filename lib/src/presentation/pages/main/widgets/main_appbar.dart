@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:admin_desktop/src/core/constants/constants.dart';
 import 'package:admin_desktop/src/core/utils/utils.dart';
+import '../../../theme/theme_controller_getx.dart';
 import '../riverpod/provider/main_provider.dart';
 
 class MainAppbar extends ConsumerWidget {
@@ -33,7 +34,7 @@ class MainAppbar extends ConsumerWidget {
                     width: double.infinity,
                     padding: EdgeInsets.all(8.r),
                     decoration: BoxDecoration(
-                      color: AppStyle.white,
+                      color:  ChangeColorController.to.selectedColors[1] ,
                       borderRadius: BorderRadius.circular(10.r)
                     ),
                     height: 130.h,
